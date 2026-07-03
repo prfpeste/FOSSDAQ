@@ -9,8 +9,8 @@ FOSSDAQ is developed as an open modular measurement system in the context of stu
 
 Current contributors include:
 
-- Jürgen Altemeier
-- Patrick Uitz
+- Jürgen Altemeier (Student HTWG Konstanz 2026)
+- Patrick Uitz (Student HTWG Konstanz 2026)
 - Prof. Dr. Peter Stein
 
 
