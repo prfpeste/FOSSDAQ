@@ -1,5 +1,5 @@
 # FOSSDAQ
-Free and Open Source Data Acquisition 
+Free and Open Source Software (and hardware) for Data Acquisition 
 
 ## Project aim
 
