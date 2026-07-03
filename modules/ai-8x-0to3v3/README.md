@@ -95,6 +95,11 @@ Important project files for this module include:
 
 This module is intended for educational, demonstrator, and laboratory use in controlled environments. The design prioritizes simplicity, low cost, and ease of reproduction over maximum electrical robustness. The module uses a shared ground and does not include galvanic isolation. Additional protection, filtering, and EMC measures may be required for use in harsher environments or outside supervised lab settings.
 
+## Contributors
+
+- Jürgen Altemeier
+- Patrick Uitz
+
 ## License
 
 Hardware design files in this module are licensed under **CERN-OHL-W-2.0**.  
