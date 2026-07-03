@@ -14,8 +14,8 @@ FOSSDAQ is developed as an open modular measurement system in the context of stu
 - Prof. Dr. Peter Stein
 
 #### Core contributors
-- Jürgen Altemeier (basic concept and first modules)
-- Patrick Uitz (basic concept and first modules)
+- Jürgen Altemeier (basic concept and first modules - 2026)
+- Patrick Uitz (basic concept and first modules - 2026)
 
 #### Further module contributors
 - To be added as new modules are published
