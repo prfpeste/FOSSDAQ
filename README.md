@@ -7,11 +7,15 @@ Free and Open Source Data Acquisition
 
 FOSSDAQ is developed as an open modular measurement system in the context of student projects and teaching.
 
-Current contributors include:
+### Project lead and supervision
+- Prof. Dr. Peter Stein
 
-- Jürgen Altemeier (Student HTWG Konstanz - 2026)
-- Patrick Uitz (Student HTWG Konstanz - 2026)
-- Prof. Dr. Peter Stein (HTWG Konstanz)
+### Core contributors
+- Jürgen Altemeier (basic concept and first modules)
+- Patrick Uitz (basic concept and first modules)
+
+### Further module contributors
+- To be added as new modules are published
 
 
 ## License
