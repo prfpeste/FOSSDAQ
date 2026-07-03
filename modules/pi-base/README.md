@@ -84,6 +84,11 @@ Important project files for this module include:
 
 This module is intended for supervised educational and laboratory environments. The design prioritizes simplicity, low cost, accessibility, and ease of reproduction over maximum ruggedness. Additional protection, isolation, or EMC measures may be required for use in industrial or electrically harsh environments.
 
+## Contributors
+
+- Jürgen Altemeier
+- Patrick Uitz
+
 ## License
 
 Hardware design files in this module are licensed under **CERN-OHL-W-2.0**.  
