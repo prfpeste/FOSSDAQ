@@ -1,0 +1,9 @@
+[
+  {
+    "id": "node-red",
+    "label": "NodeRed",
+    "url": "http://192.168.50.1",
+    "visible": true,
+    "order": 0
+  }
+]

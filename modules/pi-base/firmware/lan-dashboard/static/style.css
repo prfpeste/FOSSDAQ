@@ -1,0 +1,483 @@
+:root {
+  --bg: #12161b;
+  --surface: #1b2129;
+  --surface-hover: #212832;
+  --border: #2a323c;
+  --text: #e7ebee;
+  --text-muted: #8a95a3;
+  --accent: #ffb454;
+  --accent-dim: #8a6a3a;
+  --teal: #55d9c2;
+  --danger: #e8646a;
+  --font-display: "IBM Plex Mono", monospace;
+  --font-body: "Inter", sans-serif;
+  --white: #ffffff;
+}
+
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --surface: #f5f6f8;
+  --surface-hover: #ebedf1;
+  --border: #dde1e6;
+  --text: #1a1f26;
+  --text-muted: #6b7480;
+  --accent: #c97b1f;
+  --accent-dim: #e0b073;
+  --teal: #1f9d87;
+  --danger: #c93a41;
+}
+
+* { box-sizing: border-box; }
+
+body { transition: background 0.2s ease, color 0.2s ease; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255, 180, 84, 0.06), transparent 40%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  padding: 0 0 4rem;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.25rem clamp(1.25rem, 4vw, 3rem) 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar__eyebrow {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.topbar__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.topbar__eyebrow[contenteditable="true"],
+.topbar__title[contenteditable="true"] {
+  display: block;
+  min-width: 10px;
+  padding: 4px 8px;
+  display: inline-block;
+}
+
+.topbar__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  letter-spacing: -0.01em;
+}
+
+.topbar {
+  gap: 1rem;
+}
+
+.topbar__brand {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.topbar__logo {
+  width: 152px;
+  height: 76px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.topbar__logo[hidden] {
+  display: none;
+}
+
+.topbar__logo-edit,
+.topbar__logo-remove {
+  display: none;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  font-size: 0.6rem;
+}
+
+.topbar__logo-edit {
+  bottom: -6px;
+  right: -6px;
+}
+
+.topbar__logo-remove {
+  top: -6px;
+  right: -6px;
+  color: var(--danger);
+}
+
+.is-admin .topbar__logo-edit {
+  display: flex;
+}
+
+.is-admin .topbar__logo-remove {
+  display: flex;
+}
+
+.topbar__logo-remove[hidden] {
+  display: none;
+}
+
+.is-admin [data-editable] {
+  outline: 1px dashed var(--accent-dim);
+  outline-offset: 4px;
+  border-radius: 4px;
+  cursor: text;
+}
+
+.is-admin [data-editable]:focus {
+  outline: 1px solid var(--accent);
+  background: var(--surface);
+}
+
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.icon-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.icon-toggle:hover {
+  border-color: var(--accent-dim);
+  color: var(--text);
+}
+
+/* WICHTIG: gleiches Problem wie bei .modal-backdrop[hidden] weiter unten:
+   ohne diese Regel gewinnt "display: flex" oben immer gegen das
+   hidden-Attribut (Author-CSS schlägt die Browser-Standardregel für
+   [hidden]), wodurch Hell-/Dunkelmodus-Umschalter, Passwort-Button und
+   Bild-Symbol auch außerhalb des Admin-Modus sichtbar blieben. */
+.icon-toggle[hidden] {
+  display: none;
+}
+
+.admin-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-toggle:hover {
+  border-color: var(--accent-dim);
+  color: var(--text);
+}
+
+.admin-toggle__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  box-shadow: none;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-toggle.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.admin-toggle.is-active .admin-toggle__dot {
+  background: var(--accent);
+  box-shadow: 0 0 8px 1px rgba(255, 180, 84, 0.7);
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 2rem clamp(1.25rem, 4vw, 3rem) 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.empty-hint {
+  text-align: center;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  margin-top: 2rem;
+}
+
+/* Tile */
+.tile {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  min-height: 108px;
+  transition: border-color 0.15s ease, transform 0.1s ease, background 0.15s ease;
+}
+
+.tile:hover {
+  border-color: var(--accent-dim);
+  background: var(--surface-hover);
+}
+
+.tile__link {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  height: 100%;
+  padding: 1rem 1.1rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.tile__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 7px 1px rgba(85, 217, 194, 0.65);
+}
+
+.tile__label {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.tile--hidden {
+  opacity: 0.5;
+}
+
+.tile--hidden .tile__dot {
+  background: var(--text-muted);
+  box-shadow: none;
+}
+
+/* Admin controls on tile */
+.tile__admin-controls {
+  display: none;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  gap: 0.3rem;
+}
+
+.is-admin .tile__admin-controls {
+  display: flex;
+}
+
+.tile__icon-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: rgba(18, 22, 27, 0.7);
+  color: var(--white);
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.tile__icon-btn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.tile__delete:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* Add tile */
+.tile--add {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 108px;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  grid-column: 1 / -1;
+  max-width: 1100px;
+  margin: 1rem auto 0;
+  width: calc(100% - clamp(2.5rem, 8vw, 6rem));
+  padding: 1rem;
+}
+
+.is-admin .tile--add {
+  display: flex;
+}
+
+.tile--add:hover {
+  border-color: var(--accent-dim);
+  color: var(--text);
+}
+
+.tile--add__plus {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 10, 13, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 10;
+}
+
+/* WICHTIG: ohne diese Regel gewinnt "display: flex" oben immer gegen das
+   hidden-Attribut (Author-CSS schlägt die Browser-Standardregel für
+   [hidden]), wodurch die Modals dauerhaft sichtbar bleiben und sich nicht
+   schließen lassen. */
+.modal-backdrop[hidden] {
+  display: none;
+}
+
+.modal {
+  width: 100%;
+  max-width: 360px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.6rem;
+}
+
+.modal__title {
+  margin: 0 0 1.1rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.field {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.field__label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.field__input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.6rem 0.7rem;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.modal__error {
+  color: var(--danger);
+  font-size: 0.82rem;
+  margin: -0.3rem 0 0.9rem;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.55rem 1rem;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.btn--ghost:hover {
+  color: var(--text);
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: #1a1305;
+}
+
+.btn--primary:hover {
+  filter: brightness(1.06);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

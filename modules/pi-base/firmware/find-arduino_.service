@@ -1,0 +1,12 @@
+# /etc/systemd/system/find-arduino@.service
+#
+# Wird per udev-Regel (99-arduino.rules) für jedes neu erkannte
+# ttyACM*/ttyUSB*-Gerät gestartet. %i = z.B. "ttyACM0".
+[Unit]
+Description=Arduino/Clone auf %i identifizieren und Symlink anlegen
+After=dev-%i.device
+BindsTo=dev-%i.device
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/find_arduino.sh -s -p /dev/%i

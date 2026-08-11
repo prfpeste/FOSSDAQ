@@ -1,0 +1,7 @@
+# /etc/udev/rules.d/99-arduino.rules
+#
+# Wird ein neues serielles USB-Gerät (Arduino/Clone) erkannt, wird
+# find-arduino@<KERNELNAME>.service gestartet, z.B. find-arduino@ttyACM0.service.
+# Das läuft als root über systemd -> keine Passwortabfrage nötig.
+SUBSYSTEM=="tty", KERNEL=="ttyACM[0-9]*", ACTION=="add", TAG+="systemd", ENV{SYSTEMD_WANTS}+="find-arduino@%k.service"
+SUBSYSTEM=="tty", KERNEL=="ttyUSB[0-9]*", ACTION=="add", TAG+="systemd", ENV{SYSTEMD_WANTS}+="find-arduino@%k.service"

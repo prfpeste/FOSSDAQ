@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="{{ settings.theme }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ settings.title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    {% if logo_url %}
+    <img id="topbarLogo" class="topbar__logo" src="{{ logo_url }}" alt="Logo">
+    {% else %}
+    <img id="topbarLogo" class="topbar__logo" src="" alt="Logo" hidden>
+    {% endif %}
+    <button id="logoEditBtn" class="topbar__logo-edit icon-toggle" title="Bild ändern" aria-label="Bild ändern" hidden>🖼</button>
+    <button id="logoRemoveBtn" class="topbar__logo-remove icon-toggle" title="Bild entfernen" aria-label="Bild entfernen" hidden>✕</button>
+  </div>
+  <div class="topbar__label">
+    <span class="topbar__eyebrow" id="topbarEyebrow" data-editable="eyebrow">{{ settings.eyebrow }}</span>
+    <h1 class="topbar__title" id="topbarTitle" data-editable="title">{{ settings.title }}</h1>
+  </div>
+  <div class="admin-actions">
+    <button id="themeToggle" class="icon-toggle" title="Hell-/Dunkelmodus" aria-label="Hell-/Dunkelmodus umschalten" hidden>🌙</button>
+    <button id="adminPasswordBtn" class="icon-toggle" title="Admin-Passwort ändern" aria-label="Admin-Passwort ändern" hidden>🔑</button>
+    <button id="adminToggle" class="admin-toggle" title="Admin-Modus" aria-label="Admin-Modus umschalten">
+      <span class="admin-toggle__dot"></span>
+      <span class="admin-toggle__text">Admin</span>
+    </button>
+  </div>
+</header>
+
+<input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml" hidden>
+
+<main class="grid" id="grid"></main>
+
+<p class="empty-hint" id="emptyHint" hidden>Noch keine Schaltflächen vorhanden.</p>
+
+<!-- Kachel-Vorlage -->
+<template id="tileTemplate">
+  <div class="tile">
+    <a class="tile__link" href="#" target="_blank" rel="noopener noreferrer">
+      <span class="tile__dot"></span>
+      <span class="tile__label"></span>
+    </a>
+    <div class="tile__admin-controls">
+      <button class="tile__icon-btn tile__toggle-visibility" title="Ein-/Ausblenden">👁</button>
+      <button class="tile__icon-btn tile__edit" title="Bearbeiten">✎</button>
+      <button class="tile__icon-btn tile__delete" title="Löschen">✕</button>
+    </div>
+  </div>
+</template>
+
+<!-- Kachel zum Hinzufügen (nur im Admin-Modus) -->
+<button id="addTileBtn" class="tile tile--add" hidden>
+  <span class="tile--add__plus">+</span>
+  <span>Neue Schaltfläche</span>
+</button>
+
+<!-- Login-Modal -->
+<div class="modal-backdrop" id="loginBackdrop" hidden>
+  <div class="modal">
+    <h2 class="modal__title">Admin-Anmeldung</h2>
+    <form id="loginForm">
+      <label class="field">
+        <span class="field__label">Passwort</span>
+        <input type="password" id="loginPassword" class="field__input" autocomplete="current-password" required>
+      </label>
+      <p class="modal__error" id="loginError" hidden></p>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="loginCancel">Abbrechen</button>
+        <button type="submit" class="btn btn--primary">Anmelden</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Bearbeiten/Erstellen-Modal -->
+<div class="modal-backdrop" id="editBackdrop" hidden>
+  <div class="modal">
+    <h2 class="modal__title" id="editTitle">Schaltfläche bearbeiten</h2>
+    <form id="editForm">
+      <label class="field">
+        <span class="field__label">Anzeigename</span>
+        <input type="text" id="editLabel" class="field__input" required maxlength="40">
+      </label>
+      <label class="field">
+        <span class="field__label">Link</span>
+        <input type="text" id="editUrl" class="field__input" placeholder="http://raspberrypi.local:1880" required>
+      </label>
+      <p class="modal__error" id="editError" hidden></p>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="editCancel">Abbrechen</button>
+        <button type="submit" class="btn btn--primary" id="editSubmit">Speichern</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Passwort-ändern-Modal -->
+<div class="modal-backdrop" id="passwordBackdrop" hidden>
+  <div class="modal">
+    <h2 class="modal__title">Admin-Passwort ändern</h2>
+    <form id="passwordForm">
+      <label class="field">
+        <span class="field__label">Aktuelles Passwort</span>
+        <input type="password" id="currentPassword" class="field__input" autocomplete="current-password" required>
+      </label>
+      <label class="field">
+        <span class="field__label">Neues Passwort</span>
+        <input type="password" id="newPassword" class="field__input" autocomplete="new-password" required minlength="4">
+      </label>
+      <label class="field">
+        <span class="field__label">Neues Passwort wiederholen</span>
+        <input type="password" id="newPassword2" class="field__input" autocomplete="new-password" required minlength="4">
+      </label>
+      <p class="modal__error" id="passwordError" hidden></p>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="passwordCancel">Abbrechen</button>
+        <button type="submit" class="btn btn--primary">Speichern</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
