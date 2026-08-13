@@ -62,6 +62,8 @@ Running these commands will setup everything nearly automatically. The installer
 |Passphrase|ENTER|
 |-|default -> ENTER|
 |-|monaco (default) -> ENTER|
+|save IP4|yes -> ENTER|
+|save IP6|yes -> ENTER|
 
 The `install.sh` script is idempotent — re-running it later (e.g. after an update) is
 safe and will not overwrite data you've already configured through the web
