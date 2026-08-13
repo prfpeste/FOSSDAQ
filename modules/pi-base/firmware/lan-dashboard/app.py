@@ -24,9 +24,9 @@ GIT_REPO_URL = os.environ.get("GIT_REPO_URL", "https://github.com/prfpeste/FOSSD
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 DEFAULT_SETTINGS = {
-    "eyebrow": "LOKALES NETZWERK",
-    "title": "Kontrolltafel",
-    "theme": "dark",
+    "eyebrow": "Institution",
+    "title": "Titel",
+    "theme": "light",
     "logo_filename": None,
 }
 
