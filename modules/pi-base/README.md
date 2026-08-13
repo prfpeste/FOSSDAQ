@@ -65,7 +65,7 @@ The `pi-base` module is the central master unit of the FOSSDAQ platform. It is i
 
 ## Main components
 
-- Raspberry Pi 5 (8 GB RAM recommended)
+- Raspberry Pi 5 (1 GB RAM minimum, 2 GB RAM recommended)
 - Official Raspberry Pi active cooler
 - Optional RTC battery
 - LM2596S DC/DC converter module
