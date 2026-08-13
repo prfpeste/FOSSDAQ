@@ -27,6 +27,27 @@ const newPassword2 = document.getElementById("newPassword2");
 const passwordError = document.getElementById("passwordError");
 const passwordCancel = document.getElementById("passwordCancel");
 
+const powerBtn = document.getElementById("powerBtn");
+const powerBackdrop = document.getElementById("powerBackdrop");
+const powerCancel = document.getElementById("powerCancel");
+const powerError = document.getElementById("powerError");
+const powerRestartBtn = document.getElementById("powerRestartBtn");
+const powerShutdownBtn = document.getElementById("powerShutdownBtn");
+
+const hotspotSettingsBtn = document.getElementById("hotspotSettingsBtn");
+const hotspotBackdrop = document.getElementById("hotspotBackdrop");
+const hotspotForm = document.getElementById("hotspotForm");
+const hotspotSsid = document.getElementById("hotspotSsid");
+const hotspotPassword = document.getElementById("hotspotPassword");
+const hotspotPassword2 = document.getElementById("hotspotPassword2");
+const hotspotError = document.getElementById("hotspotError");
+const hotspotCancel = document.getElementById("hotspotCancel");
+
+const hotspotRestartBackdrop = document.getElementById("hotspotRestartBackdrop");
+const hotspotRestartError = document.getElementById("hotspotRestartError");
+const hotspotRestartLater = document.getElementById("hotspotRestartLater");
+const hotspotRestartNow = document.getElementById("hotspotRestartNow");
+
 const themeToggle = document.getElementById("themeToggle");
 const topbarLogo = document.getElementById("topbarLogo");
 const logoEditBtn = document.getElementById("logoEditBtn");
@@ -264,6 +285,7 @@ async function refreshAdminState() {
   adminToggle.classList.toggle("is-active", isAdmin);
   adminToggle.querySelector(".admin-toggle__text").textContent = isAdmin ? "Angemeldet" : "Admin";
   adminPasswordBtn.hidden = !isAdmin;
+  hotspotSettingsBtn.hidden = !isAdmin;
   themeToggle.hidden = !isAdmin;
   topbarEyebrow.contentEditable = isAdmin ? "true" : "false";
   topbarTitle.contentEditable = isAdmin ? "true" : "false";
@@ -337,9 +359,95 @@ passwordForm.addEventListener("submit", async (e) => {
   }
 });
 
+// PC ausschalten/neustarten - bewusst OHNE Admin-Login nutzbar (Standardmodus).
+powerBtn.addEventListener("click", () => {
+  powerError.hidden = true;
+  powerBackdrop.hidden = false;
+});
+
+powerCancel.addEventListener("click", () => {
+  powerBackdrop.hidden = true;
+});
+
+async function triggerPower(action, label) {
+  if (!confirm(`PC jetzt wirklich ${label}?`)) return;
+  try {
+    await api(`/api/system/${action}`, { method: "POST" });
+    powerBackdrop.hidden = true;
+  } catch (err) {
+    powerError.textContent = err.message;
+    powerError.hidden = false;
+  }
+}
+
+powerShutdownBtn.addEventListener("click", () => triggerPower("shutdown", "ausschalten"));
+powerRestartBtn.addEventListener("click", () => triggerPower("restart", "neustarten"));
+
+// WLAN-Einstellungen (nur im Admin-Modus)
+hotspotSettingsBtn.addEventListener("click", async () => {
+  hotspotError.hidden = true;
+  hotspotForm.reset();
+  try {
+    const config = await api("/api/settings/hotspot");
+    hotspotSsid.value = config.ssid;
+  } catch (err) {
+    hotspotSsid.value = "";
+  }
+  hotspotBackdrop.hidden = false;
+});
+
+hotspotCancel.addEventListener("click", () => {
+  hotspotBackdrop.hidden = true;
+});
+
+hotspotForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (hotspotPassword.value || hotspotPassword2.value) {
+    if (hotspotPassword.value !== hotspotPassword2.value) {
+      hotspotError.textContent = "Die eingegebenen WLAN-Passwörter stimmen nicht überein";
+      hotspotError.hidden = false;
+      return;
+    }
+  }
+
+  const payload = { ssid: hotspotSsid.value.trim() };
+  if (hotspotPassword.value) payload.password = hotspotPassword.value;
+  try {
+    await api("/api/settings/hotspot", {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+    hotspotBackdrop.hidden = true;
+    // Wird bewusst NICHT sofort angewendet - erst nach einem Neustart aktiv
+    // (siehe apply_hotspot_config-Entfernung in app.py). Nutzer per Popup
+    // informieren, statt stillschweigend zu tun als wäre es schon aktiv.
+    hotspotRestartError.hidden = true;
+    hotspotRestartBackdrop.hidden = false;
+  } catch (err) {
+    hotspotError.textContent = err.message;
+    hotspotError.hidden = false;
+  }
+});
+
+hotspotRestartLater.addEventListener("click", () => {
+  hotspotRestartBackdrop.hidden = true;
+});
+
+hotspotRestartNow.addEventListener("click", async () => {
+  if (!confirm("PC jetzt wirklich neustarten?")) return;
+  try {
+    await api("/api/system/restart", { method: "POST" });
+    hotspotRestartBackdrop.hidden = true;
+  } catch (err) {
+    hotspotRestartError.textContent = err.message;
+    hotspotRestartError.hidden = false;
+  }
+});
+
 // Zusätzliche Absicherung: Modals lassen sich auch per Klick auf den
 // abgedunkelten Hintergrund oder per Escape-Taste schließen.
-[loginBackdrop, editBackdrop, passwordBackdrop].forEach((backdrop) => {
+[loginBackdrop, editBackdrop, passwordBackdrop, powerBackdrop, hotspotBackdrop, hotspotRestartBackdrop].forEach((backdrop) => {
   backdrop.addEventListener("click", (e) => {
     if (e.target === backdrop) backdrop.hidden = true;
   });
@@ -350,6 +458,8 @@ document.addEventListener("keydown", (e) => {
   loginBackdrop.hidden = true;
   editBackdrop.hidden = true;
   passwordBackdrop.hidden = true;
+  powerBackdrop.hidden = true;
+  hotspotBackdrop.hidden = true;
 });
 
 (async function init() {

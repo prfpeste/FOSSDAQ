@@ -173,6 +173,41 @@ body {
   color: var(--text);
 }
 
+/* Ein-/Ausschalten-Knopf: immer sichtbar (auch ohne Admin-Login), daher
+   optisch etwas abgesetzt vom eigentlichen Admin-Bereich. */
+.power-btn {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.power-btn:hover {
+  background: var(--danger);
+  color: var(--white);
+}
+
+/* Footer mit Git-Link, mittig unten auf der Seite */
+.site-footer {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem 1rem;
+}
+
+.site-footer__link {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 2px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.site-footer__link:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
+
 /* WICHTIG: gleiches Problem wie bei .modal-backdrop[hidden] weiter unten:
    ohne diese Regel gewinnt "display: flex" oben immer gegen das
    hidden-Attribut (Author-CSS schlägt die Browser-Standardregel für
@@ -396,6 +431,12 @@ body {
   padding: 1.6rem;
 }
 
+/* Power-Modal hat 3 Buttons nebeneinander ("Abbrechen", "Neustarten",
+   "Ausschalten") - bei 360px werden die zu eng bzw. brechen um. */
+#powerBackdrop .modal {
+  max-width: 399px;
+}
+
 .modal__title {
   margin: 0 0 1.1rem;
   font-family: var(--font-display);
@@ -442,6 +483,7 @@ body {
   justify-content: flex-end;
   gap: 0.6rem;
   margin-top: 0.4rem;
+  flex-wrap: wrap;
 }
 
 .btn {

@@ -26,11 +26,14 @@
   </div>
   <div class="admin-actions">
     <button id="themeToggle" class="icon-toggle" title="Hell-/Dunkelmodus" aria-label="Hell-/Dunkelmodus umschalten" hidden>🌙</button>
+    <button id="hotspotSettingsBtn" class="icon-toggle" title="WLAN-Einstellungen" aria-label="WLAN-Einstellungen" hidden>📶</button>
     <button id="adminPasswordBtn" class="icon-toggle" title="Admin-Passwort ändern" aria-label="Admin-Passwort ändern" hidden>🔑</button>
     <button id="adminToggle" class="admin-toggle" title="Admin-Modus" aria-label="Admin-Modus umschalten">
       <span class="admin-toggle__dot"></span>
       <span class="admin-toggle__text">Admin</span>
     </button>
+    <!-- Immer sichtbar, auch im Standardmodus (nicht an Admin-Login gebunden). -->
+    <button id="powerBtn" class="icon-toggle power-btn" title="PC ausschalten oder neustarten" aria-label="PC ausschalten oder neustarten">⏻</button>
   </div>
 </header>
 
@@ -101,6 +104,58 @@
   </div>
 </div>
 
+<!-- Ausschalten/Neustarten-Modal (im Standardmodus, ohne Admin-Login nutzbar) -->
+<div class="modal-backdrop" id="powerBackdrop" hidden>
+  <div class="modal">
+    <h2 class="modal__title">PC ausschalten oder neustarten</h2>
+    <p class="modal__error" id="powerError" hidden></p>
+    <div class="modal__actions">
+      <button type="button" class="btn btn--ghost" id="powerCancel">Abbrechen</button>
+      <button type="button" class="btn btn--ghost" id="powerRestartBtn">Neustarten</button>
+      <button type="button" class="btn btn--primary" id="powerShutdownBtn">Ausschalten</button>
+    </div>
+  </div>
+</div>
+
+<!-- WLAN-Einstellungen-Modal (nur im Admin-Modus) -->
+<div class="modal-backdrop" id="hotspotBackdrop" hidden>
+  <div class="modal">
+    <h2 class="modal__title">WLAN-Einstellungen</h2>
+    <form id="hotspotForm">
+      <label class="field">
+        <span class="field__label">WLAN-Name (SSID)</span>
+        <input type="text" id="hotspotSsid" class="field__input" maxlength="32" required>
+      </label>
+      <label class="field">
+        <span class="field__label">Neues WLAN-Passwort (leer lassen = unverändert)</span>
+        <input type="password" id="hotspotPassword" class="field__input" autocomplete="new-password" minlength="8">
+      </label>
+      <label class="field">
+        <span class="field__label">Neues WLAN-Passwort wiederholen</span>
+        <input type="password" id="hotspotPassword2" class="field__input" autocomplete="new-password" minlength="8">
+      </label>
+      <p class="modal__error" id="hotspotError" hidden></p>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" id="hotspotCancel">Abbrechen</button>
+        <button type="submit" class="btn btn--primary">Speichern</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Hinweis-Modal: WLAN-Änderung erfordert Neustart -->
+<div class="modal-backdrop" id="hotspotRestartBackdrop" hidden>
+  <div class="modal">
+    <h2 class="modal__title">Neustart erforderlich</h2>
+    <p>Die WLAN-Einstellungen wurden gespeichert, werden aber erst nach einem Neustart aktiv.</p>
+    <p class="modal__error" id="hotspotRestartError" hidden></p>
+    <div class="modal__actions">
+      <button type="button" class="btn btn--ghost" id="hotspotRestartLater">Später</button>
+      <button type="button" class="btn btn--primary" id="hotspotRestartNow">Jetzt neustarten</button>
+    </div>
+  </div>
+</div>
+
 <!-- Passwort-ändern-Modal -->
 <div class="modal-backdrop" id="passwordBackdrop" hidden>
   <div class="modal">
@@ -126,6 +181,10 @@
     </form>
   </div>
 </div>
+
+<footer class="site-footer">
+  <a href="{{ git_repo_url }}" target="_blank" rel="noopener noreferrer" class="site-footer__link">Git-Repository</a>
+</footer>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

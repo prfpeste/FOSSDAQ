@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 import uuid
 from functools import wraps
 
@@ -11,9 +12,14 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "buttons.json")
 ADMIN_CONFIG_FILE = os.path.join(BASE_DIR, "admin_config.json")
 SETTINGS_FILE = os.path.join(BASE_DIR, "settings.json")
+HOTSPOT_CONFIG_FILE = os.path.join(BASE_DIR, "hotspot_config.json")
 UPLOAD_DIR = os.path.join(BASE_DIR, "static", "uploads")
 ALLOWED_LOGO_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp", "svg"}
 MAX_LOGO_SIZE = 3 * 1024 * 1024  # 3 MB
+
+# Link zum Git-Repository dieses Projekts, wird unten mittig im Footer
+# angezeigt. Bei Bedarf hier anpassen.
+GIT_REPO_URL = os.environ.get("GIT_REPO_URL", "https://github.com/prfpeste/FOSSDAQ")
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -22,6 +28,14 @@ DEFAULT_SETTINGS = {
     "title": "Kontrolltafel",
     "theme": "dark",
     "logo_filename": None,
+}
+
+# Standardwerte für den Hotspot. Werden beim allerersten Start (noch keine
+# hotspot_config.json vorhanden) verwendet und können anschließend über die
+# Weboberfläche (Admin-Modus) geändert werden - siehe /api/settings/hotspot.
+DEFAULT_HOTSPOT_CONFIG = {
+    "ssid": "Hotspot",
+    "password": "Password",
 }
 
 app = Flask(__name__)
@@ -89,6 +103,23 @@ def save_settings(settings):
         json.dump(settings, f, ensure_ascii=False, indent=2)
 
 
+def load_hotspot_config():
+    config = dict(DEFAULT_HOTSPOT_CONFIG)
+    if os.path.exists(HOTSPOT_CONFIG_FILE):
+        with open(HOTSPOT_CONFIG_FILE, "r", encoding="utf-8") as f:
+            try:
+                stored = json.load(f)
+            except json.JSONDecodeError:
+                stored = {}
+        config.update({k: v for k, v in stored.items() if k in DEFAULT_HOTSPOT_CONFIG})
+    return config
+
+
+def save_hotspot_config(config):
+    with open(HOTSPOT_CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(config, f, ensure_ascii=False, indent=2)
+
+
 def allowed_logo_file(filename):
     return (
         "." in filename
@@ -113,7 +144,9 @@ def index():
         logo_path = os.path.join(UPLOAD_DIR, settings["logo_filename"])
         if os.path.exists(logo_path):
             logo_url = url_for("static", filename=f"uploads/{settings['logo_filename']}")
-    return render_template("index.html", settings=settings, logo_url=logo_url)
+    return render_template(
+        "index.html", settings=settings, logo_url=logo_url, git_repo_url=GIT_REPO_URL
+    )
 
 
 @app.route("/api/status")
@@ -303,6 +336,59 @@ def delete_button(button_id):
     if len(new_buttons) == len(buttons):
         return jsonify({"error": "Nicht gefunden"}), 404
     save_buttons(new_buttons)
+    return jsonify({"ok": True})
+
+
+@app.route("/api/settings/hotspot", methods=["GET"])
+@admin_required
+def get_hotspot_settings():
+    config = load_hotspot_config()
+    return jsonify({"ssid": config["ssid"]})
+
+
+@app.route("/api/settings/hotspot", methods=["PUT"])
+@admin_required
+def update_hotspot_settings():
+    data = request.get_json(silent=True) or {}
+    config = load_hotspot_config()
+
+    ssid = (data.get("ssid") or "").strip()
+    if ssid:
+        config["ssid"] = ssid[:32]
+
+    password = data.get("password")
+    if password:
+        if len(password) < 8:
+            return jsonify({"error": "WLAN-Passwort muss mindestens 8 Zeichen haben"}), 400
+        config["password"] = password
+
+    # Wird bewusst NICHT sofort angewendet (kein Hotspot-Neustart hier) -
+    # der Hotspot läuft mit den alten Zugangsdaten weiter, bis der Nutzer
+    # über das Neustart-Popup im Frontend einen PC-Neustart auslöst. Beim
+    # Boot liest setup-hotspot.sh die Datei neu ein (siehe startup-sequence.sh).
+    save_hotspot_config(config)
+    return jsonify({"ok": True, "ssid": config["ssid"], "restart_required": True})
+
+
+@app.route("/api/system/shutdown", methods=["POST"])
+def system_shutdown():
+    # Bewusst OHNE Admin-Anmeldung: Der Ein-/Ausschalt-Knopf soll auch im
+    # Standardmodus für jeden nutzbar sein (siehe README). Erfordert einen
+    # passenden NOPASSWD-Eintrag in /etc/sudoers.d/lan-dashboard, sonst
+    # schlägt der Befehl fehl.
+    try:
+        subprocess.Popen(["sudo", "/sbin/shutdown", "-h", "now"])
+    except Exception as e:
+        return jsonify({"error": f"Ausschalten fehlgeschlagen: {e}"}), 500
+    return jsonify({"ok": True})
+
+
+@app.route("/api/system/restart", methods=["POST"])
+def system_restart():
+    try:
+        subprocess.Popen(["sudo", "/sbin/shutdown", "-r", "now"])
+    except Exception as e:
+        return jsonify({"error": f"Neustart fehlgeschlagen: {e}"}), 500
     return jsonify({"ok": True})
 
 
