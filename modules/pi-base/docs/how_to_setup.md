@@ -52,6 +52,7 @@ Running these commands will setup everything nearly automatically. The installer
 
 |Name|User Input|
 |---|---|
+|password for active user|type in your password -> ENTER|
 |install PI specific Nodes|y -> ENTER|
 |settings file|ENTER|
 |send usage data|no -> ENTER|
@@ -176,4 +177,4 @@ The hotspot has a capture portal setup. Because of this you will get a notificat
 | Hotspot fails to start with "Failed to set channel" | Regulatory domain issue — check `COUNTRY_CODE` in `setup-hotspot.sh` |
 | `startup-sequence.service` fails at boot but dashboard/Node-RED work | Hotspot step failed (e.g. wrong/missing Wi-Fi interface) — check `journalctl -u startup-sequence.service -e` |
 | Dashboard unreachable on port 5000 | Check `systemctl status lan-dashboard.service` and `journalctl -u lan-dashboard.service` |
-|E: Could not open lock file /var/lib/apt/lists/lock|run sudo `sudo rm -rf /var/lib/apt/lists/*`|
+|E: Could not open lock file /var/lib/apt/lists/lock|run `sudo rm -rf /var/lib/apt/lists/*`|
