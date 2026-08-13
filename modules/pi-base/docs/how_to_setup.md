@@ -1,7 +1,7 @@
 # Installation Guide
 
-This guide walks through installing the full stack on a fresh Ubuntu (or
-Raspberry Pi OS) machine:
+This guide walks through installing the full stack on a fresh
+Raspberry Pi OS (recommended) (or Ubuntu) machine:
 
 - **Node-RED** (flow automation)
 - **lan-dashboard** (Flask web control panel)
@@ -15,12 +15,10 @@ Everything is orchestrated by a single script, `install.sh`.
 
 ## 1. Requirements
 
-- Ubuntu 22.04/24.04 (or Raspberry Pi OS) with a network connection for the
+- freshly installed Raspberry Pi OS (recommended) (or Ubuntu 22.04/24.04) with a network connection for the
   install step
-- A Wi-Fi adapter that supports AP (access point) mode
+- A Wi-Fi adapter that supports AP (access point) mode. Raspberry PIs come with a builtin one.
 - Root access (`sudo`)
-- The project files, kept together in one folder (`install.sh` looks for the
-  other files relative to its own location — no need to `cd` first)
 
 ## 2. What gets installed
 
@@ -36,10 +34,35 @@ Everything is orchestrated by a single script, `install.sh`.
 ## 3. Run the installer
 
 ```bash
-sudo ./install.sh
+sudo apt update && sudo apt upgrade -y
+rm -rf firmware/
+git clone --no-checkout --depth 1 --branch Alexander_Gschlecht_Test https://github.com/prfpeste/FOSSDAQ.git
+cd FOSSDAQ
+git sparse-checkout init --cone
+git sparse-checkout set modules/pi-base/firmware
+git checkout
+cd ..
+mv FOSSDAQ/modules/pi-base/firmware ~/firmware
+rm -rf FOSSDAQ/
+rm firmware/README.md
+sudo bash firmware/install.sh
+sudo reboot now
 ```
+Running these commands will setup everything nearly automatically. The installer will ask for these inputs:
 
-The script is idempotent — re-running it later (e.g. after an update) is
+|Name|User Input|
+|---|---|
+|install PI specific Nodes|y -> ENTER|
+|settings file|ENTER|
+|send usage data|no -> ENTER|
+|setup user security|no -> ENTER|
+|setup projects|no -> ENTER|
+|Name for flows file|ENTER|
+|Passphrase|ENTER|
+|-|default -> ENTER|
+|-|monaco (default) -> ENTER|
+
+The `install.sh` script is idempotent — re-running it later (e.g. after an update) is
 safe and will not overwrite data you've already configured through the web
 UI (buttons, settings, admin password, hotspot config).
 
@@ -120,21 +143,6 @@ DASHBOARD_USER=web NODERED_PALETTES="" WLAN_IFACE=wlp2s0 sudo -E ./install.sh
 `lan-dashboard.service` is **not** separately enabled — `startup-sequence.sh`
 starts it explicitly, in order, before bringing up the hotspot.
 
-## 5. Testing without a reboot
-
-```bash
-sudo systemctl start startup-sequence.service
-systemctl status startup-sequence.service
-journalctl -u startup-sequence.service -e
-```
-
-Individual services:
-
-```bash
-systemctl status lan-dashboard.service
-journalctl -u lan-dashboard.service -f
-```
-
 ## 6. Boot order
 
 ```
@@ -149,6 +157,7 @@ The hotspot is started last on purpose: its captive portal points at the
 dashboard/Node-RED domains, so both need to already be answering.
 
 ## 7. Accessing things afterward
+The hotspot has a capture portal setup. Because of this you will get a notification on your device (or in the browser), the notification opens the dashboard automatically. The capture portal works on Windows, MacOS, Linux and IOS. It does not work on Android. Here you'll need to open the link automatically. 
 
 - Dashboard: `http://<device-ip>:5000` (or `http://dashboard.hotspot` once
   connected to the hotspot)
@@ -167,3 +176,4 @@ dashboard/Node-RED domains, so both need to already be answering.
 | Hotspot fails to start with "Failed to set channel" | Regulatory domain issue — check `COUNTRY_CODE` in `setup-hotspot.sh` |
 | `startup-sequence.service` fails at boot but dashboard/Node-RED work | Hotspot step failed (e.g. wrong/missing Wi-Fi interface) — check `journalctl -u startup-sequence.service -e` |
 | Dashboard unreachable on port 5000 | Check `systemctl status lan-dashboard.service` and `journalctl -u lan-dashboard.service` |
+|E: Could not open lock file /var/lib/apt/lists/lock|run sudo `sudo rm -rf /var/lib/apt/lists/*`|
