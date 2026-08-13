@@ -255,6 +255,62 @@ echo ">>> Hotspot-Name/-Passwort werden NICHT mehr abgefragt - Standardwerte"
 echo "    'Hotspot' / 'Password' aus $DASHBOARD_DIR/hotspot_config.json gelten,"
 echo "    änderbar über die Weboberfläche (Admin-Modus -> WLAN-Einstellungen)."
 
+# ==========================================================================
+# WLAN-Interface für den Hotspot ermitteln
+#
+# setup-hotspot.sh hat "wlan0" fest als Default-Wert (WLAN_IFACE) einprogrammiert,
+# liest aber /etc/default/hotspot am Anfang ein und lässt diese Datei Vorrang
+# vor dem Default haben. Wir müssen setup-hotspot.sh also NICHT anfassen -
+# es reicht, den tatsächlich erkannten Interface-Namen dort hineinzuschreiben.
+#
+# Manuell erzwingen (z.B. bei mehreren WLAN-Adaptern oder falscher Erkennung):
+#   WLAN_IFACE=wlp2s0 sudo -E ./install.sh
+# ==========================================================================
+if [ -n "${WLAN_IFACE:-}" ]; then
+    echo ">>> WLAN_IFACE=$WLAN_IFACE wurde manuell vorgegeben - überspringe automatische Erkennung."
+else
+    echo ">>> Suche angeschlossenes WLAN-Interface ..."
+    # /sys/class/net/*/wireless existiert nur für echte WLAN-Interfaces
+    # (im Gegensatz zu "iw dev", das ggf. fehlt, falls das Paket "iw" noch
+    # nicht installiert ist - daher hier bewusst kein Tool vorausgesetzt).
+    mapfile -t WLAN_CANDIDATES < <(
+        for w in /sys/class/net/*/wireless; do
+            [ -d "$w" ] || continue
+            basename "$(dirname "$w")"
+        done | sort
+    )
+
+    case "${#WLAN_CANDIDATES[@]}" in
+        0)
+            echo "FEHLER: Kein WLAN-Interface gefunden (kein Eintrag unter /sys/class/net/*/wireless)."
+            echo "        Ist ein WLAN-Adapter eingesteckt/aktiviert? Treiber geladen (siehe 'ip a')?"
+            echo "        Alternativ das Interface manuell vorgeben: WLAN_IFACE=<name> sudo -E $0"
+            exit 1
+            ;;
+        1)
+            WLAN_IFACE="${WLAN_CANDIDATES[0]}"
+            echo ">>> WLAN-Interface erkannt: $WLAN_IFACE"
+            ;;
+        *)
+            echo "FEHLER: Mehrere WLAN-Interfaces gefunden (${WLAN_CANDIDATES[*]}) - automatische Auswahl nicht eindeutig."
+            echo "        Bitte gewünschtes Interface manuell vorgeben, z.B.:"
+            echo "        WLAN_IFACE=${WLAN_CANDIDATES[0]} sudo -E $0"
+            exit 1
+            ;;
+    esac
+fi
+
+echo ">>> Trage WLAN_IFACE=$WLAN_IFACE in /etc/default/hotspot ein ..."
+# Vorhandene WLAN_IFACE-Zeile (aus einem früheren install.sh-Lauf) ersetzen,
+# sonst anhängen - der Rest von /etc/default/hotspot (z.B. manuell gesetzte
+# SSID/PASSWORD-Overrides) bleibt dabei unangetastet.
+touch /etc/default/hotspot
+if grep -q '^WLAN_IFACE=' /etc/default/hotspot 2>/dev/null; then
+    sed -i "s/^WLAN_IFACE=.*/WLAN_IFACE=$WLAN_IFACE/" /etc/default/hotspot
+else
+    echo "WLAN_IFACE=$WLAN_IFACE" >> /etc/default/hotspot
+fi
+
 if [ "$SKIP_HOTSPOT_INSTALL" -eq 1 ]; then
     echo ">>> SKIP_HOTSPOT_INSTALL=1 gesetzt - überspringe Hotspot-Paketinstallation (hostapd/dnsmasq/nginx)."
 else
