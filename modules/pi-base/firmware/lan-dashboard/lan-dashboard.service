@@ -1,5 +1,5 @@
 [Unit]
-Description=LAN Kontrolltafel (Flask Dashboard)
+Description=LAN Dashboard (Flask Dashboard)
 After=network.target
 
 [Service]
