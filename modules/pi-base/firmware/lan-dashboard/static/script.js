@@ -57,7 +57,7 @@ const topbarEyebrow = document.getElementById("topbarEyebrow");
 const topbarTitle = document.getElementById("topbarTitle");
 
 let isAdmin = false;
-let editingId = null; // null = neue Schaltfläche wird erstellt
+let editingId = null; // null = new button is being created
 let currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
 
 async function api(path, options = {}) {
@@ -72,7 +72,7 @@ async function api(path, options = {}) {
     data = null;
   }
   if (!res.ok) {
-    const message = (data && data.error) || "Unbekannter Fehler";
+    const message = (data && data.error) || "Unknown error";
     throw new Error(message);
   }
   return data;
@@ -119,14 +119,14 @@ async function toggleVisibility(button) {
 }
 
 async function deleteButton(button) {
-  if (!confirm(`"${button.label}" wirklich löschen?`)) return;
+  if (!confirm(`Really delete "${button.label}"?`)) return;
   await api(`/api/buttons/${button.id}`, { method: "DELETE" });
   loadButtons();
 }
 
 function openEditModal(button) {
   editingId = button ? button.id : null;
-  editTitle.textContent = button ? "Schaltfläche bearbeiten" : "Neue Schaltfläche";
+  editTitle.textContent = button ? "Edit Button" : "New Button";
   editLabel.value = button ? button.label : "";
   editUrl.value = button ? button.url : "";
   editError.hidden = true;
@@ -258,7 +258,7 @@ logoFileInput.addEventListener("change", async () => {
   try {
     const res = await fetch("/api/settings/logo", { method: "POST", body: formData });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Upload fehlgeschlagen");
+    if (!res.ok) throw new Error(data.error || "Upload failed");
     applyLogo(data.logo_url);
   } catch (err) {
     alert(err.message);
@@ -269,7 +269,7 @@ logoFileInput.addEventListener("change", async () => {
 
 logoRemoveBtn.addEventListener("click", async () => {
   if (!isAdmin) return;
-  if (!confirm("Bild wirklich entfernen?")) return;
+  if (!confirm("Really remove the image?")) return;
   try {
     await api("/api/settings/logo", { method: "DELETE" });
     applyLogo(null);
@@ -283,7 +283,7 @@ async function refreshAdminState() {
   isAdmin = status.is_admin;
   document.body.classList.toggle("is-admin", isAdmin);
   adminToggle.classList.toggle("is-active", isAdmin);
-  adminToggle.querySelector(".admin-toggle__text").textContent = isAdmin ? "Angemeldet" : "Admin";
+  adminToggle.querySelector(".admin-toggle__text").textContent = isAdmin ? "Logged in" : "Admin";
   adminPasswordBtn.hidden = !isAdmin;
   hotspotSettingsBtn.hidden = !isAdmin;
   themeToggle.hidden = !isAdmin;
@@ -340,7 +340,7 @@ passwordCancel.addEventListener("click", () => {
 passwordForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (newPassword.value !== newPassword2.value) {
-    passwordError.textContent = "Die neuen Passwörter stimmen nicht überein";
+    passwordError.textContent = "The new passwords do not match";
     passwordError.hidden = false;
     return;
   }
@@ -359,7 +359,7 @@ passwordForm.addEventListener("submit", async (e) => {
   }
 });
 
-// PC ausschalten/neustarten - bewusst OHNE Admin-Login nutzbar (Standardmodus).
+// Shutdown/restart PC - intentionally usable WITHOUT admin login (standard mode).
 powerBtn.addEventListener("click", () => {
   powerError.hidden = true;
   powerBackdrop.hidden = false;
@@ -370,7 +370,7 @@ powerCancel.addEventListener("click", () => {
 });
 
 async function triggerPower(action, label) {
-  if (!confirm(`PC jetzt wirklich ${label}?`)) return;
+  if (!confirm(`Really ${label} the PC now?`)) return;
   try {
     await api(`/api/system/${action}`, { method: "POST" });
     powerBackdrop.hidden = true;
@@ -380,10 +380,10 @@ async function triggerPower(action, label) {
   }
 }
 
-powerShutdownBtn.addEventListener("click", () => triggerPower("shutdown", "ausschalten"));
-powerRestartBtn.addEventListener("click", () => triggerPower("restart", "neustarten"));
+powerShutdownBtn.addEventListener("click", () => triggerPower("shutdown", "shut down"));
+powerRestartBtn.addEventListener("click", () => triggerPower("restart", "restart"));
 
-// WLAN-Einstellungen (nur im Admin-Modus)
+// Wi-Fi settings (admin mode only)
 hotspotSettingsBtn.addEventListener("click", async () => {
   hotspotError.hidden = true;
   hotspotForm.reset();
@@ -405,7 +405,7 @@ hotspotForm.addEventListener("submit", async (e) => {
 
   if (hotspotPassword.value || hotspotPassword2.value) {
     if (hotspotPassword.value !== hotspotPassword2.value) {
-      hotspotError.textContent = "Die eingegebenen WLAN-Passwörter stimmen nicht überein";
+      hotspotError.textContent = "The entered Wi-Fi passwords do not match";
       hotspotError.hidden = false;
       return;
     }
@@ -419,9 +419,9 @@ hotspotForm.addEventListener("submit", async (e) => {
       body: JSON.stringify(payload),
     });
     hotspotBackdrop.hidden = true;
-    // Wird bewusst NICHT sofort angewendet - erst nach einem Neustart aktiv
-    // (siehe apply_hotspot_config-Entfernung in app.py). Nutzer per Popup
-    // informieren, statt stillschweigend zu tun als wäre es schon aktiv.
+    // Intentionally NOT applied immediately - only active after a restart
+    // (see removal of apply_hotspot_config in app.py). Inform user via popup
+    // instead of silently pretending it is already active.
     hotspotRestartError.hidden = true;
     hotspotRestartBackdrop.hidden = false;
   } catch (err) {
@@ -435,7 +435,7 @@ hotspotRestartLater.addEventListener("click", () => {
 });
 
 hotspotRestartNow.addEventListener("click", async () => {
-  if (!confirm("PC jetzt wirklich neustarten?")) return;
+  if (!confirm("Really restart the PC now?")) return;
   try {
     await api("/api/system/restart", { method: "POST" });
     hotspotRestartBackdrop.hidden = true;
@@ -445,8 +445,8 @@ hotspotRestartNow.addEventListener("click", async () => {
   }
 });
 
-// Zusätzliche Absicherung: Modals lassen sich auch per Klick auf den
-// abgedunkelten Hintergrund oder per Escape-Taste schließen.
+// Additional security: Modals can also be closed by clicking on the
+// darkened background or pressing the Escape key.
 [loginBackdrop, editBackdrop, passwordBackdrop, powerBackdrop, hotspotBackdrop, hotspotRestartBackdrop].forEach((backdrop) => {
   backdrop.addEventListener("click", (e) => {
     if (e.target === backdrop) backdrop.hidden = true;
