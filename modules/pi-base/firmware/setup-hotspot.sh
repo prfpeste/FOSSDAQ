@@ -2,70 +2,67 @@
 set -e
 
 # ============================================================
-# Ubuntu Hotspot mit automatischem Captive Portal (ohne Login)
+# Ubuntu Hotspot with Automatic Captive Portal (No Login)
 # ============================================================
-# Baut ein WLAN auf. Wer sich verbindet, bekommt automatisch
-# die definierte Webseite angezeigt (wie im Café/Flughafen-WLAN).
-# Es gibt keine "Freischaltung" - die Seite öffnet sich einfach.
+# Sets up a Wi-Fi network. Devices that connect automatically
+# see the defined webpage (like in a café/airport Wi-Fi).
+# There is no "activation" - the page simply opens.
 #
-# Erkennung erfolgt über ZWEI parallele Mechanismen:
-#  1) DHCP Option 114 / RFC 8910 + Captive-Portal-API (RFC 8908)
-#     -> zuverlässig auf Android 11+ und iOS 14+/macOS, ohne
-#        DNS- oder Port-Hijacking.
-#  2) DNS-Wildcard + HTTP(80)-Redirect + Blockieren von 443/853
-#     -> Fallback für Windows und Geräte ohne RFC-8910-Support.
+# Detection uses TWO parallel mechanisms:
+#  1) DHCP Option 114 / RFC 8910 + Captive Portal API (RFC 8908)
+#     -> Reliable on Android 11+ and iOS 14+/macOS, without
+#        DNS or port hijacking.
+#  2) DNS wildcard + HTTP(80) redirect + blocking 443/853
+#     -> Fallback for Windows and devices without RFC 8910 support.
 #
-# WICHTIG - Warum hostapd statt NetworkManager-AP-Modus:
-# Auf modernem Ubuntu spiegelt netplan jede per "nmcli" angelegte
-# NetworkManager-Verbindung automatisch nach /etc/netplan/*.yaml.
-# Das netplan-Schema kennt für eine Wifi-AP-Verbindung mit fester
-# Adresse aber keinen echten "ipv4.method=manual"-Zustand - beim
-# Rückübersetzen wird die Verbindung immer wieder auf
-# "ipv4.method=shared" gesetzt (NetworkManagers eigener interner
-# DHCP/DNS-Mechanismus fürs Tethering). Das kollidiert mit unserem
-# eigenen dnsmasq (doppelter DHCP-Server, doppeltes DNS, instabile
-# Aktivierung, siehe "ip-config-unavailable"-Fehler). Jeder Versuch,
-# das nur über nmcli zu reparieren, wird beim nächsten netplan-Sync
-# wieder zurückgesetzt. Deshalb: wlan0 komplett aus der
-# NetworkManager-Verwaltung nehmen und den AP direkt mit hostapd
-# betreiben - der klassische, robuste Ansatz für genau diesen Zweck.
+# IMPORTANT: Why hostapd instead of NetworkManager AP mode:
+# On modern Ubuntu, netplan mirrors every connection created via "nmcli"
+# in NetworkManager to /etc/netplan/*.yaml.
+# The netplan schema for a Wi-Fi AP connection with a fixed address
+# does not support a true "ipv4.method=manual" state - when translating back,
+# the connection is always set to "ipv4.method=shared" (NetworkManager's own
+# internal DHCP/DNS mechanism for tethering). This conflicts with our own
+# dnsmasq (duplicate DHCP server, duplicate DNS, unstable activation,
+# see "ip-config-unavailable" errors). Any attempt to fix this via nmcli
+# will be reset on the next netplan sync. Therefore: remove wlan0 completely
+# from NetworkManager control and run the AP directly with hostapd -
+# the classic, robust approach for this purpose.
 #
-# Verwendung:
-#   sudo ./setup-hotspot.sh install   -> einmalig Pakete installieren
-#   sudo ./setup-hotspot.sh start     -> Hotspot starten
-#   sudo ./setup-hotspot.sh stop      -> Hotspot stoppen
+# Usage:
+#   sudo ./setup-hotspot.sh install   -> Install packages once
+#   sudo ./setup-hotspot.sh start     -> Start hotspot
+#   sudo ./setup-hotspot.sh stop      -> Stop hotspot
 # ============================================================
 
-# ---- KONFIGURATION: hier anpassen ----
+# ---- CONFIGURATION: Adjust here ----
 SSID="Hotspot"
-PASSWORD="Password"             # mind. 8 Zeichen
-WLAN_IFACE="wlan0"              # mit `ip a` prüfen, ggf. anpassen
-WLAN_CHANNEL="6"                # 2.4GHz-Kanal (1, 6 oder 11 empfohlen)
+PASSWORD="Password"             # min. 8 characters
+WLAN_IFACE="wlan0"              # Check with `ip a`, adjust if needed
+WLAN_CHANNEL="6"                # 2.4GHz channel (1, 6, or 11 recommended)
 HOTSPOT_IP="192.168.50.1"
 DHCP_RANGE_START="192.168.50.10"
 DHCP_RANGE_END="192.168.50.100"
-COUNTRY_CODE="DE"               # ISO-3166-1 alpha2 Ländercode für die WLAN-Regulatory-Domain.
-                                 # Ohne gesetztes Land bleibt der Kernel in der "world"-Domain,
-                                 # die auf vielen Chipsätzen aktives Senden (Beaconing) auf
-                                 # 2.4GHz-Kanälen verweigert -> hostapd bricht dann mit
+COUNTRY_CODE="DE"               # ISO-3166-1 alpha2 country code for Wi-Fi regulatory domain.
+                                 # Without a set country, the kernel remains in the "world" domain,
+                                 # which on many chipsets refuses active transmission (beaconing)
+                                 # on 2.4GHz channels -> hostapd then fails with
                                  # "nl80211: Failed to set channel" / "could not set channel
-                                 # for kernel driver" ab, obwohl die Config sonst korrekt ist.
-DASHBOARD_DOMAIN="dashboard.hotspot"            # Domain fürs lan-dashboard (Port 5000 intern)
-NODERED_DOMAIN="nodered.hotspot"                # Domain für Node-RED (Port 1880 intern)
+                                 # for kernel driver", even if the config is otherwise correct.
+DASHBOARD_DOMAIN="dashboard.hotspot"            # Domain for lan-dashboard (internal port 5000)
+NODERED_DOMAIN="nodered.hotspot"                # Domain for Node-RED (internal port 1880)
 DASHBOARD_PORT="5000"
 NODERED_PORT="1880"
-PORTAL_TARGET="http://$DASHBOARD_DOMAIN"        # Ziel-Webseite, die beim Verbinden geöffnet wird
-CAPTIVE_API_PATH="/captive-portal-api"          # Pfad, unter dem die RFC8908-JSON-API liegt
+PORTAL_TARGET="http://$DASHBOARD_DOMAIN"        # Target webpage that opens when connecting
+CAPTIVE_API_PATH="/captive-portal-api"          # Path where the RFC8908 JSON API is located
 # ---------------------------------------
 
-# SSID/Passwort werden NICHT mehr bei der Installation abgefragt, sondern
-# starten mit den Standardwerten oben ("Hotspot" / "Password") und können
-# anschließend über die Weboberfläche (Admin-Modus -> WLAN-Einstellungen)
-# geändert werden. Die Weboberfläche schreibt dazu hotspot_config.json im
-# lan-dashboard-Verzeichnis des konfigurierten Dashboard-Benutzers - das wird
-# hier eingelesen und überschreibt die Standardwerte oben. Existiert die
-# Datei nicht (z.B. beim direkten Testen dieses Skripts ohne install.sh),
-# gelten einfach die Standardwerte oben weiter.
+# SSID/password are NO LONGER prompted during installation, but start
+# with the default values above ("Hotspot" / "Password") and can be changed
+# afterward via the web interface (Admin mode -> Wi-Fi settings).
+# The web interface writes hotspot_config.json in the lan-dashboard directory
+# of the configured dashboard user - this is read here and overrides the
+# default values above. If the file does not exist (e.g., when directly testing
+# this script without install.sh), the default values above continue to apply.
 DASHBOARD_USER="${DASHBOARD_USER:-pi}"
 HOTSPOT_CONFIG_JSON="/home/$DASHBOARD_USER/lan-dashboard/hotspot_config.json"
 if [ -f "$HOTSPOT_CONFIG_JSON" ] && command -v python3 >/dev/null 2>&1; then
@@ -83,12 +80,12 @@ except Exception:
 ' "$HOTSPOT_CONFIG_JSON")"
 fi
 
-# /etc/default/hotspot bleibt zusätzlich als manuelle Override-Möglichkeit
-# bestehen (z.B. für Systeme ohne Weboberfläche) und hat Vorrang vor der JSON.
+# /etc/default/hotspot remains as a manual override option
+# (e.g., for systems without a web interface) and takes precedence over JSON.
 [ -f /etc/default/hotspot ] && source /etc/default/hotspot
 
-# Erlaubt, das Land zusätzlich per env COUNTRY_CODE=XX zu überschreiben
-# (z.B. für manuelle Tests), ohne /etc/default/hotspot anfassen zu müssen.
+# Allows overriding the country additionally via env COUNTRY_CODE=XX
+# (e.g., for manual tests) without modifying /etc/default/hotspot.
 COUNTRY_CODE="${COUNTRY_CODE:-DE}"
 
 CAPTIVE_API_URL="http://$DASHBOARD_DOMAIN$CAPTIVE_API_PATH"
@@ -99,35 +96,35 @@ HOSTAPD_PID="/run/hostapd-hotspot.pid"
 
 require_root() {
     if [ "$EUID" -ne 0 ]; then
-        echo "Bitte mit sudo ausführen: sudo $0 $1"
+        echo "Please run with sudo: sudo $0 $1"
         exit 1
     fi
 }
 
 install_packages() {
     require_root install
-    echo ">>> Installiere benötigte Pakete..."
+    echo ">>> Installing required packages..."
     apt update
     apt install -y hostapd dnsmasq nginx iptables-persistent
 
-    # hostapd und dnsmasq sollen NICHT global als Dienst laufen (würden mit
-    # NetworkManager/systemd-resolved kollidieren) - wir starten beide gezielt
-    # nur für das Hotspot-Interface, siehe start_hotspot().
+    # hostapd and dnsmasq should NOT run globally as a service (would conflict
+    # with NetworkManager/systemd-resolved) - we start both specifically
+    # only for the hotspot interface, see start_hotspot().
     systemctl disable --now hostapd 2>/dev/null || true
     systemctl disable --now dnsmasq 2>/dev/null || true
 
-    # nginx: liefert die Portalseite (Reverse Proxy) sowie die
-    # RFC8908-Captive-Portal-API (statisches JSON, immer "captive": true,
-    # da es hier keine echte Freischaltung/Login gibt).
+    # nginx: serves the portal page (reverse proxy) and the
+    # RFC8908 Captive Portal API (static JSON, always "captive": true,
+    # as there is no actual activation/login here).
     #
-    # HINWEIS: Bewusst NUR Port 80. HTTPS (443) wird per iptables aktiv per
-    # TCP-Reset abgewiesen, damit Geräte ohne RFC8910-Support zügig auf den
-    # unverschlüsselten Connectivity-Check ausweichen, statt an einem
-    # Zertifikatsfehler eines Self-Signed-443-vHosts hängen zu bleiben.
+    # NOTE: Intentionally ONLY port 80. HTTPS (443) is actively rejected via
+    # iptables with TCP Reset, so devices without RFC8910 support quickly
+    # fall back to the unencrypted connectivity check instead of getting
+    # stuck on a certificate error from a self-signed 443 vHost.
     cat > /etc/nginx/sites-available/hotspot-portal <<NGINX
-# Default-Server: greift für Captive-Portal-Erkennung (Aufruf per IP oder per
-# beliebiger Fremd-Domain über den dnsmasq-Wildcard) und für alle
-# Betriebssystem-Connectivity-Checks. Leitet auf die Dashboard-Domain um.
+# Default server: handles captive portal detection (access via IP or any
+# foreign domain via dnsmasq wildcard) and all OS connectivity checks.
+# Redirects to the dashboard domain.
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -146,7 +143,7 @@ server {
     }
 }
 
-# lan-dashboard unter eigener Domain (statt IP:$DASHBOARD_PORT)
+# lan-dashboard under its own domain (instead of IP:$DASHBOARD_PORT)
 server {
     listen 80;
     listen [::]:80;
@@ -168,7 +165,7 @@ server {
     }
 }
 
-# Node-RED unter eigener Domain (statt IP:$NODERED_PORT)
+# Node-RED under its own domain (instead of IP:$NODERED_PORT)
 server {
     listen 80;
     listen [::]:80;
@@ -179,7 +176,7 @@ server {
         proxy_set_header Host \$host;
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        # Node-RED-Editor braucht WebSockets (Flow-Deploy, Debug-Sidebar)
+        # Node-RED editor requires WebSockets (flow deploy, debug sidebar)
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
@@ -189,10 +186,10 @@ NGINX
     ln -sf /etc/nginx/sites-available/hotspot-portal /etc/nginx/sites-enabled/hotspot-portal
     rm -f /etc/nginx/sites-enabled/default
 
-    echo ">>> Trage $DASHBOARD_DOMAIN und $NODERED_DOMAIN lokal in /etc/hosts ein ..."
-    # nginx selbst lauscht nicht auf dnsmasq (das läuft nur auf $WLAN_IFACE,
-    # siehe except-interface=lo unten) - ohne diesen Eintrag könnte der Pi
-    # seine eigenen server_name-Domains beim nginx-Start/Reload nicht auflösen.
+    echo ">>> Adding $DASHBOARD_DOMAIN and $NODERED_DOMAIN locally to /etc/hosts ..."
+    # nginx itself does not listen on dnsmasq (which only runs on $WLAN_IFACE,
+    # see except-interface=lo below) - without this entry, the Pi might not
+    # resolve its own server_name domains during nginx start/reload.
     for d in "$DASHBOARD_DOMAIN" "$NODERED_DOMAIN"; do
         grep -qE "^\s*$HOTSPOT_IP\s+$d\s*$" /etc/hosts || echo "$HOTSPOT_IP $d" >> /etc/hosts
     done
@@ -200,19 +197,19 @@ NGINX
     nginx -t
     systemctl restart nginx
 
-    echo ">>> Fertig installiert. nginx leitet:"
+    echo ">>> Installation complete. nginx redirects:"
     echo "      http://$DASHBOARD_DOMAIN  -> 127.0.0.1:$DASHBOARD_PORT (lan-dashboard)"
     echo "      http://$NODERED_DOMAIN    -> 127.0.0.1:$NODERED_PORT (Node-RED)"
-    echo ">>> Captive-Portal-API erreichbar unter: $CAPTIVE_API_URL"
-    echo ">>> Stelle sicher, dass dein Dienst (z.B. Node-RED) auf Port $NODERED_PORT läuft."
-    echo ">>> Danach starten mit: sudo $0 start"
+    echo ">>> Captive Portal API available at: $CAPTIVE_API_URL"
+    echo ">>> Ensure your service (e.g., Node-RED) is running on port $NODERED_PORT."
+    echo ">>> Then start with: sudo $0 start"
 }
 
 stop_stale_processes() {
-    # Sauber (SIGTERM) statt blind (-9) beenden, und über die eigenen PID-Dateien
-    # bzw. eindeutige Config-Pfade identifizieren - NICHT über pauschales "was
-    # lauscht gerade auf der Hotspot-IP", da das versehentlich fremde Prozesse
-    # treffen könnte.
+    # Cleanly terminate (SIGTERM) instead of forcefully (-9), and identify
+    # via our own PID files or unique config paths - NOT via a blanket
+    # "what is listening on the hotspot IP", as this could accidentally
+    # affect foreign processes.
     if [ -f "$HOSTAPD_PID" ]; then
         kill "$(cat "$HOSTAPD_PID")" 2>/dev/null || true
         rm -f "$HOSTAPD_PID"
@@ -230,31 +227,31 @@ stop_stale_processes() {
 
 start_hotspot() {
     require_root start
-    echo ">>> Entferne $WLAN_IFACE aus der NetworkManager-Verwaltung ..."
-    # WICHTIG: Erst hier rausnehmen, nicht dauerhaft in NetworkManager.conf
-    # konfigurieren, damit "stop" das Interface am Ende wieder normal nutzbar
-    # macht (z.B. für gewöhnliches WLAN-Client-WLAN).
+    echo ">>> Removing $WLAN_IFACE from NetworkManager control ..."
+    # IMPORTANT: Only remove here, not permanently in NetworkManager.conf,
+    # so that "stop" can return the interface to normal use afterward
+    # (e.g., for regular Wi-Fi client mode).
     nmcli device set "$WLAN_IFACE" managed no 2>/dev/null || true
-    # Alte NM/netplan-Verbindungsprofile aus früheren Skriptversionen sind
-    # nicht mehr nötig, da wir das Interface jetzt selbst verwalten.
+    # Old NM/netplan connection profiles from earlier script versions
+    # are no longer needed, as we now manage the interface ourselves.
     nmcli connection delete hotspot-portal 2>/dev/null || true
 
-    echo ">>> Beende ggf. vorherige hostapd-/dnsmasq-Instanzen ..."
+    echo ">>> Stopping any previous hostapd/dnsmasq instances ..."
     stop_stale_processes
 
-    echo ">>> Setze WLAN-Regulatory-Domain auf $COUNTRY_CODE ..."
-    # Muss VOR dem Hochfahren des Interfaces passieren. Ohne das bleibt der
-    # Kernel bei manchen Chipsätzen in der "world"-Domain und verweigert
-    # aktives Senden -> hostapd scheitert dann mit "Failed to set channel".
-    iw reg set "$COUNTRY_CODE" || echo ">>> WARNUNG: 'iw reg set $COUNTRY_CODE' fehlgeschlagen (ignoriere, ggf. hilft country_code in hostapd.conf trotzdem)."
+    echo ">>> Setting Wi-Fi regulatory domain to $COUNTRY_CODE ..."
+    # Must happen BEFORE bringing up the interface. Without this, the
+    # kernel may remain in the "world" domain on some chipsets and refuse
+    # active transmission -> hostapd will then fail with "Failed to set channel".
+    iw reg set "$COUNTRY_CODE" || echo ">>> WARNING: 'iw reg set $COUNTRY_CODE' failed (ignoring, country_code in hostapd.conf may still help)."
 
-    echo ">>> Setze $WLAN_IFACE zurück und vergebe feste IP $HOTSPOT_IP ..."
+    echo ">>> Resetting $WLAN_IFACE and assigning static IP $HOTSPOT_IP ..."
     ip link set "$WLAN_IFACE" down
     ip addr flush dev "$WLAN_IFACE"
     ip link set "$WLAN_IFACE" up
     ip addr add "$HOTSPOT_IP/24" dev "$WLAN_IFACE"
 
-    echo ">>> Schreibe hostapd-Konfiguration ..."
+    echo ">>> Writing hostapd configuration ..."
     cat > "$HOSTAPD_CONF" <<HOSTAPD
 interface=$WLAN_IFACE
 driver=nl80211
@@ -273,20 +270,20 @@ wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 HOSTAPD
 
-    echo ">>> Starte hostapd ..."
+    echo ">>> Starting hostapd ..."
     if ! hostapd -B -P "$HOSTAPD_PID" "$HOSTAPD_CONF"; then
-        echo "FEHLER: hostapd konnte nicht gestartet werden. Debug-Ausgabe:"
+        echo "ERROR: hostapd could not be started. Debug output:"
         hostapd -dd "$HOSTAPD_CONF" 2>&1 | head -n 40
         exit 1
     fi
     sleep 1
     if ! [ -f "$HOSTAPD_PID" ] || ! kill -0 "$(cat "$HOSTAPD_PID")" 2>/dev/null; then
-        echo "FEHLER: hostapd ist direkt nach dem Start wieder beendet. Debug-Ausgabe:"
+        echo "ERROR: hostapd terminated immediately after start. Debug output:"
         hostapd -dd "$HOSTAPD_CONF" 2>&1 | head -n 40
         exit 1
     fi
 
-    echo ">>> Warte, bis $WLAN_IFACE als AP bereit ist ..."
+    echo ">>> Waiting for $WLAN_IFACE to be ready as AP ..."
     for i in $(seq 1 10); do
         if ip link show "$WLAN_IFACE" 2>/dev/null | grep -q "state UP"; then
             break
@@ -294,28 +291,28 @@ HOSTAPD
         sleep 0.5
     done
 
-    echo ">>> Schreibe dnsmasq-Konfiguration (DHCP + DNS + Option 114) ..."
+    echo ">>> Writing dnsmasq configuration (DHCP + DNS + Option 114) ..."
     cat > "$DNSMASQ_CONF" <<DNSMASQ
 interface=$WLAN_IFACE
 bind-interfaces
 except-interface=lo
 
-# DHCP für die Hotspot-Clients
+# DHCP for hotspot clients
 dhcp-range=$DHCP_RANGE_START,$DHCP_RANGE_END,255.255.255.0,12h
 dhcp-option=option:router,$HOTSPOT_IP
 dhcp-option=option:dns-server,$HOTSPOT_IP
 
-# RFC 8910: DHCP Option 114 - teilt Android 11+/iOS 14+/macOS die
-# Captive-Portal-API-URL direkt beim DHCP-Handshake mit, ohne DNS/HTTP-Tricks.
+# RFC 8910: DHCP Option 114 - tells Android 11+/iOS 14+/macOS the
+# Captive Portal API URL directly during the DHCP handshake, without DNS/HTTP tricks.
 dhcp-option=114,"$CAPTIVE_API_URL"
 
-# Unsere eigenen Domains explizit auf die Hotspot-IP auflösen
+# Resolve our own domains explicitly to the hotspot IP
 address=/$DASHBOARD_DOMAIN/$HOTSPOT_IP
 address=/$NODERED_DOMAIN/$HOTSPOT_IP
 
-# DNS-Wildcard: JEDE weitere Domain wird ebenfalls auf uns selbst aufgelöst
-# (Fallback für Geräte/OS ohne RFC-8910-Unterstützung, z.B. Windows). Die
-# beiden expliziten Einträge oben haben Vorrang vor diesem Wildcard.
+# DNS wildcard: ANY other domain is also resolved to ourselves
+# (fallback for devices/OS without RFC 8910 support, e.g., Windows).
+# The two explicit entries above take precedence over this wildcard.
 address=/#/$HOTSPOT_IP
 no-resolv
 no-poll
@@ -323,20 +320,20 @@ DNSMASQ
 
     dnsmasq --conf-file="$DNSMASQ_CONF" --pid-file="$DNSMASQ_PID"
 
-    echo ">>> Leite jeglichen HTTP-Traffic auf die Portalseite um (Fallback für Clients, die per IP statt per Hostname prüfen) ..."
+    echo ">>> Redirecting all HTTP traffic to the portal page (fallback for clients checking via IP instead of hostname) ..."
     iptables -t nat -D PREROUTING -i "$WLAN_IFACE" -p tcp --dport 80 -j DNAT --to-destination "$HOTSPOT_IP:80" 2>/dev/null || true
     iptables -t nat -A PREROUTING -i "$WLAN_IFACE" -p tcp --dport 80 -j DNAT --to-destination "$HOTSPOT_IP:80"
 
-    # HINWEIS: Bewusst KEIN DNAT für Port 443. Ein DNAT in PREROUTING würde das
-    # Paket auf $HOTSPOT_IP umschreiben, wodurch es als "lokal zugestellt" gilt
-    # und über INPUT statt FORWARD läuft - die REJECT-Regel weiter unten würde
-    # es dann nie sehen. Stattdessen wird 443 unten in FORWARD aktiv abgewiesen.
+    # NOTE: Intentionally NO DNAT for port 443. A DNAT in PREROUTING would
+    # rewrite the packet to $HOTSPOT_IP, causing it to be considered "locally delivered"
+    # and processed via INPUT instead of FORWARD - the REJECT rule below would
+    # never see it. Instead, 443 is actively rejected in FORWARD below.
 
-    echo ">>> Blockiere DNS-over-TLS (Port 853) als zusätzliche Absicherung für Geräte, die trotz Option 114 auf Private-DNS-Automatic zurückfallen ..."
+    echo ">>> Blocking DNS-over-TLS (port 853) as additional security for devices that fall back to Private DNS Automatic despite Option 114 ..."
     iptables -D FORWARD -i "$WLAN_IFACE" -p tcp --dport 853 -j REJECT --reject-with tcp-reset 2>/dev/null || true
     iptables -I FORWARD -i "$WLAN_IFACE" -p tcp --dport 853 -j REJECT --reject-with tcp-reset
 
-    echo ">>> Blockiere HTTPS aktiv, damit Geräte ohne Option-114-Support schnell auf HTTP-Check ausweichen ..."
+    echo ">>> Actively blocking HTTPS to ensure devices without Option 114 support quickly fall back to HTTP check ..."
     iptables -D FORWARD -i "$WLAN_IFACE" -p tcp --dport 443 -j REJECT --reject-with tcp-reset 2>/dev/null || true
     iptables -I FORWARD -i "$WLAN_IFACE" -p tcp --dport 443 -j REJECT --reject-with tcp-reset
 
@@ -344,18 +341,18 @@ DNSMASQ
 
     echo ""
     echo "=========================================="
-    echo " Hotspot läuft: SSID '$SSID'"
-    echo " Wer sich verbindet, sieht automatisch"
-    echo " die Seite von $PORTAL_TARGET"
+    echo " Hotspot running: SSID '$SSID'"
+    echo " Devices that connect will automatically"
+    echo " see the page from $PORTAL_TARGET"
     echo " Dashboard:  http://$DASHBOARD_DOMAIN"
     echo " Node-RED:   http://$NODERED_DOMAIN"
-    echo " Captive-Portal-API: $CAPTIVE_API_URL"
+    echo " Captive Portal API: $CAPTIVE_API_URL"
     echo "=========================================="
 }
 
 stop_hotspot() {
     require_root stop
-    echo ">>> Stoppe Hotspot ..."
+    echo ">>> Stopping hotspot ..."
     stop_stale_processes
 
     ip addr flush dev "$WLAN_IFACE" 2>/dev/null || true
@@ -366,11 +363,11 @@ stop_hotspot() {
     iptables -D FORWARD -i "$WLAN_IFACE" -p tcp --dport 853 -j REJECT --reject-with tcp-reset 2>/dev/null || true
     netfilter-persistent save 2>/dev/null || true
 
-    echo ">>> Gebe $WLAN_IFACE wieder an NetworkManager zurück ..."
+    echo ">>> Returning $WLAN_IFACE to NetworkManager control ..."
     nmcli device set "$WLAN_IFACE" managed yes 2>/dev/null || true
     ip link set "$WLAN_IFACE" up 2>/dev/null || true
 
-    echo ">>> Hotspot gestoppt."
+    echo ">>> Hotspot stopped."
 }
 
 case "$1" in
@@ -379,7 +376,8 @@ case "$1" in
     stop) stop_hotspot ;;
     restart) stop_hotspot; start_hotspot ;;
     *)
-        echo "Verwendung: sudo $0 {install|start|stop|restart}"
+        echo "Usage: sudo $0 {install|start|stop|restart}"
         exit 1
         ;;
 esac
+```
