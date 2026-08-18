@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de" data-theme="{{ settings.theme }}">
+<html lang="en" data-theme="{{ settings.theme }}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,23 +17,23 @@
     {% else %}
     <img id="topbarLogo" class="topbar__logo" src="" alt="Logo" hidden>
     {% endif %}
-    <button id="logoEditBtn" class="topbar__logo-edit icon-toggle" title="Bild ändern" aria-label="Bild ändern" hidden>🖼</button>
-    <button id="logoRemoveBtn" class="topbar__logo-remove icon-toggle" title="Bild entfernen" aria-label="Bild entfernen" hidden>✕</button>
+    <button id="logoEditBtn" class="topbar__logo-edit icon-toggle" title="Change image" aria-label="Change image" hidden>🖼</button>
+    <button id="logoRemoveBtn" class="topbar__logo-remove icon-toggle" title="Remove image" aria-label="Remove image" hidden>✕</button>
   </div>
   <div class="topbar__label">
     <span class="topbar__eyebrow" id="topbarEyebrow" data-editable="eyebrow">{{ settings.eyebrow }}</span>
     <h1 class="topbar__title" id="topbarTitle" data-editable="title">{{ settings.title }}</h1>
   </div>
   <div class="admin-actions">
-    <button id="themeToggle" class="icon-toggle" title="Hell-/Dunkelmodus" aria-label="Hell-/Dunkelmodus umschalten" hidden>🌙</button>
-    <button id="hotspotSettingsBtn" class="icon-toggle" title="WLAN-Einstellungen" aria-label="WLAN-Einstellungen" hidden>📶</button>
-    <button id="adminPasswordBtn" class="icon-toggle" title="Admin-Passwort ändern" aria-label="Admin-Passwort ändern" hidden>🔑</button>
-    <button id="adminToggle" class="admin-toggle" title="Admin-Modus" aria-label="Admin-Modus umschalten">
+    <button id="themeToggle" class="icon-toggle" title="Toggle light/dark mode" aria-label="Toggle light/dark mode" hidden>🌙</button>
+    <button id="hotspotSettingsBtn" class="icon-toggle" title="Wi-Fi settings" aria-label="Wi-Fi settings" hidden>📶</button>
+    <button id="adminPasswordBtn" class="icon-toggle" title="Change admin password" aria-label="Change admin password" hidden>🔑</button>
+    <button id="adminToggle" class="admin-toggle" title="Admin mode" aria-label="Toggle admin mode">
       <span class="admin-toggle__dot"></span>
       <span class="admin-toggle__text">Admin</span>
     </button>
-    <!-- Immer sichtbar, auch im Standardmodus (nicht an Admin-Login gebunden). -->
-    <button id="powerBtn" class="icon-toggle power-btn" title="PC ausschalten oder neustarten" aria-label="PC ausschalten oder neustarten">⏻</button>
+    <!-- Always visible, even in standard mode (not tied to admin login). -->
+    <button id="powerBtn" class="icon-toggle power-btn" title="Shutdown or restart PC" aria-label="Shutdown or restart PC">⏻</button>
   </div>
 </header>
 
@@ -41,9 +41,9 @@
 
 <main class="grid" id="grid"></main>
 
-<p class="empty-hint" id="emptyHint" hidden>Noch keine Schaltflächen vorhanden.</p>
+<p class="empty-hint" id="emptyHint" hidden>No buttons available yet.</p>
 
-<!-- Kachel-Vorlage -->
+<!-- Tile template -->
 <template id="tileTemplate">
   <div class="tile">
     <a class="tile__link" href="#" target="_blank" rel="noopener noreferrer">
@@ -51,44 +51,44 @@
       <span class="tile__label"></span>
     </a>
     <div class="tile__admin-controls">
-      <button class="tile__icon-btn tile__toggle-visibility" title="Ein-/Ausblenden">👁</button>
-      <button class="tile__icon-btn tile__edit" title="Bearbeiten">✎</button>
-      <button class="tile__icon-btn tile__delete" title="Löschen">✕</button>
+      <button class="tile__icon-btn tile__toggle-visibility" title="Show/Hide">👁</button>
+      <button class="tile__icon-btn tile__edit" title="Edit">✎</button>
+      <button class="tile__icon-btn tile__delete" title="Delete">✕</button>
     </div>
   </div>
 </template>
 
-<!-- Kachel zum Hinzufügen (nur im Admin-Modus) -->
+<!-- Add tile button (admin mode only) -->
 <button id="addTileBtn" class="tile tile--add" hidden>
   <span class="tile--add__plus">+</span>
-  <span>Neue Schaltfläche</span>
+  <span>New Button</span>
 </button>
 
-<!-- Login-Modal -->
+<!-- Login Modal -->
 <div class="modal-backdrop" id="loginBackdrop" hidden>
   <div class="modal">
-    <h2 class="modal__title">Admin-Anmeldung</h2>
+    <h2 class="modal__title">Admin Login</h2>
     <form id="loginForm">
       <label class="field">
-        <span class="field__label">Passwort</span>
+        <span class="field__label">Password</span>
         <input type="password" id="loginPassword" class="field__input" autocomplete="current-password" required>
       </label>
       <p class="modal__error" id="loginError" hidden></p>
       <div class="modal__actions">
-        <button type="button" class="btn btn--ghost" id="loginCancel">Abbrechen</button>
-        <button type="submit" class="btn btn--primary">Anmelden</button>
+        <button type="button" class="btn btn--ghost" id="loginCancel">Cancel</button>
+        <button type="submit" class="btn btn--primary">Login</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Bearbeiten/Erstellen-Modal -->
+<!-- Edit/Create Modal -->
 <div class="modal-backdrop" id="editBackdrop" hidden>
   <div class="modal">
-    <h2 class="modal__title" id="editTitle">Schaltfläche bearbeiten</h2>
+    <h2 class="modal__title" id="editTitle">Edit Button</h2>
     <form id="editForm">
       <label class="field">
-        <span class="field__label">Anzeigename</span>
+        <span class="field__label">Display Name</span>
         <input type="text" id="editLabel" class="field__input" required maxlength="40">
       </label>
       <label class="field">
@@ -97,93 +97,93 @@
       </label>
       <p class="modal__error" id="editError" hidden></p>
       <div class="modal__actions">
-        <button type="button" class="btn btn--ghost" id="editCancel">Abbrechen</button>
-        <button type="submit" class="btn btn--primary" id="editSubmit">Speichern</button>
+        <button type="button" class="btn btn--ghost" id="editCancel">Cancel</button>
+        <button type="submit" class="btn btn--primary" id="editSubmit">Save</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Ausschalten/Neustarten-Modal (im Standardmodus, ohne Admin-Login nutzbar) -->
+<!-- Shutdown/Restart Modal (available in standard mode, without admin login) -->
 <div class="modal-backdrop" id="powerBackdrop" hidden>
   <div class="modal">
-    <h2 class="modal__title">PC ausschalten oder neustarten</h2>
+    <h2 class="modal__title">Shutdown or Restart PC</h2>
     <p class="modal__error" id="powerError" hidden></p>
     <div class="modal__actions">
-      <button type="button" class="btn btn--ghost" id="powerCancel">Abbrechen</button>
-      <button type="button" class="btn btn--ghost" id="powerRestartBtn">Neustarten</button>
-      <button type="button" class="btn btn--primary" id="powerShutdownBtn">Ausschalten</button>
+      <button type="button" class="btn btn--ghost" id="powerCancel">Cancel</button>
+      <button type="button" class="btn btn--ghost" id="powerRestartBtn">Restart</button>
+      <button type="button" class="btn btn--primary" id="powerShutdownBtn">Shutdown</button>
     </div>
   </div>
 </div>
 
-<!-- WLAN-Einstellungen-Modal (nur im Admin-Modus) -->
+<!-- Wi-Fi Settings Modal (admin mode only) -->
 <div class="modal-backdrop" id="hotspotBackdrop" hidden>
   <div class="modal">
-    <h2 class="modal__title">WLAN-Einstellungen</h2>
+    <h2 class="modal__title">Wi-Fi Settings</h2>
     <form id="hotspotForm">
       <label class="field">
-        <span class="field__label">WLAN-Name (SSID)</span>
+        <span class="field__label">Wi-Fi Name (SSID)</span>
         <input type="text" id="hotspotSsid" class="field__input" maxlength="32" required>
       </label>
       <label class="field">
-        <span class="field__label">Neues WLAN-Passwort (leer lassen = unverändert)</span>
+        <span class="field__label">New Wi-Fi Password (leave blank = unchanged)</span>
         <input type="password" id="hotspotPassword" class="field__input" autocomplete="new-password" minlength="8">
       </label>
       <label class="field">
-        <span class="field__label">Neues WLAN-Passwort wiederholen</span>
+        <span class="field__label">Repeat New Wi-Fi Password</span>
         <input type="password" id="hotspotPassword2" class="field__input" autocomplete="new-password" minlength="8">
       </label>
       <p class="modal__error" id="hotspotError" hidden></p>
       <div class="modal__actions">
-        <button type="button" class="btn btn--ghost" id="hotspotCancel">Abbrechen</button>
-        <button type="submit" class="btn btn--primary">Speichern</button>
+        <button type="button" class="btn btn--ghost" id="hotspotCancel">Cancel</button>
+        <button type="submit" class="btn btn--primary">Save</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Hinweis-Modal: WLAN-Änderung erfordert Neustart -->
+<!-- Notice Modal: Wi-Fi changes require restart -->
 <div class="modal-backdrop" id="hotspotRestartBackdrop" hidden>
   <div class="modal">
-    <h2 class="modal__title">Neustart erforderlich</h2>
-    <p>Die WLAN-Einstellungen wurden gespeichert, werden aber erst nach einem Neustart aktiv.</p>
+    <h2 class="modal__title">Restart Required</h2>
+    <p>Wi-Fi settings have been saved but will only take effect after a restart.</p>
     <p class="modal__error" id="hotspotRestartError" hidden></p>
     <div class="modal__actions">
-      <button type="button" class="btn btn--ghost" id="hotspotRestartLater">Später</button>
-      <button type="button" class="btn btn--primary" id="hotspotRestartNow">Jetzt neustarten</button>
+      <button type="button" class="btn btn--ghost" id="hotspotRestartLater">Later</button>
+      <button type="button" class="btn btn--primary" id="hotspotRestartNow">Restart Now</button>
     </div>
   </div>
 </div>
 
-<!-- Passwort-ändern-Modal -->
+<!-- Change Password Modal -->
 <div class="modal-backdrop" id="passwordBackdrop" hidden>
   <div class="modal">
-    <h2 class="modal__title">Admin-Passwort ändern</h2>
+    <h2 class="modal__title">Change Admin Password</h2>
     <form id="passwordForm">
       <label class="field">
-        <span class="field__label">Aktuelles Passwort</span>
+        <span class="field__label">Current Password</span>
         <input type="password" id="currentPassword" class="field__input" autocomplete="current-password" required>
       </label>
       <label class="field">
-        <span class="field__label">Neues Passwort</span>
+        <span class="field__label">New Password</span>
         <input type="password" id="newPassword" class="field__input" autocomplete="new-password" required minlength="4">
       </label>
       <label class="field">
-        <span class="field__label">Neues Passwort wiederholen</span>
+        <span class="field__label">Repeat New Password</span>
         <input type="password" id="newPassword2" class="field__input" autocomplete="new-password" required minlength="4">
       </label>
       <p class="modal__error" id="passwordError" hidden></p>
       <div class="modal__actions">
-        <button type="button" class="btn btn--ghost" id="passwordCancel">Abbrechen</button>
-        <button type="submit" class="btn btn--primary">Speichern</button>
+        <button type="button" class="btn btn--ghost" id="passwordCancel">Cancel</button>
+        <button type="submit" class="btn btn--primary">Save</button>
       </div>
     </form>
   </div>
 </div>
 
 <footer class="site-footer">
-  <a href="{{ git_repo_url }}" target="_blank" rel="noopener noreferrer" class="site-footer__link">Git-Repository</a>
+  <a href="{{ git_repo_url }}" target="_blank" rel="noopener noreferrer" class="site-footer__link">Git Repository</a>
 </footer>
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
