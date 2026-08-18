@@ -1,72 +1,75 @@
+```bash
 #!/bin/bash
 #
 # install.sh
 #
-# Installiert Node-RED (offizieller Installer, falls noch nicht vorhanden),
-# kopiert find_arduino.sh, setup-hotspot.sh, startup-sequence.sh/.service,
-# 99-arduino.rules und find-arduino@.service an die richtigen Systemorte
-# und aktiviert alles. Einmalig ausführen mit:
+# Installs Node-RED (official installer if not already present),
+# copies find_arduino.sh, setup-hotspot.sh, startup-sequence.sh/.service,
+# 99-arduino.rules, and find-arduino@.service to the correct system locations,
+# and activates everything. Run once with:
 #
 #   sudo ./install.sh
 #
-# WICHTIG: Muss im selben Verzeichnis liegen wie die o.g. Dateien
-# (das Skript ermittelt seinen eigenen Ordner automatisch, ihr müsst
-# also NICHT vorher irgendwohin "cd"en).
+# IMPORTANT: Must be in the same directory as the above files
+# (the script automatically determines its own folder, so you do NOT
+# need to "cd" anywhere beforehand).
 #
-# Node-RED-Installation überspringen (z.B. weil schon vorhanden/eigenes
-# Setup): SKIP_NODERED=1 sudo -E ./install.sh
+# Skip Node-RED installation (e.g., if already present or custom setup):
+#   SKIP_NODERED=1 sudo -E ./install.sh
 #
-# Hotspot-Pakete (hostapd/dnsmasq/nginx/iptables-persistent) NICHT
-# installieren (z.B. weil schon vorhanden): SKIP_HOTSPOT_INSTALL=1 sudo -E ./install.sh
+# Skip hotspot packages (hostapd/dnsmasq/nginx/iptables-persistent) installation
+# (e.g., if already present):
+#   SKIP_HOTSPOT_INSTALL=1 sudo -E ./install.sh
 #
-# Node-RED-Paletten (npm-Pakete), die automatisch installiert werden:
-# Standard ist "@flowfuse/node-red-dashboard node-red-node-serialport"
-# (Dashboard 2.0 - das alte "node-red-dashboard" ist deprecated).
-# Eigene Liste (leerzeichengetrennt) angeben, z.B.:
+# Node-RED palettes (npm packages) to be installed automatically:
+# Default is "@flowfuse/node-red-dashboard node-red-node-serialport"
+# (Dashboard 2.0 - the old "node-red-dashboard" is deprecated).
+# Specify a custom list (space-separated), e.g.:
 #   NODERED_PALETTES="@flowfuse/node-red-dashboard node-red-contrib-modbus" sudo -E ./install.sh
-# Keine Paletten installieren: NODERED_PALETTES="" sudo -E ./install.sh
+# Skip palette installation: NODERED_PALETTES="" sudo -E ./install.sh
 #
-# Webseiten-Pakete (python3-venv/python3-pip) NICHT installieren (z.B. weil
-# schon vorhanden): SKIP_DASHBOARD_INSTALL=1 sudo -E ./install.sh
+# Skip dashboard packages (python3-venv/python3-pip) installation
+# (e.g., if already present):
+#   SKIP_DASHBOARD_INSTALL=1 sudo -E ./install.sh
 #
-# Systembenutzer, unter dem die Webseite (lan-dashboard) läuft. Standard "pi"
-# passend zu lan-dashboard.service/README. Eigenen Benutzer verwenden, z.B.:
+# System user under which the dashboard (lan-dashboard) runs. Default is "pi",
+# matching lan-dashboard.service/README. Use a custom user, e.g.:
 #   DASHBOARD_USER=web sudo -E ./install.sh
 #
-# Hotspot-Name (SSID), Hotspot-Passwort und Admin-Passwort der Webseite
-# werden NICHT mehr bei der Installation abgefragt. Sie starten mit den
-# Standardwerten "Hotspot" / "Password" / "admin" und können danach ganz
-# normal über die Weboberfläche (Admin-Modus) geändert werden.
+# Hotspot name (SSID), hotspot password, and admin password for the dashboard
+# are NO LONGER prompted during installation. They start with the default
+# values "Hotspot" / "Password" / "admin" and can be changed afterward via
+# the web interface (Admin mode).
 
 set -euo pipefail
 
 SKIP_NODERED="${SKIP_NODERED:-0}"
-SKIP_HOTSPOT_INSTALL="${SKIP_HOTSPOT_INSTALL:-0}"   # z.B. wenn hostapd/dnsmasq/nginx schon manuell eingerichtet sind
-SKIP_DASHBOARD_INSTALL="${SKIP_DASHBOARD_INSTALL:-0}"   # z.B. wenn python3-venv/python3-pip schon vorhanden sind
-NODERED_USER="${NODERED_USER:-nodered}"   # Systembenutzer, unter dem Node-RED läuft (NICHT root)
-DASHBOARD_USER="${DASHBOARD_USER:-pi}"    # Systembenutzer, unter dem die Webseite (lan-dashboard) läuft
+SKIP_HOTSPOT_INSTALL="${SKIP_HOTSPOT_INSTALL:-0}"   # e.g., if hostapd/dnsmasq/nginx are already manually configured
+SKIP_DASHBOARD_INSTALL="${SKIP_DASHBOARD_INSTALL:-0}"   # e.g., if python3-venv/python3-pip are already present
+NODERED_USER="${NODERED_USER:-nodered}"   # System user under which Node-RED runs (NOT root)
+DASHBOARD_USER="${DASHBOARD_USER:-pi}"    # System user under which the dashboard (lan-dashboard) runs
 DASHBOARD_DIR="/home/$DASHBOARD_USER/lan-dashboard"
-# Leerzeichengetrennte Liste an npm-Paketen, die in ~/.node-red des
-# Node-RED-Benutzers installiert werden (erscheinen danach in der Palette).
-# node-red-dashboard (Dashboard 1.0) ist seit Juni 2024 offiziell deprecated
-# (keine Weiterentwicklung mehr) - @flowfuse/node-red-dashboard (Dashboard
-# 2.0) ist der aktiv gepflegte Nachfolger, daher als Default gesetzt.
-# Leer lassen (NODERED_PALETTES=""), um keine Paletten zu installieren.
+# Space-separated list of npm packages to install in ~/.node-red of the
+# Node-RED user (will appear in the palette afterward).
+# node-red-dashboard (Dashboard 1.0) has been officially deprecated since June 2024
+# (no further development) - @flowfuse/node-red-dashboard (Dashboard 2.0)
+# is the actively maintained successor, hence set as default.
+# Leave empty (NODERED_PALETTES="") to skip palette installation.
 NODERED_PALETTES="${NODERED_PALETTES:-@flowfuse/node-red-dashboard node-red-node-serialport}"
 
 if [ "$EUID" -ne 0 ]; then
-    echo "Bitte mit sudo ausführen: sudo $0"
+    echo "Please run with sudo: sudo $0"
     exit 1
 fi
 
-# Verzeichnis, in dem dieses Skript (und die anderen Dateien) liegen
+# Directory where this script (and the other files) are located
 SRC_DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
-echo ">>> Quellverzeichnis: $SRC_DIR"
+echo ">>> Source directory: $SRC_DIR"
 cd "$SRC_DIR"
 
 require_file() {
     if [ ! -f "$1" ]; then
-        echo "FEHLER: $1 nicht gefunden in $SRC_DIR - Abbruch."
+        echo "ERROR: $1 not found in $SRC_DIR - aborting."
         exit 1
     fi
 }
@@ -80,35 +83,35 @@ for f in lan-dashboard/app.py lan-dashboard/requirements.txt lan-dashboard/lan-d
 done
 
 if [ "$SKIP_NODERED" -eq 1 ]; then
-    echo ">>> SKIP_NODERED=1 gesetzt - überspringe Node-RED-Installation."
+    echo ">>> SKIP_NODERED=1 set - skipping Node-RED installation."
 elif command -v node-red >/dev/null 2>&1; then
-    echo ">>> Node-RED ist bereits installiert - überspringe Installation."
+    echo ">>> Node-RED is already installed - skipping installation."
 else
-    echo ">>> Installiere Node.js + Node-RED (offizieller Installer) ..."
-    # Offizieller Installer von nodered.org. --confirm-install überspringt die
-    # interaktive Ja/Nein-Abfrage, --confirm-root erlaubt die Ausführung als
-    # root (dieses Skript läuft ja bereits per sudo). Node-RED läuft SPÄTER
-    # trotzdem nicht als root - siehe Benutzer-Anlage weiter unten.
+    echo ">>> Installing Node.js + Node-RED (official installer) ..."
+    # Official installer from nodered.org. --confirm-install skips the
+    # interactive yes/no prompt, --confirm-root allows execution as root
+    # (this script is already running via sudo). Node-RED will NOT run as root later -
+    # see user creation below.
     bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered) --confirm-install --confirm-root
 fi
 
-echo ">>> Prüfe/lege Systembenutzer '$NODERED_USER' für Node-RED an ..."
+echo ">>> Checking/creating system user '$NODERED_USER' for Node-RED ..."
 if id "$NODERED_USER" >/dev/null 2>&1; then
-    echo ">>> Benutzer '$NODERED_USER' existiert bereits."
+    echo ">>> User '$NODERED_USER' already exists."
 else
-    # --system: Systembenutzer (keine reguläre Login-Person, keine Passwortabfrage)
-    # --create-home: legt Home-Verzeichnis an, in dem Node-RED sein
-    #                Userverzeichnis (~/.node-red mit flows.json, Nodes, etc.) ablegt
-    # --shell nologin: kein interaktiver Login möglich
-    # --groups dialout: falls Node-RED-Flows (Serial-Nodes) direkt auf
-    #                   /dev/ttyACM*/ttyUSB* zugreifen sollen
+    # --system: system user (not a regular login user, no password prompt)
+    # --create-home: creates home directory where Node-RED stores its
+    #                user directory (~/.node-red with flows.json, nodes, etc.)
+    # --shell nologin: no interactive login possible
+    # --groups dialout: if Node-RED flows (serial nodes) need direct access
+    #                   to /dev/ttyACM*/ttyUSB*
     useradd --system --create-home --home-dir "/home/$NODERED_USER" \
         --shell /usr/sbin/nologin --groups dialout "$NODERED_USER"
-    echo ">>> Benutzer '$NODERED_USER' angelegt (Home: /home/$NODERED_USER, Gruppe dialout)."
+    echo ">>> User '$NODERED_USER' created (Home: /home/$NODERED_USER, group: dialout)."
 fi
 
-# Log-Verzeichnis gehört dem Node-RED-Benutzer, falls er (z.B. bei manuellen
-# Tests außerhalb des Startskripts) selbst hineinschreiben will/muss.
+# Log directory owned by the Node-RED user, in case they need to write to it
+# (e.g., during manual tests outside the startup script).
 mkdir -p /var/log/node-red
 chown "$NODERED_USER":"$NODERED_USER" /var/log/node-red
 
@@ -116,21 +119,20 @@ NODERED_HOME="/home/$NODERED_USER"
 NODERED_DIR="$NODERED_HOME/.node-red"
 
 if [ -n "$NODERED_PALETTES" ]; then
-    echo ">>> Installiere Node-RED-Paletten: $NODERED_PALETTES"
+    echo ">>> Installing Node-RED palettes: $NODERED_PALETTES"
     mkdir -p "$NODERED_DIR"
     chown "$NODERED_USER":"$NODERED_USER" "$NODERED_DIR"
 
-    # ~/.node-red braucht eine package.json, damit "npm install" die Pakete
-    # als Abhängigkeiten dort einträgt (so erkennt Node-RED sie beim Start
-    # als Paletten). Existiert noch keine (z.B. weil Node-RED hier noch nie
-    # gestartet wurde), legen wir eine minimale an.
+    # ~/.node-red requires a package.json so that "npm install" registers the
+    # packages as dependencies there (Node-RED recognizes them as palettes on startup).
+    # If none exists yet (e.g., because Node-RED has never been started here),
+    # create a minimal one.
     #
-    # WICHTIG: NICHT "npm init -y" verwenden - npm leitet den Default-Namen
-    # vom Verzeichnisnamen ab, und ".node-red" beginnt mit einem Punkt, was
-    # kein gültiger npm-Paketname ist ("npm error invalid name"). Die
-    # package.json wird dann NICHT angelegt und "npm install" schlägt
-    # danach fehl. Stattdessen die Datei direkt mit einem gültigen Namen
-    # schreiben.
+    # IMPORTANT: Do NOT use "npm init -y" - npm derives the default name from
+    # the directory name, and ".node-red" starts with a dot, which is not a valid
+    # npm package name ("npm error invalid name"). The package.json will NOT be
+    # created, and "npm install" will fail afterward. Instead, write the file
+    # directly with a valid name.
     if [ ! -f "$NODERED_DIR/package.json" ]; then
         runuser -u "$NODERED_USER" -- bash -c "cat > '$NODERED_DIR/package.json' <<'PKGJSON'
 {
@@ -142,63 +144,63 @@ if [ -n "$NODERED_PALETTES" ]; then
 PKGJSON"
     fi
 
-    # Als NODERED_USER (nicht root) installieren, damit Dateirechte in
-    # ~/.node-red stimmen - genau wie Node-RED selbst später auch als
-    # dieser Benutzer läuft (siehe startup-sequence.sh).
+    # Install as NODERED_USER (not root) to ensure file permissions in
+    # ~/.node-red are correct - just like Node-RED itself will run as this
+    # user later (see startup-sequence.sh).
     if ! runuser -u "$NODERED_USER" -- bash -c "cd '$NODERED_DIR' && npm install --no-audit --no-fund $NODERED_PALETTES"; then
-        echo "WARNUNG: Installation mindestens einer Palette ist fehlgeschlagen - bitte Ausgabe oben prüfen."
-        echo "Node-RED startet trotzdem, ggf. fehlt dann nur der/die betroffene(n) Node(s) in der Palette."
+        echo "WARNING: Installation of at least one palette failed - please check the output above."
+        echo "Node-RED will still start, but the affected node(s) may be missing from the palette."
     fi
 else
-    echo ">>> NODERED_PALETTES ist leer - überspringe Paletten-Installation."
+    echo ">>> NODERED_PALETTES is empty - skipping palette installation."
 fi
 
-echo ">>> Kopiere Skripte nach /usr/local/bin ..."
+echo ">>> Copying scripts to /usr/local/bin ..."
 cp find_arduino.sh setup-hotspot.sh startup-sequence.sh /usr/local/bin/
 chmod +x /usr/local/bin/find_arduino.sh /usr/local/bin/setup-hotspot.sh /usr/local/bin/startup-sequence.sh
 
 # ==========================================================================
-# Webseite (lan-dashboard) einrichten
+# Set up dashboard (lan-dashboard)
 #
-# Wird NICHT per "systemctl enable" eigenständig gestartet - sonst würde
-# systemd sie parallel/unkoordiniert zum Hotspot hochfahren. Stattdessen
-# startet startup-sequence.sh sie gezielt per "systemctl start" und wartet,
-# bis sie antwortet, BEVOR der Hotspot online geht (siehe startup-sequence.sh).
+# NOT enabled via "systemctl enable" to start independently - otherwise,
+# systemd would start it in parallel/uncoordinated with the hotspot.
+# Instead, startup-sequence.sh starts it explicitly via "systemctl start"
+# and waits for it to respond BEFORE the hotspot goes online
+# (see startup-sequence.sh).
 # ==========================================================================
-echo ">>> Richte Webseite (lan-dashboard) ein ..."
+echo ">>> Setting up dashboard (lan-dashboard) ..."
 
 if [ "$SKIP_DASHBOARD_INSTALL" -eq 1 ]; then
-    echo ">>> SKIP_DASHBOARD_INSTALL=1 gesetzt - überspringe Paketinstallation (python3-venv/python3-pip)."
+    echo ">>> SKIP_DASHBOARD_INSTALL=1 set - skipping package installation (python3-venv/python3-pip)."
 else
-    echo ">>> Installiere Python-Abhängigkeiten (python3-venv, python3-pip) ..."
+    echo ">>> Installing Python dependencies (python3-venv, python3-pip) ..."
     apt update
     apt install -y python3-venv python3-pip
 fi
 
-echo ">>> Prüfe/lege Systembenutzer '$DASHBOARD_USER' für die Webseite an ..."
+echo ">>> Checking/creating system user '$DASHBOARD_USER' for the dashboard ..."
 if id "$DASHBOARD_USER" >/dev/null 2>&1; then
-    echo ">>> Benutzer '$DASHBOARD_USER' existiert bereits."
+    echo ">>> User '$DASHBOARD_USER' already exists."
 else
-    # Regulärer Benutzer mit Home-Verzeichnis (kein --system), da "pi" auf
-    # einem echten Raspberry Pi normalerweise ohnehin schon existiert - dieser
-    # Zweig greift nur auf Systemen, auf denen er fehlt (z.B. reines Ubuntu).
+    # Regular user with home directory (not --system), since "pi" on a
+    # real Raspberry Pi usually already exists - this branch only applies
+    # to systems where it is missing (e.g., pure Ubuntu).
     useradd --create-home --shell /bin/bash "$DASHBOARD_USER"
-    echo ">>> Benutzer '$DASHBOARD_USER' angelegt (Home: /home/$DASHBOARD_USER)."
+    echo ">>> User '$DASHBOARD_USER' created (Home: /home/$DASHBOARD_USER)."
 fi
 
-echo ">>> Kopiere Webseiten-Dateien nach $DASHBOARD_DIR ..."
+echo ">>> Copying dashboard files to $DASHBOARD_DIR ..."
 mkdir -p "$DASHBOARD_DIR"
 for item in app.py requirements.txt README.md templates static; do
     cp -r "lan-dashboard/$item" "$DASHBOARD_DIR/"
 done
 
-# Laufzeitdaten (Schaltflächen, Design, Admin-Passwort-Hash) nur kopieren,
-# falls dort noch keine vorhanden sind - so gehen bei einem erneuten Lauf von
-# install.sh keine bereits über die Weboberfläche vorgenommenen Änderungen
-# verloren.
+# Runtime data (buttons, design, admin password hash) is only copied
+# if not already present - this ensures that re-running install.sh does
+# not overwrite changes made via the web interface.
 for datafile in buttons.json settings.json admin_config.json hotspot_config.json; do
     if [ -f "$DASHBOARD_DIR/$datafile" ]; then
-        echo ">>> $datafile existiert bereits in $DASHBOARD_DIR - behalte vorhandene Datei."
+        echo ">>> $datafile already exists in $DASHBOARD_DIR - keeping existing file."
     elif [ -f "lan-dashboard/$datafile" ]; then
         cp "lan-dashboard/$datafile" "$DASHBOARD_DIR/"
     fi
@@ -207,19 +209,19 @@ mkdir -p "$DASHBOARD_DIR/static/uploads"
 
 chown -R "$DASHBOARD_USER":"$DASHBOARD_USER" "$DASHBOARD_DIR"
 
-echo ">>> Richte Python-Umgebung (venv) für die Webseite ein ..."
+echo ">>> Setting up Python environment (venv) for the dashboard ..."
 if [ ! -x "$DASHBOARD_DIR/venv/bin/python" ]; then
     runuser -u "$DASHBOARD_USER" -- bash -c "cd '$DASHBOARD_DIR' && python3 -m venv venv"
 fi
 runuser -u "$DASHBOARD_USER" -- bash -c "cd '$DASHBOARD_DIR' && venv/bin/pip install --no-input --quiet --upgrade pip && venv/bin/pip install --no-input --quiet -r requirements.txt"
 
-echo ">>> Prüfe/erzeuge .env (Secret Key) für die Webseite ..."
+echo ">>> Checking/creating .env (Secret Key) for the dashboard ..."
 if [ -f "$DASHBOARD_DIR/.env" ]; then
-    echo ">>> $DASHBOARD_DIR/.env existiert bereits - lasse sie unverändert."
+    echo ">>> $DASHBOARD_DIR/.env already exists - leaving it unchanged."
 else
-    # Admin-Passwort NICHT mehr abfragen: startet mit dem Standardwert "admin"
-    # (siehe app.py) und kann anschließend über die Weboberfläche geändert
-    # werden. Optional weiterhin per DASHBOARD_ADMIN_PASSWORD vorbelegbar.
+    # Admin password is NO LONGER prompted: starts with the default value "admin"
+    # (see app.py) and can be changed afterward via the web interface.
+    # Optionally, it can still be predefined via DASHBOARD_ADMIN_PASSWORD.
     DASHBOARD_SECRET_KEY="$("$DASHBOARD_DIR/venv/bin/python" -c 'import secrets; print(secrets.token_hex(32))')"
 
     {
@@ -232,47 +234,46 @@ else
     chmod 600 "$DASHBOARD_DIR/.env"
 fi
 
-echo ">>> Richte sudo-Rechte ein (Herunterfahren/Neustart-Button, WLAN-Einstellungen) ..."
-# Die Webseite läuft als $DASHBOARD_USER (kein root) und braucht für den
-# Ausschalten/Neustarten-Button sowie zum sofortigen Anwenden geänderter
-# WLAN-Einstellungen root-Rechte für genau diese drei Befehle - ohne
-# Passwortabfrage, da hier kein interaktives Terminal zur Verfügung steht.
+echo ">>> Setting up sudo permissions (shutdown/restart button, Wi-Fi settings) ..."
+# The dashboard runs as $DASHBOARD_USER (not root) and needs root permissions
+# for shutdown/restart and to apply changed Wi-Fi settings immediately -
+# without a password prompt, as no interactive terminal is available.
 cat > /etc/sudoers.d/lan-dashboard <<EOF
 $DASHBOARD_USER ALL=(root) NOPASSWD: /sbin/shutdown, /usr/local/bin/setup-hotspot.sh restart
 EOF
 chmod 440 /etc/sudoers.d/lan-dashboard
 visudo -c -f /etc/sudoers.d/lan-dashboard
 
-echo ">>> Installiere Systemd-Unit für die Webseite ..."
-# lan-dashboard.service ist fest auf Benutzer/Pfad "pi" ausgelegt - beim
-# Installieren auf $DASHBOARD_USER/$DASHBOARD_DIR anpassen (Quelldatei bleibt
-# dabei unverändert, es wird nur die installierte Kopie angepasst).
+echo ">>> Installing systemd unit for the dashboard ..."
+# lan-dashboard.service is hardcoded for user/path "pi" - adjust to
+# $DASHBOARD_USER/$DASHBOARD_DIR during installation (source file remains
+# unchanged, only the installed copy is modified).
 sed -e "s#/home/pi/lan-dashboard#$DASHBOARD_DIR#g" \
     -e "s/^User=pi$/User=$DASHBOARD_USER/" \
     lan-dashboard/lan-dashboard.service > /etc/systemd/system/lan-dashboard.service
 
-echo ">>> Hotspot-Name/-Passwort werden NICHT mehr abgefragt - Standardwerte"
-echo "    'Hotspot' / 'Password' aus $DASHBOARD_DIR/hotspot_config.json gelten,"
-echo "    änderbar über die Weboberfläche (Admin-Modus -> WLAN-Einstellungen)."
+echo ">>> Hotspot name/password are NO LONGER prompted - default values"
+echo "    'Hotspot' / 'Password' from $DASHBOARD_DIR/hotspot_config.json apply,"
+echo "    changeable via the web interface (Admin mode -> Wi-Fi settings)."
 
 # ==========================================================================
-# WLAN-Interface für den Hotspot ermitteln
+# Determine Wi-Fi interface for the hotspot
 #
-# setup-hotspot.sh hat "wlan0" fest als Default-Wert (WLAN_IFACE) einprogrammiert,
-# liest aber /etc/default/hotspot am Anfang ein und lässt diese Datei Vorrang
-# vor dem Default haben. Wir müssen setup-hotspot.sh also NICHT anfassen -
-# es reicht, den tatsächlich erkannten Interface-Namen dort hineinzuschreiben.
+# setup-hotspot.sh has "wlan0" hardcoded as the default WLAN_IFACE, but reads
+# /etc/default/hotspot at the beginning and prioritizes that file over the default.
+# Therefore, we do NOT need to modify setup-hotspot.sh - it is sufficient to
+# write the detected interface name there.
 #
-# Manuell erzwingen (z.B. bei mehreren WLAN-Adaptern oder falscher Erkennung):
+# Manually enforce (e.g., with multiple Wi-Fi adapters or incorrect detection):
 #   WLAN_IFACE=wlp2s0 sudo -E ./install.sh
 # ==========================================================================
 if [ -n "${WLAN_IFACE:-}" ]; then
-    echo ">>> WLAN_IFACE=$WLAN_IFACE wurde manuell vorgegeben - überspringe automatische Erkennung."
+    echo ">>> WLAN_IFACE=$WLAN_IFACE was manually specified - skipping automatic detection."
 else
-    echo ">>> Suche angeschlossenes WLAN-Interface ..."
-    # /sys/class/net/*/wireless existiert nur für echte WLAN-Interfaces
-    # (im Gegensatz zu "iw dev", das ggf. fehlt, falls das Paket "iw" noch
-    # nicht installiert ist - daher hier bewusst kein Tool vorausgesetzt).
+    echo ">>> Searching for connected Wi-Fi interface ..."
+    # /sys/class/net/*/wireless only exists for actual Wi-Fi interfaces
+    # (unlike "iw dev", which may be missing if the "iw" package is not yet
+    # installed - hence no tool dependency here).
     mapfile -t WLAN_CANDIDATES < <(
         for w in /sys/class/net/*/wireless; do
             [ -d "$w" ] || continue
@@ -282,28 +283,28 @@ else
 
     case "${#WLAN_CANDIDATES[@]}" in
         0)
-            echo "FEHLER: Kein WLAN-Interface gefunden (kein Eintrag unter /sys/class/net/*/wireless)."
-            echo "        Ist ein WLAN-Adapter eingesteckt/aktiviert? Treiber geladen (siehe 'ip a')?"
-            echo "        Alternativ das Interface manuell vorgeben: WLAN_IFACE=<name> sudo -E $0"
+            echo "ERROR: No Wi-Fi interface found (no entry under /sys/class/net/*/wireless)."
+            echo "       Is a Wi-Fi adapter connected/activated? Driver loaded (see 'ip a')?"
+            echo "       Alternatively, specify the interface manually: WLAN_IFACE=<name> sudo -E $0"
             exit 1
             ;;
         1)
             WLAN_IFACE="${WLAN_CANDIDATES[0]}"
-            echo ">>> WLAN-Interface erkannt: $WLAN_IFACE"
+            echo ">>> Wi-Fi interface detected: $WLAN_IFACE"
             ;;
         *)
-            echo "FEHLER: Mehrere WLAN-Interfaces gefunden (${WLAN_CANDIDATES[*]}) - automatische Auswahl nicht eindeutig."
-            echo "        Bitte gewünschtes Interface manuell vorgeben, z.B.:"
-            echo "        WLAN_IFACE=${WLAN_CANDIDATES[0]} sudo -E $0"
+            echo "ERROR: Multiple Wi-Fi interfaces found (${WLAN_CANDIDATES[*]}) - automatic selection not unique."
+            echo "       Please specify the desired interface manually, e.g.:"
+            echo "       WLAN_IFACE=${WLAN_CANDIDATES[0]} sudo -E $0"
             exit 1
             ;;
     esac
 fi
 
-echo ">>> Trage WLAN_IFACE=$WLAN_IFACE in /etc/default/hotspot ein ..."
-# Vorhandene WLAN_IFACE-Zeile (aus einem früheren install.sh-Lauf) ersetzen,
-# sonst anhängen - der Rest von /etc/default/hotspot (z.B. manuell gesetzte
-# SSID/PASSWORD-Overrides) bleibt dabei unangetastet.
+echo ">>> Writing WLAN_IFACE=$WLAN_IFACE to /etc/default/hotspot ..."
+# Replace existing WLAN_IFACE line (from a previous install.sh run),
+# otherwise append - the rest of /etc/default/hotspot (e.g., manually set
+# SSID/PASSWORD overrides) remains untouched.
 touch /etc/default/hotspot
 if grep -q '^WLAN_IFACE=' /etc/default/hotspot 2>/dev/null; then
     sed -i "s/^WLAN_IFACE=.*/WLAN_IFACE=$WLAN_IFACE/" /etc/default/hotspot
@@ -312,58 +313,59 @@ else
 fi
 
 if [ "$SKIP_HOTSPOT_INSTALL" -eq 1 ]; then
-    echo ">>> SKIP_HOTSPOT_INSTALL=1 gesetzt - überspringe Hotspot-Paketinstallation (hostapd/dnsmasq/nginx)."
+    echo ">>> SKIP_HOTSPOT_INSTALL=1 set - skipping hotspot package installation (hostapd/dnsmasq/nginx)."
 else
-    echo ">>> Installiere Hotspot-Abhängigkeiten (hostapd, dnsmasq, nginx, iptables-persistent) ..."
-    # WICHTIG: Ohne diesen Schritt fehlt beim Boot der Befehl 'hostapd'
-    # ("Kommando nicht gefunden"), da startup-sequence.sh -> setup-hotspot.sh
-    # start davon ausgeht, dass die Pakete bereits vorhanden sind.
+    echo ">>> Installing hotspot dependencies (hostapd, dnsmasq, nginx, iptables-persistent) ..."
+    # IMPORTANT: Without this step, the 'hostapd' command will be missing
+    # ("command not found") during boot, as startup-sequence.sh -> setup-hotspot.sh
+    # assumes the packages are already present.
     /usr/local/bin/setup-hotspot.sh install
 fi
 
-echo ">>> Schreibe Konfiguration (Node-RED-/Dashboard-Benutzer) nach /etc/default/startup-sequence ..."
+echo ">>> Writing configuration (Node-RED/dashboard user) to /etc/default/startup-sequence ..."
 cat > /etc/default/startup-sequence <<EOF
-# Wird von startup-sequence.sh per systemd EnvironmentFile eingelesen.
+# Read by startup-sequence.sh via systemd EnvironmentFile.
 NODERED_USER=$NODERED_USER
-# DASHBOARD_USER wird an setup-hotspot.sh weitergereicht (als Environment
-# des startup-sequence.service-Prozesses), damit beim Boot die richtige
-# hotspot_config.json unter /home/$DASHBOARD_USER/lan-dashboard/ gefunden wird.
+# DASHBOARD_USER is passed to setup-hotspot.sh (as environment of the
+# startup-sequence.service process) so that the correct hotspot_config.json
+# is found under /home/$DASHBOARD_USER/lan-dashboard/ during boot.
 DASHBOARD_USER=$DASHBOARD_USER
 EOF
 
-echo ">>> Kopiere Systemd-Unit für die Boot-Startsequenz ..."
+echo ">>> Copying systemd unit for boot startup sequence ..."
 cp startup-sequence.service /etc/systemd/system/
 
-echo ">>> Kopiere udev-Regel und Hotplug-Service ..."
+echo ">>> Copying udev rule and hotplug service ..."
 cp 99-arduino.rules /etc/udev/rules.d/
 cp find-arduino_.service /etc/systemd/system/find-arduino@.service
 
-echo ">>> Lade udev-Regeln neu ..."
+echo ">>> Reloading udev rules ..."
 udevadm control --reload
 udevadm trigger
 
-echo ">>> Lade systemd neu und aktiviere startup-sequence.service ..."
+echo ">>> Reloading systemd and enabling startup-sequence.service ..."
 systemctl daemon-reload
 systemctl enable startup-sequence.service
-# lan-dashboard.service bewusst NICHT per "systemctl enable" aktivieren:
-# startup-sequence.sh startet sie gezielt (vor dem Hotspot), damit die
-# Reihenfolge beim Boot garantiert stimmt (siehe Kommentar dort).
+# lan-dashboard.service is intentionally NOT enabled via "systemctl enable":
+# startup-sequence.sh starts it explicitly (before the hotspot) to ensure
+# the correct order during boot (see comment there).
 
 if [ -d /root/.node-red ] && [ ! -d "/home/$NODERED_USER/.node-red/node_modules" ]; then
     echo ""
-    echo "HINWEIS: Unter /root/.node-red liegen offenbar noch Daten aus einem"
-    echo "früheren Lauf (als root). Node-RED läuft jetzt als '$NODERED_USER' und"
-    echo "sucht sein Userverzeichnis unter /home/$NODERED_USER/.node-red - alte"
-    echo "Flows werden NICHT automatisch übernommen. Zum manuellen Übertragen z.B.:"
+    echo "NOTE: There appears to be old data in /root/.node-red from a"
+    echo "previous run (as root). Node-RED now runs as '$NODERED_USER' and"
+    echo "looks for its user directory under /home/$NODERED_USER/.node-red - old"
+    echo "flows will NOT be automatically transferred. To manually copy, e.g.:"
     echo "  sudo cp -r /root/.node-red/. /home/$NODERED_USER/.node-red/"
     echo "  sudo chown -R $NODERED_USER:$NODERED_USER /home/$NODERED_USER/.node-red"
 fi
 
 echo ""
 echo "=========================================="
-echo " Installation abgeschlossen."
-echo " Testen ohne Neustart: sudo systemctl start startup-sequence.service"
-echo " Status prüfen:        systemctl status startup-sequence.service"
-echo " Logs ansehen:         journalctl -u startup-sequence.service -e"
-echo " Webseite (lan-dashboard): http://<Pi-IP>:5000 - Status: systemctl status lan-dashboard.service"
+echo " Installation complete."
+echo " Test without reboot: sudo systemctl start startup-sequence.service"
+echo " Check status:        systemctl status startup-sequence.service"
+echo " View logs:           journalctl -u startup-sequence.service -e"
+echo " Dashboard (lan-dashboard): http://<Pi-IP>:5000 - Status: systemctl status lan-dashboard.service"
 echo "=========================================="
+```
