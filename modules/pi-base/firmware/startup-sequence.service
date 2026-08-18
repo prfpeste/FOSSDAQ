@@ -1,26 +1,26 @@
 # /etc/systemd/system/startup-sequence.service
 #
-# Führt beim Boot die Startsequenz aus:
-# Arduino-Symlinks -> Node-RED -> Webseite (lan-dashboard) -> Hotspot.
+# Executes the startup sequence during boot:
+# Arduino symlinks -> Node-RED -> Website (lan-dashboard) -> Hotspot.
 
 [Unit]
-Description=Startsequenz: Arduino-Symlinks, Node-RED, Webseite, Hotspot
+Description=Startup sequence: Arduino symlinks, Node-RED, Website, Hotspot
 Wants=network-online.target systemd-udev-settle.service
 After=network-online.target systemd-udev-settle.service NetworkManager.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-# Der Service selbst läuft weiterhin als root (kein User= gesetzt), da er
-# udev-Symlinks unter /dev anlegt und den Hotspot per hostapd/iptables
-# konfiguriert - das braucht echte Root-Rechte. Node-RED läuft NICHT als
-# root, sondern als eigener Benutzer (siehe NODERED_USER unten), den
-# startup-sequence.sh per runuser aufruft.
+# The service itself continues to run as root (no User= set), as it
+# creates udev symlinks under /dev and configures the hotspot via hostapd/iptables,
+# which requires actual root permissions. Node-RED does NOT run as root,
+# but as a dedicated user (see NODERED_USER below), which startup-sequence.sh
+# calls via runuser.
 Environment=HOME=/root
 EnvironmentFile=-/etc/default/startup-sequence
 ExecStart=/usr/local/bin/startup-sequence.sh
-# Erhöht (vorher 120s), da die Sequenz jetzt zusätzlich auf die Webseite
-# (lan-dashboard.service, max. 30s) wartet.
+# Increased (previously 120s) because the sequence now additionally waits for the
+# website (lan-dashboard.service, max. 30s).
 TimeoutStartSec=150
 
 [Install]
