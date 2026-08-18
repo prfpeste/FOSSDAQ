@@ -1,47 +1,47 @@
 #!/bin/bash
 #
 # find_arduino.sh
-# Findet den seriellen Port eines Arduino (auch Clones), indem es
-# über die serielle Schnittstelle "serveID" sendet und die Antwort prüft.
+# Finds the serial port of an Arduino (including clones) by sending
+# "serveID" via the serial interface and checking the response.
 #
-# Ausgabe: PORT<TAB>EMPFANGENE_NACHRICHT   (eine Zeile pro gefundenem Gerät)
+# Output: PORT<TAB>RECEIVED_MESSAGE (one line per detected device)
 #
-# Nutzung:
-#   ./find_arduino.sh            -> gibt Port + Nachricht des ersten Treffers aus
-#                                    z.B. "/dev/ttyACM0    ID1130"
-#   ./find_arduino.sh -v         -> ausführliche Ausgabe (Debugging)
-#   ./find_arduino.sh -a         -> gibt ALLE gefundenen Arduino-Ports (+ Nachricht) aus
-#   ./find_arduino.sh -s         -> legt zusätzlich für jeden Treffer einen Symlink an,
-#                                    z.B. /dev/arduino/ID1130 -> /dev/ttyACM0
-#                                    (braucht meist sudo, da unter /dev geschrieben wird)
-#   ./find_arduino.sh -d DIR     -> Zielverzeichnis für die Symlinks (Standard: /dev/arduino)
-#                                    impliziert -s
+# Usage:
+#   ./find_arduino.sh            -> outputs port + message of the first match
+#                                    e.g., "/dev/ttyACM0    ID1130"
+#   ./find_arduino.sh -v         -> verbose output (debugging)
+#   ./find_arduino.sh -a         -> outputs ALL found Arduino ports (+ message)
+#   ./find_arduino.sh -s         -> additionally creates a symlink for each match,
+#                                    e.g., /dev/arduino/ID1130 -> /dev/ttyACM0
+#                                    (usually requires sudo, as it writes to /dev)
+#   ./find_arduino.sh -d DIR     -> target directory for symlinks (default: /dev/arduino)
+#                                    implies -s
 
 set -uo pipefail
 
 # ==========================================================================
-# ANPASSEN: Liste der bekannten IDs, die ein Arduino/Board zurückliefert.
-# Einfach neue Einträge hinzufügen/entfernen.
-# Die Antwort endet immer mit einer 5-stelligen Zahl (z.B. Seriennummer),
-# die für den Vergleich automatisch abgeschnitten wird -> hier nur die
-# eigentliche ID ohne die Zahl eintragen.
+# ADJUST: List of known IDs that an Arduino/board returns.
+# Simply add/remove entries.
+# The response always ends with a 5-digit number (e.g., serial number),
+# which is automatically truncated for comparison -> only enter the
+# actual ID without the number here.
 # ==========================================================================
 KNOWN_IDS=(
     "ID"
-    # weitere IDs hier ergänzen, z.B.:
-    # "MeinSensorBoard"
+    # add more IDs here, e.g.:
+    # "MySensorBoard"
 )
 
-BAUDRATE=9600      # ANPASSEN: an die Baudrate deines Sketches
+BAUDRATE=9600      # ADJUST: match the baud rate of your sketch
 IDENTIFY_CMD='serveID'
-TIMEOUT_SEC=2       # wie lange auf Antwort gewartet wird
-BOOT_WAIT_SEC=2     # viele Boards resetten beim Öffnen des Ports (DTR) -> Bootzeit abwarten
+TIMEOUT_SEC=2       # how long to wait for a response
+BOOT_WAIT_SEC=2     # many boards reset when opening the port (DTR) -> wait for boot time
 
 VERBOSE=0
 LIST_ALL=0
 MAKE_SYMLINKS=0
-SYMLINK_DIR="/dev/arduino"   # ANPASSEN: Zielverzeichnis für die Symlinks
-LAST_RESPONSE=""   # wird von check_port() mit der empfangenen Rohantwort befüllt
+SYMLINK_DIR="/dev/arduino"   # ADJUST: target directory for symlinks
+LAST_RESPONSE=""   # filled by check_port() with the raw received response
 
 while getopts "vasd:p" opt; do
   case $opt in
@@ -50,7 +50,7 @@ while getopts "vasd:p" opt; do
     s) MAKE_SYMLINKS=1 ;;
     d) MAKE_SYMLINKS=1; SYMLINK_DIR="$OPTARG" ;;
     p) SINGLE_PORT="$OPTARG" ;;
-    *) echo "Unbekannte Option"; exit 1 ;;
+    *) echo "Unknown option"; exit 1 ;;
   esac
 done
 
@@ -64,67 +64,66 @@ check_port() {
     local dev="$1"
 
     if [ ! -w "$dev" ]; then
-        log "  -> keine Schreibrechte auf $dev, überspringe (evtl. sudo nötig oder dialout-Gruppe)"
+        log "  -> no write permissions on $dev, skipping (sudo or dialout group may be needed)"
         return 1
     fi
 
-    # Port konfigurieren: Baudrate, raw mode (keine Verarbeitung/Echo)
+    # Configure port: baud rate, raw mode (no processing/echo)
     if ! stty -F "$dev" "$BAUDRATE" raw -echo cs8 -cstopb -parenb 2>/dev/null; then
-        log "  -> stty fehlgeschlagen auf $dev"
+        log "  -> stty failed on $dev"
         return 1
     fi
 
-    # WICHTIG: Den Port nur EINMAL öffnen und die Verbindung für Schreiben
-    # UND Lesen offenhalten (File-Descriptor 3). Würde man stattdessen
-    # mehrfach hintereinander öffnen (z.B. einmal zum Schreiben, einmal
-    # zum Lesen), lösen viele Boards bei JEDEM Öffnen einen Reset aus
-    # (DTR-Toggle) -> man schreibt/liest dann evtl. mitten im Neustart
-    # des Boards und bekommt nie eine passende Antwort.
+    # IMPORTANT: Open the port ONLY ONCE and keep the connection open
+    # for both writing AND reading (file descriptor 3). If you open it
+    # multiple times in succession (e.g., once for writing, once for reading),
+    # many boards trigger a reset on EVERY open (DTR toggle) ->
+    # you might write/read during the board's restart and never get a proper response.
     if ! exec 3<>"$dev"; then
-        log "  -> konnte $dev nicht öffnen"
+        log "  -> could not open $dev"
         return 1
     fi
 
-    # Nach dem Öffnen resetten viele Boards (Uno, Nano mit CH340, Leonardo...).
-    # Kurz warten, bis der Sketch wieder läuft.
+    # After opening, many boards reset (Uno, Nano with CH340, Leonardo, etc.).
+    # Wait briefly for the sketch to restart.
     sleep "$BOOT_WAIT_SEC"
 
-    # Eingangspuffer leeren (alte Boot-Meldungen etc. verwerfen)
+    # Clear input buffer (discard old boot messages, etc.)
     timeout 0.3 dd if=/proc/self/fd/3 of=/dev/null bs=1 2>/dev/null
 
-    # Befehl senden
+    # Send command
     printf '%s\n' "$IDENTIFY_CMD" >&3
 
-    # Antwort mit Timeout lesen (erste Zeile reicht)
+    # Read response with timeout (first line is sufficient)
     local response
     response=$(timeout "$TIMEOUT_SEC" head -n1 <&3)
 
-    # Verbindung schließen
+    # Close connection
     exec 3<&-
     exec 3>&-
 
-    # Zeilenumbrüche/Leerzeichen am Rand entfernen
+    # Trim leading/trailing whitespace and newlines
     response="$(echo "$response" | tr -d '\r\n' | xargs)"
 
-    log "  -> Antwort (roh): '$response'"
+    log "  -> response (raw): '$response'"
 
     LAST_RESPONSE="$response"
 
     if [ -z "$response" ]; then
-        log "  -> keine Antwort erhalten (Timeout)"
+        log "  -> no response received (timeout)"
         return 1
     fi
 
-    # Angehängte Zahl (beliebig viele Ziffern, z.B. Seriennummer/ID-Nummer)
-    # am Ende für den Vergleich abschneiden.
+    # Trim trailing digits (any number of digits, e.g., serial number/ID number)
+    # from the end for comparison.
     local id_part
     id_part=$(echo "$response" | sed -E 's/[0-9]+$//')
 
-    log "  -> ID ohne Zahl: '$id_part'"
+    log "  -> ID without number: '$id_part'"
 
     for known in "${KNOWN_IDS[@]}"; do
         if [ "$id_part" = "$known" ]; then
-            log "  -> passt zu bekannter ID '$known'"
+            log "  -> matches known ID '$known'"
             return 0
         fi
     done
@@ -132,34 +131,34 @@ check_port() {
     return 1
 }
 
-# Legt unter $SYMLINK_DIR einen Symlink an, der auf den seriellen Port zeigt.
-# Der Name des Links wird aus der vom Arduino gesendeten Antwort gebildet
-# (z.B. "ID1130"), damit man das Board unabhängig vom zufällig vergebenen
-# /dev/ttyACM*-Namen ansprechen kann.
+# Creates a symlink under $SYMLINK_DIR pointing to the serial port.
+# The link name is derived from the response sent by the Arduino
+# (e.g., "ID1130"), so the board can be addressed independently of the
+# randomly assigned /dev/ttyACM* name.
 create_symlink() {
     local dev="$1"
     local response="$2"
 
-    # Antwort in einen für Dateinamen/Symlinks sicheren String umwandeln:
-    # nur Buchstaben, Ziffern, '_', '.', '-' erlauben, alles andere -> '_'
+    # Convert response into a string safe for filenames/symlinks:
+    # only allow letters, digits, '_', '.', '-', replace everything else with '_'
     local safe_name
     safe_name=$(printf '%s' "$response" | tr -c 'A-Za-z0-9_.-' '_')
 
     if [ -z "$safe_name" ]; then
-        log "  -> konnte keinen gültigen Symlink-Namen aus '$response' erzeugen, überspringe"
+        log "  -> could not generate a valid symlink name from '$response', skipping"
         return 1
     fi
 
     if ! mkdir -p "$SYMLINK_DIR" 2>/dev/null; then
-        log "  -> konnte $SYMLINK_DIR nicht anlegen (evtl. sudo nötig)"
+        log "  -> could not create $SYMLINK_DIR (sudo may be needed)"
         return 1
     fi
 
     local link="$SYMLINK_DIR/$safe_name"
     if ln -sf "$dev" "$link" 2>/dev/null; then
-        log "  -> Symlink erstellt: $link -> $dev"
+        log "  -> symlink created: $link -> $dev"
     else
-        log "  -> konnte Symlink $link nicht erstellen (evtl. sudo nötig, z.B. mit sudo starten)"
+        log "  -> could not create symlink $link (sudo may be needed, e.g., run with sudo)"
         return 1
     fi
 }
@@ -176,14 +175,14 @@ else
 fi
 
 if [ ${#CANDIDATES[@]} -eq 0 ]; then
-    echo "Keine seriellen USB-Geräte gefunden (weder /dev/ttyACM* noch /dev/ttyUSB*)." >&2
+    echo "No serial USB devices found (neither /dev/ttyACM* nor /dev/ttyUSB*)." >&2
     exit 1
 fi
 
 for dev in "${CANDIDATES[@]}"; do
-    log "Prüfe $dev ..."
+    log "Checking $dev ..."
     if check_port "$dev"; then
-        log "  -> Arduino erkannt auf $dev (Antwort: '$LAST_RESPONSE')"
+        log "  -> Arduino detected on $dev (response: '$LAST_RESPONSE')"
         FOUND_PORTS+=("$dev")
         FOUND_RESPONSES+=("$LAST_RESPONSE")
         if [ "$MAKE_SYMLINKS" -eq 1 ]; then
@@ -196,7 +195,7 @@ for dev in "${CANDIDATES[@]}"; do
 done
 
 if [ ${#FOUND_PORTS[@]} -eq 0 ]; then
-    echo "Kein Arduino gefunden (keine passende Antwort auf '$IDENTIFY_CMD')." >&2
+    echo "No Arduino found (no matching response to '$IDENTIFY_CMD')." >&2
     exit 1
 fi
 
