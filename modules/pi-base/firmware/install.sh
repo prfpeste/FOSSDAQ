@@ -367,4 +367,3 @@ echo " Check status:        systemctl status startup-sequence.service"
 echo " View logs:           journalctl -u startup-sequence.service -e"
 echo " Dashboard (lan-dashboard): http://<Pi-IP>:5000 - Status: systemctl status lan-dashboard.service"
 echo "=========================================="
-```
