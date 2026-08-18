@@ -173,8 +173,8 @@ body {
   color: var(--text);
 }
 
-/* Ein-/Ausschalten-Knopf: immer sichtbar (auch ohne Admin-Login), daher
-   optisch etwas abgesetzt vom eigentlichen Admin-Bereich. */
+/* Power button: always visible (even without admin login), so visually
+   separated from the actual admin area. */
 .power-btn {
   color: var(--danger);
   border-color: var(--danger);
@@ -185,7 +185,7 @@ body {
   color: var(--white);
 }
 
-/* Footer mit Git-Link, mittig unten auf der Seite */
+/* Footer with Git link, centered at the bottom of the page */
 .site-footer {
   display: flex;
   justify-content: center;
@@ -208,11 +208,11 @@ body {
   border-color: var(--accent-dim);
 }
 
-/* WICHTIG: gleiches Problem wie bei .modal-backdrop[hidden] weiter unten:
-   ohne diese Regel gewinnt "display: flex" oben immer gegen das
-   hidden-Attribut (Author-CSS schlägt die Browser-Standardregel für
-   [hidden]), wodurch Hell-/Dunkelmodus-Umschalter, Passwort-Button und
-   Bild-Symbol auch außerhalb des Admin-Modus sichtbar blieben. */
+/* IMPORTANT: Same issue as with .modal-backdrop[hidden] below:
+   Without this rule, "display: flex" above always overrides the
+   hidden attribute (author CSS overrides the browser's default rule for
+   [hidden]), causing the light/dark mode toggle, password button, and
+   image icon to remain visible outside admin mode. */
 .icon-toggle[hidden] {
   display: none;
 }
@@ -414,10 +414,9 @@ body {
   z-index: 10;
 }
 
-/* WICHTIG: ohne diese Regel gewinnt "display: flex" oben immer gegen das
-   hidden-Attribut (Author-CSS schlägt die Browser-Standardregel für
-   [hidden]), wodurch die Modals dauerhaft sichtbar bleiben und sich nicht
-   schließen lassen. */
+/* IMPORTANT: Without this rule, "display: flex" above always overrides the
+   hidden attribute (author CSS overrides the browser's default rule for
+   [hidden]), causing modals to remain permanently visible and not closable. */
 .modal-backdrop[hidden] {
   display: none;
 }
@@ -431,8 +430,8 @@ body {
   padding: 1.6rem;
 }
 
-/* Power-Modal hat 3 Buttons nebeneinander ("Abbrechen", "Neustarten",
-   "Ausschalten") - bei 360px werden die zu eng bzw. brechen um. */
+/* Power modal has 3 buttons side by side ("Cancel", "Restart",
+   "Shutdown") - at 360px they become too narrow or wrap. */
 #powerBackdrop .modal {
   max-width: 399px;
 }
