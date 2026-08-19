@@ -27,19 +27,19 @@ The following steps show how to integrate the Arduino into Node-RED.
 
 ![Step 1](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_1.png)
 
-Scroll through the palette until you find the `serial request` node. Click and hold it, then drag it into the flow (1.a).
+Scroll through the palette until you find the `serial request` node (1.a). Click and hold it, then drag it into the flow.
 
 ### Step 2 — Open the node configuration
 
 ![Step 2](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_2.png)
 
-Double-click the node icon to open its configuration window (2.a).
+Double-click the node icon (2.a) to open its configuration window.
 
 ### Step 3 — Create a new serial port configuration
 
 ![Step 3](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_3.png)
 
-Click the plus icon in the panel on the right to create a new serial port configuration (3.a).
+Click the plus icon (3.a) in the panel on the right to create a new serial port configuration.
 
 ### Step 4 — Configure the serial connection
 
@@ -51,7 +51,7 @@ Set the serial port in 4.b. The port always starts with `bin/arduino/`, followed
 
 Set the baud rate to `9600` (4.c).
 
-Click **Add** to save the configuration (4.d).
+Click **Add** (4.d) to save the configuration.
 
 ### Step 5 — Select the configured Arduino
 
