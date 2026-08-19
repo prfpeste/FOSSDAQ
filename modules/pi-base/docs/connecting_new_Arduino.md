@@ -27,28 +27,32 @@ The following steps show how to integrate the Arduino into Node-RED. Each image 
 
 ![Step 1](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_1.png)
 
-*(Your description here)*
+Scroll through the palette, until the module `serial request` appears. Click and hold on it and drag it into the flow (1.a).
 
 ### Step 2
 
 ![Step 2](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_2.png)
 
-*(Your description here)*
+Doubleclick on the icon (2.a).
 
 ### Step 3
 
 ![Step 3](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_3.png)
 
-*(Your description here)*
+Click on the plus in the window on the right (3.a).
 
 ### Step 4
 
 ![Step 4](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_4.png)
 
-*(Your description here)*
+Set your own name for the Arduino (4.a). If you don't set any the text in 4.b will be the name.  
+Set the serial port in 4.b. The Port ALLWAYS starts with `bin/arduino/`. After that comes the ID, which you wrote down earlier. The text in the picture is an example.  
+Set the baud rate to 9600 (4.c).  
+Click on add (4.d).
 
 ### Step 5
 
 ![Step 5](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_5.png)
 
-*(Your description here)*
+You can select the specific Arduino youve setup in the dropdownmenue of 5.a.  
+Click on done (5.b).
