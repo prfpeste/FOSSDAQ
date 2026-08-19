@@ -25,30 +25,30 @@ The following steps show how to integrate the Arduino into Node-RED. Each image 
 
 ### Step 1
 
-![Step 1](FOSSDAQ/modules/pi-base/images/NodeRed_Arduino_1.png)
+![Step 1](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_1.png)
 
 *(Your description here)*
 
 ### Step 2
 
-![Step 2](FOSSDAQ/modules/pi-base/images/NodeRed_Arduino_2.png)
+![Step 2](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_2.png)
 
 *(Your description here)*
 
 ### Step 3
 
-![Step 3](FOSSDAQ/modules/pi-base/images/NodeRed_Arduino_3.png)
+![Step 3](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_3.png)
 
 *(Your description here)*
 
 ### Step 4
 
-![Step 4](FOSSDAQ/modules/pi-base/images/NodeRed_Arduino_4.png)
+![Step 4](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_4.png)
 
 *(Your description here)*
 
 ### Step 5
 
-![Step 5](FOSSDAQ/modules/pi-base/images/NodeRed_Arduino_5.png)
+![Step 5](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_5.png)
 
 *(Your description here)*
