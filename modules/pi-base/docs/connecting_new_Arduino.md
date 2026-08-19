@@ -17,42 +17,46 @@ This guide describes how to establish a connection between a Raspberry Pi runnin
 3. Send the message `serveID` to the Arduino.
 4. The Arduino will respond with its ID.
 5. **Save/note down this ID** — it always stays the same for this specific Arduino.
-6. It is recommended to physically label the Arduino with this ID, so it can be easily identified later (e.g. when using multiple Arduinos).
+6. It is recommended to physically label the Arduino with this ID, so it can be identified easily later (e.g. when using multiple Arduinos).
 
 ## 3. Integration into Node-RED
 
-The following steps show how to integrate the Arduino into Node-RED. Each image is explained below.
+The following steps show how to integrate the Arduino into Node-RED.
 
-### Step 1
+### Step 1 — Add the Serial Request node
 
 ![Step 1](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_1.png)
 
-Scroll through the palette, until the module `serial request` appears. Click and hold on it and drag it into the flow (1.a).
+Scroll through the palette until you find the `serial request` node. Click and hold it, then drag it into the flow (1.a).
 
-### Step 2
+### Step 2 — Open the node configuration
 
 ![Step 2](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_2.png)
 
-Doubleclick on the icon (2.a).
+Double-click the node icon to open its configuration window (2.a).
 
-### Step 3
+### Step 3 — Create a new serial port configuration
 
 ![Step 3](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_3.png)
 
-Click on the plus in the window on the right (3.a).
+Click the plus icon in the panel on the right to create a new serial port configuration (3.a).
 
-### Step 4
+### Step 4 — Configure the serial connection
 
 ![Step 4](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_4.png)
 
-Set your own name for the Arduino (4.a). If you don't set any the text in 4.b will be the name.  
-Set the serial port in 4.b. The Port ALLWAYS starts with `bin/arduino/`. After that comes the ID, which you wrote down earlier. The text in the picture is an example.  
-Set the baud rate to 9600 (4.c).  
-Click on add (4.d).
+Give the Arduino a custom name (4.a). If left empty, the value from 4.b will be used as the name instead.
 
-### Step 5
+Set the serial port in 4.b. The port always starts with `bin/arduino/`, followed by the ID you noted down earlier. The value shown in the image is just an example.
+
+Set the baud rate to `9600` (4.c).
+
+Click **Add** to save the configuration (4.d).
+
+### Step 5 — Select the configured Arduino
 
 ![Step 5](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_5.png)
 
-You can select the specific Arduino youve setup in the dropdownmenue of 5.a.  
-Click on done (5.b).
+Select the Arduino you just configured from the dropdown menu (5.a).
+
+Click **Done** to finish (5.b).
