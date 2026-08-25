@@ -1,0 +1,286 @@
+<!-- ============================================================ -->
+<!-- Config node: fossdaq-serial-port                              -->
+<!-- Provides the exact same UX as the core "serial" node           -->
+<!-- (dropdown of existing ports + edit pencil + add button)        -->
+<!-- ============================================================ -->
+<script type="text/javascript">
+    RED.nodes.registerType('fossdaq-serial-port', {
+        category: 'config',
+        defaults: {
+            name: { value: "" },
+            path: { value: "", required: true }
+        },
+        label: function() {
+            return this.name || this.path || "fossdaq-serial-port";
+        },
+        oneditprepare: function() {
+            const node = this;
+            $.getJSON('fossdaq/ports', function(ports) {
+                const select = $("#node-config-input-path");
+                select.empty();
+                ports.forEach(p => {
+                    const label = p.manufacturer ? `${p.path} (${p.manufacturer})` : p.path;
+                    select.append(`<option value="${p.path}">${label}</option>`);
+                });
+                select.val(node.path);
+            });
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="fossdaq-serial-port">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-path">Port</label>
+        <select id="node-config-input-path" style="width:70%"></select>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="fossdaq-serial-port">
+    <p>Represents a single serial port that an Arduino is connected to. Can be reused by multiple FOSSDAQ nodes.</p>
+</script>
+
+<!-- ============================================================ -->
+<!-- Node: fossdaq-init                                            -->
+<!-- Shows only what the respective board type actually needs:     -->
+<!--  - settings (pin mode etc.), if any                           -->
+<!--  - formula fields, ONLY when kind === "sensor"                -->
+<!--  - for actuator boards: no further configuration, the value   -->
+<!--    type is derived automatically from settings resp. the      -->
+<!--    static board entry.                                        -->
+<!-- ============================================================ -->
+<script type="text/javascript">
+    RED.nodes.registerType('fossdaq-init', {
+        category: 'fossdaq',
+        color: '#a6d5fa',
+        defaults: {
+            name:           { value: "" },
+            port:           { value: "", type: "fossdaq-serial-port", required: true },
+            settingValues:  { value: {} },   // { "0": 1, "1": 2 }
+            sensorFormulas: { value: {} },   // { "<index>": { formula: "S", enabled: true, name: "" } } - sensor boards only
+            actuatorNames:  { value: {} }    // { "<index>": "custom name" } - actuator boards only
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: "serial.png",
+        label: function() {
+            return this.name || "FOSSDAQ Init";
+        },
+        oneditprepare: function() {
+            const node = this;
+
+            function extractPrefix(path) {
+                if (!path) return "";
+                const match = path.match(/([A-Za-z]+)\d+$/);
+                return match ? match[1] : path;
+            }
+
+            // Settings row: dropdown alone, OR - if this is an actuator
+            // channel whose value type is derived from this exact choice
+            // (actuatorsFromSettings) - dropdown + name field side by side
+            // in the same row.
+            function renderSettings(container, entry) {
+                const settings = entry.settings || [];
+                const withNames = entry.kind === "actuator" && entry.actuatorsFromSettings;
+                settings.forEach(s => {
+                    const savedName = (node.actuatorNames || {})[s.index] || "";
+                    const row = $(`
+                        <div class="form-row">
+                            <label style="width:90px">${s.label}</label>
+                            <select id="setting-input-${s.index}" style="${withNames ? 'width:32%; margin-right:6px' : 'width:70%'}"></select>
+                            ${withNames ? `<input type="text" id="actuator-name-${s.index}" placeholder="Name (optional)" style="width:32%" value="${savedName.replace(/"/g, '&quot;')}">` : ''}
+                        </div>
+                    `);
+                    const select = row.find("select");
+                    s.options.forEach(opt => {
+                        select.append(`<option value="${opt.value}">${opt.label}</option>`);
+                    });
+                    const savedValue = node.settingValues[s.index];
+                    if (savedValue !== undefined) select.val(savedValue);
+                    container.append(row);
+                });
+            }
+
+            // Channel list for actuator boards, regardless of whether the
+            // value type is derived from settings or defined statically -
+            // needed for name assignment AND by fossdaq-output.html.
+            function getActuatorList(entry) {
+                if (entry.actuatorsFromSettings) {
+                    return (entry.settings || []).map(s => ({ index: s.index, label: s.label }));
+                }
+                return entry.actuators || [];
+            }
+
+            // Only relevant for kind === "sensor": one formula field per
+            // channel, an optional name field, plus a checkbox to disable
+            // the channel entirely. Without a custom name, the channel
+            // numbering ("Sensor <index>") remains as the display name.
+            function renderSensorFormulas(container, entry) {
+                const sensors = entry.sensors || [];
+                if (sensors.length === 0) return;
+                container.append(`<h4>Sensor channels</h4>`);
+                container.append(`<div class="form-tips" style="margin-bottom:8px">
+                    <b>Name</b>: optional - if set, appears in the dropdowns of the fossdaq-input node instead of the
+                    number. <b>Formula</b> for the physical value: <code>S</code> = raw value from the Arduino, e.g.
+                    <code>5*(S+5)^3</code> (basic arithmetic, <code>^</code> for power, common Math functions such as
+                    <code>sqrt</code>, <code>sin</code>, <code>log</code>). Disabled channels are not available to
+                    the fossdaq-input node.
+                </div>`);
+                sensors.forEach(s => {
+                    const saved = (node.sensorFormulas || {})[s.index];
+                    const formula = (saved && saved.formula) || s.formula || "S";
+                    const name = (saved && saved.name) || "";
+                    const enabled = saved && saved.enabled !== undefined ? saved.enabled : true;
+                    const defaultLabel = s.label || `Sensor ${s.index}`;
+                    const row = $(`
+                        <div class="form-row">
+                            <label style="width:90px">${defaultLabel}</label>
+                            <input type="checkbox" id="sensor-enabled-${s.index}" style="width:auto; margin-right:6px" ${enabled ? "checked" : ""}>
+                            <input type="text" id="sensor-name-${s.index}" placeholder="Name (optional)" style="width:22%; margin-right:6px" value="${name.replace(/"/g, '&quot;')}" ${enabled ? "" : "disabled"}>
+                            <input type="text" id="sensor-formula-${s.index}" placeholder="Formula" style="width:32%" value="${formula.replace(/"/g, '&quot;')}" ${enabled ? "" : "disabled"}>
+                        </div>
+                    `);
+                    const checkbox = row.find(`#sensor-enabled-${s.index}`);
+                    checkbox.on('change', function() {
+                        const on = checkbox.prop('checked');
+                        row.find(`#sensor-name-${s.index}, #sensor-formula-${s.index}`).prop('disabled', !on);
+                    });
+                    container.append(row);
+                });
+            }
+
+            // Only relevant for kind === "actuator" WITHOUT actuatorsFromSettings
+            // (static actuators like boardB): optional name field per channel,
+            // since there is no settings row here it could be attached to.
+            // Without a custom name, the board default label (e.g. "Valve")
+            // resp. "Actuator <index>" remains as the display name.
+            function renderActuatorNames(container, entry) {
+                const actuators = getActuatorList(entry);
+                if (actuators.length === 0) return;
+                container.append(`<h4>Actuator channels</h4>`);
+                container.append(`<div class="form-tips" style="margin-bottom:8px">
+                    Name optional - if set, appears in the dropdowns of the fossdaq-output node instead of the
+                    number/default label.
+                </div>`);
+                actuators.forEach(a => {
+                    const saved = (node.actuatorNames || {})[a.index] || "";
+                    const defaultLabel = a.label || `Actuator ${a.index}`;
+                    const row = $(`
+                        <div class="form-row">
+                            <label style="width:90px">${defaultLabel}</label>
+                            <input type="text" id="actuator-name-${a.index}" placeholder="Name (optional)" style="width:40%" value="${saved.replace(/"/g, '&quot;')}">
+                        </div>
+                    `);
+                    container.append(row);
+                });
+            }
+
+            function loadForPrefix(prefix) {
+                const container = $("#node-settings-container");
+                container.empty();
+                node._lastEntry = null;
+                if (!prefix) return;
+                $.getJSON('fossdaq/board/' + prefix, function(entry) {
+                    node._lastEntry = entry;
+                    renderSettings(container, entry); // already includes name fields when actuatorsFromSettings
+                    if (entry.kind === "sensor") {
+                        renderSensorFormulas(container, entry);
+                    } else if (entry.kind === "actuator" && !entry.actuatorsFromSettings) {
+                        renderActuatorNames(container, entry); // static actuators without their own settings row
+                    }
+                });
+            }
+
+            function refreshFromSelectedPort() {
+                const configId = $("#node-input-port").val();
+                const configNode = RED.nodes.node(configId);
+                loadForPrefix(extractPrefix(configNode ? configNode.path : ""));
+            }
+
+            // Initial: in case a port has already been assigned
+            refreshFromSelectedPort();
+
+            // Reacts to selecting a different port AND to creating/editing a
+            // fossdaq-serial-port config node (RED fires 'change' in both cases)
+            $("#node-input-port").on("change", refreshFromSelectedPort);
+
+            setTimeout(function() {
+                RED.tray.resize();
+            }, 50);
+        },
+        oneditsave: function() {
+            const node = this;
+            const entry = node._lastEntry || { settings: [], sensors: [] };
+
+            const settingValues = {};
+            $("#node-settings-container select[id^='setting-input-']").each(function() {
+                const index = $(this).attr("id").replace("setting-input-", "");
+                settingValues[index] = parseInt($(this).val(), 10);
+            });
+            node.settingValues = settingValues;
+
+            const sensorFormulas = {};
+            if (entry.kind === "sensor") {
+                (entry.sensors || []).forEach(s => {
+                    const formulaVal = $("#sensor-formula-" + s.index).val();
+                    const nameVal = $("#sensor-name-" + s.index).val();
+                    const enabled = $("#sensor-enabled-" + s.index).prop("checked");
+                    sensorFormulas[s.index] = {
+                        formula: (formulaVal && formulaVal.trim()) || "S",
+                        name: (nameVal && nameVal.trim()) || "",
+                        enabled
+                    };
+                });
+            }
+            node.sensorFormulas = sensorFormulas;
+
+            const actuatorNames = {};
+            if (entry.kind === "actuator") {
+                const list = (entry.actuatorsFromSettings)
+                    ? (entry.settings || []).map(s => s.index)
+                    : (entry.actuators || []).map(a => a.index);
+                list.forEach(index => {
+                    const nameVal = $("#actuator-name-" + index).val();
+                    if (nameVal && nameVal.trim()) actuatorNames[index] = nameVal.trim();
+                });
+            }
+            node.actuatorNames = actuatorNames;
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="fossdaq-init">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-port"><i class="fa fa-random"></i> Port</label>
+        <input type="text" id="node-input-port" placeholder="Add new fossdaq-serial-port...">
+    </div>
+    <hr>
+    <div id="node-settings-container">
+        <!-- Settings dropdowns resp. sensor formula fields are inserted
+             dynamically, depending on what the board type actually needs. -->
+    </div>
+</script>
+
+<script type="text/html" data-help-name="fossdaq-init">
+    <p>Configures an Arduino board over a serial connection. On deploy, the init handshake (serveID → ID check →
+       initStart → settings → initEnd → checksum check) is performed. Once the board is ready, the node emits a
+       single ready message so that downstream nodes in the flow can start.</p>
+    <p>The displayed configuration depends on the board type (derived from the port ID):</p>
+    <ul>
+        <li><b>Actuator boards</b>: the pin mode (if any) is chosen here. The value type (number/yes-no) for the
+            associated <b>fossdaq-output</b> node is derived automatically from it - no separate configuration
+            needed. An optional name can be assigned per channel, which then appears in the output node instead of
+            the number/default label.</li>
+        <li><b>Sensor boards</b>: one formula per channel to convert the raw value (<code>S</code>) into a physical
+            value, e.g. <code>5*(S+5)^3</code>, an optional name (default: simple numbering "Sensor &lt;index&gt;"),
+            as well as a checkbox to disable the channel entirely - disabled channels are not available for
+            selection in the fossdaq-input node.</li>
+    </ul>
+</script>

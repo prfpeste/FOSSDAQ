@@ -1,0 +1,306 @@
+<script type="text/javascript">
+    RED.nodes.registerType('fossdaq-output', {
+        category: 'fossdaq',
+        color: '#a6d5fa',
+        defaults: {
+            name: { value: "" },
+            port: { value: "", type: "fossdaq-serial-port", required: true },
+            // dynamic === true  -> the node controls exactly ONE channel,
+            // whose index is stored in dynamicIndex. The value to set comes
+            // from msg.payload on every incoming msg (see fossdaq-output.js).
+            // dynamic === false -> "rows" is used: [{ index, value }, ...],
+            // multiple channels with a value fixed in the editor.
+            dynamic:      { value: false },
+            dynamicIndex: { value: null },
+            rows:         { value: [] }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "serial.png",
+        label: function() {
+            return this.name || "FOSSDAQ Output";
+        },
+        oneditprepare: function() {
+            const node = this;
+
+            function extractPrefix(path) {
+                if (!path) return "";
+                const match = path.match(/([A-Za-z]+)\d+$/);
+                return match ? match[1] : path;
+            }
+
+            // Value type (+ min/max for int) for a channel: for
+            // actuatorsFromSettings from the pin mode option actually chosen
+            // in the associated fossdaq-init node, otherwise from the static
+            // default definition in the board entry. Channels set to "off"
+            // return null (not controllable).
+            function channelInfoFor(entry, index) {
+                if (entry.actuatorsFromSettings) {
+                    const configId = $("#node-input-port").val();
+                    let settingValues = null;
+                    RED.nodes.eachNode(function(n) {
+                        if (n.type === "fossdaq-init" && n.port === configId) {
+                            settingValues = n.settingValues || {};
+                        }
+                    });
+                    const setting = (entry.settings || []).find(s => s.index === index);
+                    if (!setting) return null;
+                    const chosen = settingValues ? settingValues[index] : undefined;
+                    const opt = (setting.options || []).find(o => o.value === chosen);
+                    return opt ? { valueType: opt.valueType, min: opt.min, max: opt.max } : null;
+                }
+                const act = (entry.actuators || []).find(a => a.index === index);
+                return act ? { valueType: act.valueType, min: act.min, max: act.max } : { valueType: "int" };
+            }
+
+            // List of channels actually controllable for this board type:
+            // either from the (pin mode) settings, when the value type is
+            // derived from it, or from the static actuators list. Channels
+            // configured as "off" are FILTERED OUT - they don't show up in
+            // the dropdown at all. Labels are overridden with a name
+            // assigned by the user in the fossdaq-init node, if present -
+            // otherwise it stays at the board default/the number.
+            function getActuatorList(entry) {
+                const configId = $("#node-input-port").val();
+                let actuatorNames = {};
+                RED.nodes.eachNode(function(n) {
+                    if (n.type === "fossdaq-init" && n.port === configId) {
+                        actuatorNames = n.actuatorNames || {};
+                    }
+                });
+
+                const base = entry.actuatorsFromSettings
+                    ? (entry.settings || []).map(s => ({ index: s.index, label: s.label }))
+                    : (entry.actuators || []);
+
+                return base
+                    .filter(a => {
+                        const info = channelInfoFor(entry, a.index);
+                        return info && info.valueType; // "off" (valueType null) -> hide
+                    })
+                    .map(a => ({
+                        index: a.index,
+                        label: actuatorNames[a.index] || a.label || `Actuator ${a.index}`
+                    }));
+            }
+
+            function buildValueInput(row, info, value) {
+                row.find('.fossdaq-output-value, .fossdaq-output-warning, .fossdaq-output-range-label').remove();
+                if (!info || !info.valueType) {
+                    row.append(`<span class="fossdaq-output-warning form-tips" style="margin-left:8px;color:#a94442">
+                        Channel is configured as "off" (in the fossdaq-init node) - not controllable.</span>`);
+                    return;
+                }
+                let input;
+                if (info.valueType === "boolean") {
+                    input = $(`<input type="checkbox" class="fossdaq-output-value" style="width:auto; margin-left:8px">`);
+                    input.prop('checked', !!value);
+                } else {
+                    const min = info.min !== undefined ? info.min : "";
+                    const max = info.max !== undefined ? info.max : "";
+                    let initial = value !== undefined ? value : (info.min !== undefined ? info.min : 0);
+                    if (info.min !== undefined && initial < info.min) initial = info.min;
+                    if (info.max !== undefined && initial > info.max) initial = info.max;
+                    input = $(`<input type="number" class="fossdaq-output-value" style="width:80px; margin-left:8px" min="${min}" max="${max}" value="${initial}">`);
+                    if (info.min !== undefined || info.max !== undefined) {
+                        const rangeLabel = `${info.min !== undefined ? info.min : "-∞"} … ${info.max !== undefined ? info.max : "∞"}`;
+                        row.append(input);
+                        row.append(`<span class="fossdaq-output-range-label form-tips" style="margin-left:6px;color:#888">(${rangeLabel})</span>`);
+                        return;
+                    }
+                }
+                row.append(input);
+            }
+
+            const list = $("#node-input-rows-container").editableList({
+                addItem: function(container, index, data) {
+                    const row = $('<div class="form-row" style="margin-bottom:4px"></div>').appendTo(container);
+                    const select = $('<select style="width:45%"></select>').appendTo(row);
+                    (node._actuatorList || []).forEach(a => {
+                        select.append(`<option value="${a.index}">${a.label}</option>`);
+                    });
+                    if (data.index !== undefined) select.val(data.index);
+
+                    function refreshValueInput() {
+                        const idx = parseInt(select.val(), 10);
+                        const info = channelInfoFor(node._entry, idx);
+                        buildValueInput(row, info, data.value);
+                    }
+
+                    select.on('change', refreshValueInput);
+                    refreshValueInput();
+                },
+                removable: true,
+                sortable: true
+            });
+
+            // Dropdown for dynamic mode: exactly ONE channel selectable,
+            // whose setpoint then comes from msg.payload at runtime.
+            const dynamicSelect = $("#node-input-dynamic-index");
+
+            function populateDynamicSelect(actuatorList, selectedIndex) {
+                dynamicSelect.empty();
+                actuatorList.forEach(a => {
+                    dynamicSelect.append(`<option value="${a.index}">${a.label}</option>`);
+                });
+                if (selectedIndex !== null && selectedIndex !== undefined) {
+                    dynamicSelect.val(selectedIndex);
+                }
+            }
+
+            function applyDynamicVisibility(dynamicOn) {
+                $("#node-rows-block").toggle(!dynamicOn);
+                $("#node-dynamic-block").toggle(dynamicOn);
+            }
+
+            const dynamicCheckbox = $("#node-input-dynamic");
+            dynamicCheckbox.on('change', function() {
+                applyDynamicVisibility(dynamicCheckbox.prop('checked'));
+            });
+
+            function populate(entry, rows) {
+                node._entry = entry;
+                const actuatorList = getActuatorList(entry);
+                node._actuatorList = actuatorList;
+
+                list.editableList('empty');
+                populateDynamicSelect(actuatorList, node.dynamicIndex);
+
+                if (actuatorList.length === 0) {
+                    $("#node-actuator-warning").show();
+                    $("#node-rows-block, #node-dynamic-block").hide();
+                    dynamicCheckbox.prop('disabled', true);
+                    return;
+                }
+                $("#node-actuator-warning").hide();
+                dynamicCheckbox.prop('disabled', false);
+
+                const initial = (rows && rows.length > 0) ? rows : [{ index: actuatorList[0].index, value: 0 }];
+                initial.forEach(r => list.editableList('addItem', r));
+
+                if (node.dynamicIndex === null || node.dynamicIndex === undefined ||
+                    !actuatorList.some(a => a.index === node.dynamicIndex)) {
+                    dynamicSelect.val(actuatorList[0].index);
+                }
+
+                applyDynamicVisibility(dynamicCheckbox.prop('checked'));
+            }
+
+            function refreshFromSelectedPort() {
+                const configId = $("#node-input-port").val();
+                const configNode = RED.nodes.node(configId);
+                const prefix = extractPrefix(configNode ? configNode.path : "");
+                if (!prefix) {
+                    populate({ actuators: [], settings: [] }, node.rows);
+                    return;
+                }
+                $.getJSON('fossdaq/board/' + prefix, function(entry) {
+                    populate(entry, node.rows);
+                });
+            }
+
+            dynamicCheckbox.prop('checked', !!node.dynamic);
+
+            refreshFromSelectedPort();
+            $("#node-input-port").on("change", refreshFromSelectedPort);
+
+            setTimeout(function() { RED.tray.resize(); }, 50);
+        },
+        oneditsave: function() {
+            const node = this;
+            const dynamicOn = $("#node-input-dynamic").prop('checked');
+            node.dynamic = dynamicOn;
+
+            if (dynamicOn) {
+                const idx = parseInt($("#node-input-dynamic-index").val(), 10);
+                node.dynamicIndex = isNaN(idx) ? null : idx;
+                node.rows = isNaN(idx) ? [] : [{ index: idx, fromMsg: true }];
+                return;
+            }
+
+            node.dynamicIndex = null;
+            const rows = [];
+            $("#node-input-rows-container").editableList('items').each(function() {
+                const select = $(this).find('select');
+                const valueInput = $(this).find('.fossdaq-output-value');
+                if (!select.length) return;
+                const index = parseInt(select.val(), 10);
+
+                if (!valueInput.length) return; // skip "off" channel without a value input
+                let value;
+                if (valueInput.attr('type') === 'checkbox') {
+                    value = valueInput.prop('checked');
+                } else {
+                    value = parseInt(valueInput.val(), 10);
+                    const min = valueInput.attr('min');
+                    const max = valueInput.attr('max');
+                    if (min !== "" && !isNaN(parseInt(min, 10)) && value < parseInt(min, 10)) value = parseInt(min, 10);
+                    if (max !== "" && !isNaN(parseInt(max, 10)) && value > parseInt(max, 10)) value = parseInt(max, 10);
+                }
+                rows.push({ index, value, fromMsg: false });
+            });
+            node.rows = rows;
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="fossdaq-output">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-port"><i class="fa fa-random"></i> Port</label>
+        <input type="text" id="node-input-port" placeholder="Add new fossdaq-serial-port...">
+    </div>
+    <hr>
+    <div id="node-actuator-warning" class="form-tips" style="display:none">
+        This board type has no actuator channels. This node has nothing to send for it.
+    </div>
+    <div class="form-row">
+        <label for="node-input-dynamic" style="width:auto">
+            <input type="checkbox" id="node-input-dynamic" style="width:auto; margin-right:6px">
+            dynamic (from msg)
+        </label>
+    </div>
+    <div class="form-tips" style="margin-bottom:8px">
+        When "dynamic" is enabled, this node controls exactly <b>one</b> channel, which is set at runtime on every
+        incoming msg to the value from <code>msg.payload</code> - simply pick the desired pin from the dropdown.
+        Without "dynamic", instead any number of channels can be configured, each with a fixed value set here.
+    </div>
+
+    <div id="node-dynamic-block" class="form-row" style="display:none">
+        <label>Pin (dynamic)</label>
+        <select id="node-input-dynamic-index" style="width:60%"></select>
+    </div>
+
+    <div id="node-rows-block">
+        <div class="form-row">
+            <label>Pins to set</label>
+            <div style="margin-bottom:4px; color:#888">
+                Per row: pin + fixed value. The value field adapts automatically (number/checkbox), depending on the
+                pin mode chosen in the fossdaq-init node.
+            </div>
+            <ol id="node-input-rows-container"></ol>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="fossdaq-output">
+    <p>Sets one or more actuator pins of an initialized Arduino board. Per pin, <code>&lt;index&gt;,&lt;value&gt;\n</code>
+       is sent (for <code>boolean</code> channels, <code>true</code>/<code>false</code> is transmitted as
+       <code>1</code>/<code>0</code>). The node does <b>not</b> wait for a response from the Arduino.</p>
+    <p>Whether a channel is shown as a number or as a checkbox (boolean) is derived automatically from the pin mode
+       chosen in the associated <b>fossdaq-init</b> node (PWM/digital/off resp. static board default) - there is no
+       separate setting for this here.</p>
+    <p>For number channels (<code>int</code>), the value range is fixed per board type (e.g. PWM: 0-255) and is both
+       clamped in the input field and checked server-side when sending - values outside the range are rejected
+       instead of sent.</p>
+    <p><b>Dynamic mode:</b> The "dynamic (from msg)" checkbox above lets you switch the node's behavior - when
+       enabled, only a single pin dropdown is shown, and the value to set is read from <code>msg.payload</code> on
+       every incoming msg instead of being fixed in the editor. In this mode, the node always controls exactly
+       <b>one</b> channel. When the checkbox is disabled, a list of any number of channels can be configured instead,
+       each with a fixed value.</p>
+    <p>Prerequisite: the associated <b>fossdaq-init</b> node for the same port must be deployed and must have
+       reported "ready".</p>
+</script>

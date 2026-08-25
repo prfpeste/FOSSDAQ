@@ -1,0 +1,158 @@
+<script type="text/javascript">
+    RED.nodes.registerType('fossdaq-input', {
+        category: 'fossdaq',
+        color: '#a6d5fa',
+        defaults: {
+            name: { value: "" },
+            port: { value: "", type: "fossdaq-serial-port", required: true },
+            rows: { value: [] }   // [{ index: <sensorIndex> }, ...]
+        },
+        inputs: 1,
+        // Default: 1 output. Set to the actual number of configured
+        // channels in oneditsave - one dedicated output per row, in the
+        // same order as in the list.
+        outputs: 1,
+        icon: "serial.png",
+        label: function() {
+            return this.name || "FOSSDAQ Input";
+        },
+        // Labels the outputs in the editor with the respective channel name,
+        // so you can see when wiring which output belongs to which sensor.
+        outputLabels: function(index) {
+            const row = this.rows && this.rows[index];
+            if (!row) return `Channel ${index}`;
+            return row.label || `Channel ${row.index}`;
+        },
+        oneditprepare: function() {
+            const node = this;
+
+            function extractPrefix(path) {
+                if (!path) return "";
+                const match = path.match(/([A-Za-z]+)\d+$/);
+                return match ? match[1] : path;
+            }
+
+            // Only enabled sensor channels, with names from the associated
+            // fossdaq-init node (if assigned), otherwise board default resp.
+            // "Sensor <index>".
+            function getEnabledSensorList(entry) {
+                const configId = $("#node-input-port").val();
+                let sensorFormulas = {};
+                RED.nodes.eachNode(function(n) {
+                    if (n.type === "fossdaq-init" && n.port === configId) {
+                        sensorFormulas = n.sensorFormulas || {};
+                    }
+                });
+
+                return (entry.sensors || [])
+                    .filter(s => {
+                        const saved = sensorFormulas[s.index];
+                        return !saved || saved.enabled !== false;
+                    })
+                    .map(s => {
+                        const saved = sensorFormulas[s.index];
+                        const label = (saved && saved.name) || s.label || `Sensor ${s.index}`;
+                        return { index: s.index, label };
+                    });
+            }
+
+            const list = $("#node-input-rows-container").editableList({
+                addItem: function(container, index, data) {
+                    const row = $('<div class="form-row" style="margin-bottom:4px"></div>').appendTo(container);
+                    const select = $('<select style="width:100%"></select>').appendTo(row);
+                    (node._sensors || []).forEach(s => {
+                        select.append(`<option value="${s.index}">${s.label}</option>`);
+                    });
+                    if (data.index !== undefined) select.val(data.index);
+                    row.data('select', select);
+                },
+                removable: true,
+                sortable: true
+            });
+
+            function populate(sensors, rows) {
+                node._sensors = sensors;
+                list.editableList('empty');
+                if (sensors.length === 0) {
+                    $("#node-sensor-warning").show();
+                    return;
+                }
+                $("#node-sensor-warning").hide();
+                const initial = (rows && rows.length > 0) ? rows : [{ index: sensors[0].index }];
+                initial.forEach(r => list.editableList('addItem', r));
+            }
+
+            function refreshFromSelectedPort() {
+                const configId = $("#node-input-port").val();
+                const configNode = RED.nodes.node(configId);
+                const prefix = extractPrefix(configNode ? configNode.path : "");
+                if (!prefix) {
+                    populate([], node.rows);
+                    return;
+                }
+                $.getJSON('fossdaq/board/' + prefix, function(entry) {
+                    populate(getEnabledSensorList(entry), node.rows);
+                });
+            }
+
+            refreshFromSelectedPort();
+            $("#node-input-port").on("change", refreshFromSelectedPort);
+
+            setTimeout(function() { RED.tray.resize(); }, 50);
+        },
+        oneditsave: function() {
+            const node = this;
+            const rows = [];
+            $("#node-input-rows-container").editableList('items').each(function() {
+                const select = $(this).find('select');
+                if (select.length) {
+                    const index = parseInt(select.val(), 10);
+                    const label = select.find('option:selected').text();
+                    rows.push({ index, label });
+                }
+            });
+            node.rows = rows;
+            // One output per configured channel, in list order (= query
+            // order). At least 1, so the node still has a port to wire even
+            // without configured channels.
+            node.outputs = rows.length > 0 ? rows.length : 1;
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="fossdaq-input">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-port"><i class="fa fa-random"></i> Port</label>
+        <input type="text" id="node-input-port" placeholder="Add new fossdaq-serial-port...">
+    </div>
+    <hr>
+    <div id="node-sensor-warning" class="form-tips" style="display:none">
+        This board type has no sensor channels (or all are disabled in the fossdaq-init node). This node has nothing to query for it.
+    </div>
+    <div class="form-row">
+        <label>Channels to query</label>
+        <div style="margin-bottom:4px; color:#888">
+            Order = query order = order of outputs. Each row creates its own node output, on which the msg for
+            exactly this channel is emitted.
+        </div>
+        <ol id="node-input-rows-container"></ol>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="fossdaq-input">
+    <p>Queries one or more sensor channels of an initialized Arduino board. Per channel, the index is sent
+       (<code>&lt;index&gt;\n</code>) and the raw response is expected. The raw value is converted into a physical
+       value via a formula (configured in the associated <b>fossdaq-init</b> node, variable <code>S</code> = raw
+       value, e.g. <code>5*(S+5)^3</code>). <code>msg.raw</code> additionally contains the unconverted raw value.</p>
+    <p>Only channels that have not been disabled in the associated fossdaq-init node are available for selection
+       here. If a custom name was assigned there, it appears instead of the channel number.</p>
+    <p><b>Outputs:</b> The node has one dedicated output per configured channel (in list order). With multiple
+       configured channels, they are processed <b>sequentially</b> - the next channel is only queried after the
+       response to the previous one has arrived. The msg for channel N appears on the Nth output.</p>
+    <p>Prerequisite: the associated <b>fossdaq-init</b> node for the same port must be deployed and must have
+       reported "ready".</p>
+</script>

@@ -1,0 +1,24 @@
+{
+  "name": "fossdaq",
+  "version": "1.0.0",
+  "description": "Sends commands to an Arduino over a serial port to configure it",
+  "keywords": [
+    "node-red"
+  ],
+  "node-red": {
+    "nodes": {
+      "fossdaq-init": "fossdaq-init.js",
+      "fossdaq-input": "fossdaq-input.js",
+      "fossdaq-output": "fossdaq-output.js"
+    }
+  },
+  "dependencies": {
+    "serialport": "^12.0.0"
+  },
+  "main": "fossdaq-config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
