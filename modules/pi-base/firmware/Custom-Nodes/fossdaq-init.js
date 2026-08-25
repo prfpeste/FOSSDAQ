@@ -72,9 +72,67 @@ module.exports = function(RED) {
 
     // --- HTTP endpoints for the editor ---
 
+    // SYMLINK_DIR must match find_arduino.sh's default -d/SYMLINK_DIR
+    // ("/dev/arduino") - that's where find_arduino.sh -s (started via
+    // find-arduino@.service / 99-arduino.rules on every USB add event)
+    // creates one symlink per detected board, e.g. /dev/arduino/ID1130.
+    const SYMLINK_DIR = '/dev/arduino';
+
+    // SerialPort.list() only enumerates the OS-level serial devices
+    // (/dev/ttyACM*, /dev/ttyUSB*, ...) - it has no notion of the extra
+    // symlinks find_arduino.sh creates under /dev/arduino/, so those
+    // never show up in the dropdown on their own. We read that directory
+    // ourselves and resolve each symlink back to its real device path, so
+    // we can attach the friendly name to the matching SerialPort.list()
+    // entry (and still list it even if, for any reason, it's missing from
+    // SerialPort.list()).
+    function listArduinoSymlinks() {
+        const fs = require('fs');
+        const path = require('path');
+        const map = {}; // realPath -> friendlyName
+        let entries;
+        try {
+            entries = fs.readdirSync(SYMLINK_DIR);
+        } catch (err) {
+            // Directory may not exist yet (no board ever connected) - not an error.
+            return map;
+        }
+        entries.forEach(name => {
+            const linkPath = path.join(SYMLINK_DIR, name);
+            try {
+                const real = fs.realpathSync(linkPath);
+                map[real] = name;
+            } catch (err) {
+                // Broken symlink (device unplugged) - skip.
+            }
+        });
+        return map;
+    }
+
     RED.httpAdmin.get('/fossdaq/ports', RED.auth.needsPermission('fossdaq-init.read'), function(req, res) {
         SerialPort.list().then(ports => {
-            res.json(ports);
+            const friendlyByRealPath = listArduinoSymlinks();
+            const seenReal = new Set();
+
+            const merged = ports.map(p => {
+                let real = p.path;
+                try { real = require('fs').realpathSync(p.path); } catch (err) { /* keep p.path */ }
+                const friendly = friendlyByRealPath[real];
+                seenReal.add(real);
+                return friendly
+                    ? { ...p, path: `${SYMLINK_DIR}/${friendly}`, realPath: p.path }
+                    : p;
+            });
+
+            // Symlinks whose target wasn't (yet) reported by SerialPort.list()
+            // for some reason - add them too so they're still selectable.
+            Object.keys(friendlyByRealPath).forEach(real => {
+                if (!seenReal.has(real)) {
+                    merged.push({ path: `${SYMLINK_DIR}/${friendlyByRealPath[real]}`, realPath: real });
+                }
+            });
+
+            res.json(merged);
         }).catch(err => {
             RED.log.error("Failed to list serial ports: " + err.message);
             res.json([]);
