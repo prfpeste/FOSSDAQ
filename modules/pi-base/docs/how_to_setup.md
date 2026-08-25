@@ -63,7 +63,9 @@ Running these commands will setup everything nearly automatically. The installer
 |-|default -> ENTER|
 |-|monaco (default) -> ENTER|
 |save IP4|yes -> ENTER|
-|save IP6|yes -> ENTER|
+|save IP6|yes -> ENTER|  
+
+If all you care about is setting up the Raspberry PI, this is all you have to do. After the Raspberry PI reboots, everything will be up and running. The services will autostart after every boot. 
 
 The `install.sh` script is idempotent — re-running it later (e.g. after an update) is
 safe and will not overwrite data you've already configured through the web
