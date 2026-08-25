@@ -41,9 +41,10 @@ The `pi-base` module is the central master unit of the FOSSDAQ platform. It is i
 2. Assemble the DIN rail latch and side cover.
 3. Install the Raspberry Pi 5 and active cooler.
 4. Build the 24 V input and pass-through terminal assembly.
-5. Connect the 24 V input to the LM2596S step-down converter.
+5. Connect the 24 V input to the REG5V5A step-down converter.
 6. Feed the generated 5 V to the Raspberry Pi.
 7. Close the enclosure and perform the checks described in `docs/`.
+8. follow the instructions in `docs/how_to_setup.md`.
 
 ## Interfaces
 
@@ -68,7 +69,7 @@ The `pi-base` module is the central master unit of the FOSSDAQ platform. It is i
 - Raspberry Pi 5 (1 GB RAM minimum, 2 GB RAM recommended)
 - Official Raspberry Pi active cooler
 - Optional RTC battery
-- LM2596S DC/DC converter module
+- REG5V5A DC/DC converter module
 - AST 025-04 spring terminal block for 24 V input and pass-through
 - 3D-printed enclosure parts
 
@@ -88,6 +89,7 @@ This module is intended for supervised educational and laboratory environments. 
 
 - Jürgen Altemeier
 - Patrick Uitz
+- Alexander Gschlecht
 
 ## License
 
