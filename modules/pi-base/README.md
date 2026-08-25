@@ -8,8 +8,8 @@ This module hosts the Raspberry Pi 5 as the central unit of the system, provides
 
 - Development status: prototype
 - Hardware version: v1.0
-- Firmware/software status: external software interface defined outside this module
-- Last updated: June 19, 2026
+- Firmware version: v1.0
+- Last updated: August 25, 2026
 
 ## Purpose
 
