@@ -4,7 +4,9 @@ This is the top-level directory of the FOSSDAQ Raspberry Pi setup. It turns a
 Pi into a self-contained field-data-acquisition box: it finds connected
 Arduinos, runs Node-RED (with custom "fossdaq" nodes to talk to those
 Arduinos), serves a small local website (`lan-dashboard`), and finally opens a
-Wi-Fi hotspot with a captive portal that points visitors at that dashboard.
+Wi-Fi hotspot with a captive portal that points visitors at that dashboard.  
+
+For installation details see `docs/hot_to_setup.md`.
 
 Subdirectories have their own `README.md` with more detail:
 - **`Custom-Nodes/`** – custom Node-RED nodes for talking to Arduinos over
