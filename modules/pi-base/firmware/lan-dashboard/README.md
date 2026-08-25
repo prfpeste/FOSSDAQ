@@ -25,48 +25,6 @@ name/password — all from the browser, without SSH.
 | `requirements.txt` | Python dependencies: `Flask`, `gunicorn`. | Add packages here if `app.py` gains new dependencies. |
 | `lan-dashboard.service` | systemd unit template (installed as `/etc/systemd/system/lan-dashboard.service`, with paths/user substituted by `../install.sh` for the actual `DASHBOARD_USER`/directory). Runs the app via `gunicorn`. | Edit `ExecStart` if you want different gunicorn options (e.g. worker count `-w`, bind port). The as-shipped `User=pi` / `/home/pi/...` paths are placeholders that `install.sh` rewrites automatically — don't rely on editing this file for a different user, use `DASHBOARD_USER=... sudo -E ./install.sh` instead. |
 
-## Manual setup (without `install.sh`)
-
-```bash
-# 1. Copy files to the Pi
-scp -r lan-dashboard pi@raspberrypi.local:/home/pi/
-
-# 2. Set up the Python environment
-cd /home/pi/lan-dashboard
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-# 3. Create .env (not shipped, contains secrets)
-cat > /home/pi/lan-dashboard/.env << 'EOF'
-ADMIN_PASSWORD=your-secure-password
-SECRET_KEY=a-long-random-string
-EOF
-# Generate a random secret key:
-python3 -c "import secrets; print(secrets.token_hex(32))"
-
-# 4. Quick test (without systemd)
-set -a && source .env && set +a
-venv/bin/python app.py
-# Visit http://raspberrypi.local:5000 (or http://<Pi-IP>:5000), Ctrl+C to stop.
-
-# 5. Install as a service (auto-starts on boot)
-sudo cp lan-dashboard.service /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now lan-dashboard.service
-systemctl status lan-dashboard.service
-journalctl -u lan-dashboard.service -f
-```
-
-### Optional: serve on port 80 instead of 5000
-
-By default the app runs on port 5000. To make it reachable at
-`http://raspberrypi.local` (no port), either bind gunicorn directly to port
-80 in `lan-dashboard.service` (`-b 0.0.0.0:80`; needs root or
-`CAP_NET_BIND_SERVICE`), or put nginx in front as a reverse proxy (this is
-what `../setup-hotspot.sh` does when the hotspot is active — check
-`sudo ss -tlnp | grep :80` first to avoid port conflicts).
-
 ## Data & backup
 
 Buttons live in `buttons.json`. Once the admin password is changed via the
