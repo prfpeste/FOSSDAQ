@@ -73,10 +73,10 @@
             const node = this;
 
             function extractPrefix(path) {
-                if (!path) return "";
-                const match = path.match(/([A-Za-z]+)\d+$/);
-                return match ? match[1] : path;
-            }
+    		if (!path) return "";
+    		const match = path.match(/([A-Za-z]+)\d+$/);
+    		return match ? match[1] : path;
+	    }
 
             // Settings row: dropdown alone, OR - if this is an actuator
             // channel whose value type is derived from this exact choice
