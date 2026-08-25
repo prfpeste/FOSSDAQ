@@ -5,13 +5,13 @@ module.exports = function(RED) {
     const { compileFormula } = require('./formula.js');
 
     function extractFullId(path) {
-        const match = path.match(/([A-Za-z]+\d+)$/);
+        const match = path.match(/([A-Za-z0-9]+)_\d+$/);
         return match ? match[1] : null;
     }
 
     function extractPrefix(fullId) {
         if (!fullId) return null;
-        return fullId.replace(/\d+$/, '');
+        return fullId.replace(/_\d+$/, '');
     }
 
     // Derives the actuator channel config (value type per index):
