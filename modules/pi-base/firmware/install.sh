@@ -154,6 +154,55 @@ else
     echo ">>> NODERED_PALETTES is empty - skipping palette installation."
 fi
 
+# ==========================================================================
+# Install custom Node-RED nodes (Custom-Nodes/, e.g. fossdaq-init/-input/-output)
+#
+# Custom-Nodes/package.json declares a "node-red" field listing these nodes,
+# so Node-RED picks them up automatically once the package is installed
+# (as a local dependency, via its path) into the user's ~/.node-red directory
+# - the same place the palettes above are installed into.
+# ==========================================================================
+require_file "Custom-Nodes/package.json"
+
+echo ">>> Installing custom Node-RED nodes from Custom-Nodes/ ..."
+mkdir -p "$NODERED_DIR"
+chown "$NODERED_USER":"$NODERED_USER" "$NODERED_DIR"
+
+if [ ! -f "$NODERED_DIR/package.json" ]; then
+    runuser -u "$NODERED_USER" -- bash -c "cat > '$NODERED_DIR/package.json' <<'PKGJSON'
+{
+  \"name\": \"node-red-user-dir\",
+  \"version\": \"1.0.0\",
+  \"description\": \"Node-RED user directory\",
+  \"private\": true
+}
+PKGJSON"
+fi
+
+# Copy the source into the Node-RED user's home so it's owned by, and
+# writable/reachable by, NODERED_USER (avoids permission issues with a
+# path under $SRC_DIR, which may not be readable by NODERED_USER).
+# IMPORTANT: This must live INSIDE $NODERED_DIR (.node-red), not just
+# somewhere under $NODERED_HOME. "npm install <local-path>" creates a
+# symlink node_modules/fossdaq -> ../custom-nodes/fossdaq. Node resolves
+# require() calls (e.g. require('serialport') in fossdaq-init.js) via the
+# REAL (symlink-resolved) path, then walks UP that real path looking for
+# node_modules folders. If the real path is outside .node-red entirely
+# (e.g. under $NODERED_HOME directly), that walk never reaches
+# .node-red/node_modules and "Cannot find module 'serialport'" results,
+# even though npm install itself succeeds and the symlink looks correct.
+# Keeping the real directory under .node-red/custom-nodes ensures
+# .node-red/node_modules is one of the ancestors Node checks.
+CUSTOM_NODES_DIR="$NODERED_DIR/custom-nodes/fossdaq"
+mkdir -p "$CUSTOM_NODES_DIR"
+cp -r Custom-Nodes/. "$CUSTOM_NODES_DIR/"
+chown -R "$NODERED_USER":"$NODERED_USER" "$NODERED_DIR/custom-nodes"
+
+if ! runuser -u "$NODERED_USER" -- bash -c "cd '$NODERED_DIR' && npm install --no-audit --no-fund '$CUSTOM_NODES_DIR'"; then
+    echo "ERROR: Installation of the custom Node-RED nodes (Custom-Nodes/) failed - aborting."
+    exit 1
+fi
+
 echo ">>> Copying scripts to /usr/local/bin ..."
 cp find_arduino.sh setup-hotspot.sh startup-sequence.sh /usr/local/bin/
 chmod +x /usr/local/bin/find_arduino.sh /usr/local/bin/setup-hotspot.sh /usr/local/bin/startup-sequence.sh
