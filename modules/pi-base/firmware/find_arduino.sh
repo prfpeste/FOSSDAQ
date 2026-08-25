@@ -22,12 +22,14 @@ set -uo pipefail
 # ==========================================================================
 # ADJUST: List of known IDs that an Arduino/board returns.
 # Simply add/remove entries.
-# The response always ends with a 5-digit number (e.g., serial number),
-# which is automatically truncated for comparison -> only enter the
-# actual ID without the number here.
+# The response always contains an underscore "_" between the ID and a
+# trailing number (e.g., serial number), e.g. "ID_1130". Everything from
+# the first underscore onward is automatically truncated for comparison
+# -> only enter the actual ID without the underscore/number here.
 # ==========================================================================
 KNOWN_IDS=(
     "ID"
+    "do-PWM-1to6x"
     # add more IDs here, e.g.:
     # "MySensorBoard"
 )
@@ -43,7 +45,7 @@ MAKE_SYMLINKS=0
 SYMLINK_DIR="/dev/arduino"   # ADJUST: target directory for symlinks
 LAST_RESPONSE=""   # filled by check_port() with the raw received response
 
-while getopts "vasd:p" opt; do
+while getopts "vasd:p:" opt; do
   case $opt in
     v) VERBOSE=1 ;;
     a) LIST_ALL=1 ;;
@@ -114,10 +116,11 @@ check_port() {
         return 1
     fi
 
-    # Trim trailing digits (any number of digits, e.g., serial number/ID number)
-    # from the end for comparison.
+    # Trim everything from the first underscore onward (the underscore
+    # reliably separates the ID from the trailing number, e.g. serial
+    # number/ID number) for comparison.
     local id_part
-    id_part=$(echo "$response" | sed -E 's/[0-9]+$//')
+    id_part=$(echo "$response" | sed -E 's/_.*$//')
 
     log "  -> ID without number: '$id_part'"
 
