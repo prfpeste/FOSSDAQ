@@ -1,4 +1,4 @@
-g# /etc/udev/rules.d/99-arduino.rules
+# /etc/udev/rules.d/99-arduino.rules
 #
 # When a new serial USB device (Arduino/clone) is detected,
 # find-arduino@<KERNELNAME>.service is started, e.g., find-arduino@ttyACM0.service.
