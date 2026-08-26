@@ -18,6 +18,7 @@
 #                                    implies -s
 
 set -uo pipefail
+trap '' TTIN TTOU
 
 # ==========================================================================
 # ADJUST: List of known IDs that an Arduino/board returns.
