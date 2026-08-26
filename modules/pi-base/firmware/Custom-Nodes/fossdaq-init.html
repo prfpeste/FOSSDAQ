@@ -72,11 +72,11 @@
         oneditprepare: function() {
             const node = this;
 
-            function extractPrefix(path) {
-    		if (!path) return "";
-    		const match = path.match(/([A-Za-z]+)_\d+$/);
-    		return match ? match[1] : path;
-	    }
+        function extractPrefix(path) {
+		    if (!path) return "";
+			const base = path.split('/').pop();
+			return base.replace(/_\d+$/, '');
+		}
 
             // Settings row: dropdown alone, OR - if this is an actuator
             // channel whose value type is derived from this exact choice
