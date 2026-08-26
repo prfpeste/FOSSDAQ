@@ -24,10 +24,10 @@
             const node = this;
 
             function extractPrefix(path) {
-                if (!path) return "";
-                const match = path.match(/([A-Za-z0-9]+)_\d+$/);
-                return match ? match[1] : path;
-            }
+		        if (!path) return "";
+			    const base = path.split('/').pop();
+			    return base.replace(/_\d+$/, '');
+		    }
 
             // Value type (+ min/max for int) for a channel: for
             // actuatorsFromSettings from the pin mode option actually chosen
