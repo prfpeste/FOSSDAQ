@@ -5,7 +5,7 @@ module.exports = function(RED) {
     const { compileFormula } = require('./formula.js');
 
     function extractFullId(path) {
-        const match = path.match(/([A-Za-z0-9]+)_\d+$/);
+        const match = path.match(/([A-Za-z0-9-]+)_\d+$/);
         return match ? match[1] : null;
     }
 
@@ -207,12 +207,32 @@ module.exports = function(RED) {
         // only access it later via portManager.get(path).
         const conn = portManager.open(node.portPath, 9600);
 
-        conn.emitter.on('open', () => {
+        const BOOT_WAIT_MS = 2000; // many boards reset on port open (DTR) -> wait for boot time
+        let bootTimer = null;
+
+        function requestId() {
             node.status({ fill: "yellow", shape: "ring", text: "requesting ID" });
             portManager.write(node.portPath, "serveID\n").catch(err => {
                 node.error("Write error: " + err.message);
             });
-        });
+        }
+
+        if (conn.serial.isOpen) {
+            // Reused an already-open connection (e.g. quick redeploy race in
+            // portManager.open()) - the 'open' event already fired in the
+            // past on this emitter and won't fire again for us, and no new
+            // DTR reset happened either, so the board is already booted.
+            // Skip the wait and ask right away.
+            requestId();
+        } else {
+            conn.emitter.on('open', () => {
+                node.status({ fill: "yellow", shape: "ring", text: "waiting for boot" });
+                bootTimer = setTimeout(() => {
+                    bootTimer = null;
+                    requestId();
+                }, BOOT_WAIT_MS);
+            });
+        }
 
         conn.emitter.on('error', (err) => {
             node.error("Connection error: " + err.message);
@@ -278,6 +298,7 @@ module.exports = function(RED) {
         // Only the init node closes the connection again - sensor/actuator
         // nodes never call close().
         node.on('close', function(done) {
+            if (bootTimer) clearTimeout(bootTimer);
             portManager.close(node.portPath);
             done();
         });
