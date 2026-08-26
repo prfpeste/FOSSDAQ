@@ -74,7 +74,7 @@
 
             function extractPrefix(path) {
     		if (!path) return "";
-    		const match = path.match(/([A-Za-z]+)\d+$/);
+    		const match = path.match(/([A-Za-z]+)_\d+$/);
     		return match ? match[1] : path;
 	    }
 
