@@ -5,7 +5,7 @@ module.exports = function(RED) {
     const { compileFormula } = require('./formula.js');
 
     function extractFullId(path) {
-        const match = path.match(/([A-Za-z0-9-]+)_\d+$/);
+        const match = path.match(/([A-Za-z0-9-]+_\d+)$/);
         return match ? match[1] : null;
     }
 
@@ -246,7 +246,7 @@ module.exports = function(RED) {
                 return;
             }
 
-            if (!node.idVerified && line.startsWith("ID")) {
+            if (!node.idVerified && line.startsWith(node.prefix)) {
                 const receivedFullId = line.substring(2);
                 if (receivedFullId !== node.expectedFullId) {
                     node.error(`ID mismatch: expected ${node.expectedFullId}, got ${receivedFullId}`);
