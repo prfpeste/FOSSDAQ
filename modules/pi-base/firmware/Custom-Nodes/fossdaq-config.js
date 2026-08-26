@@ -70,6 +70,7 @@ module.exports = {
     // --- Actuator board without selectable pin mode: fixed, static actuators.
     "ao-1to3x-0to10V": {
         kind: "actuator",
+        actuatorsFromSettings: true,
         settings: [{
                 index: 0,
                 label: "Output 1",
