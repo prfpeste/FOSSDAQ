@@ -6,7 +6,7 @@ module.exports = {
     // chosen here - PWM out => int (0-255), digital out => boolean,
     // off => channel is not available to the output node.
     // Settings index === actuator index.
-    "ttyUSB": {
+    "do-PWM-1to6x": {
         kind: "actuator",
         actuatorsFromSettings: true,
         settings: [
@@ -68,14 +68,33 @@ module.exports = {
     },
 
     // --- Actuator board without selectable pin mode: fixed, static actuators.
-    "boardB": {
+    "ao-1to3x-0to10V": {
         kind: "actuator",
-        settings: [],   // no settings -> node sends initEnd immediately, expects 'noSettings'
-        actuators: [
-            { index: 0, label: "Valve", valueType: "boolean" },
-            // Example of a static int actuator with its own limits:
-            { index: 1, label: "Pump speed", valueType: "int", min: 0, max: 100 }
-        ],
+        settings: [{
+                index: 0,
+                label: "Output 1",
+                options: [
+                    { value: 1, label: "off", valueType: null},
+                    { value: 2, label: "on", valueType: "int", min: 0, max: 1024 },
+                ]
+            },
+            {
+                index: 1,
+                label: "Output 2",
+                options: [
+                    { value: 1, label: "off", valueType: null},
+                    { value: 2, label: "on", valueType: "int", min: 0, max: 1024 },
+                ]
+            },
+            {
+                index: 2,
+                label: "Output 3",
+                options: [
+                    { value: 1, label: "off", valueType: null},
+                    { value: 2, label: "on", valueType: "int", min: 0, max: 1024 },
+                ]
+            }
+        ],   // no settings -> node sends initEnd immediately, expects 'noSettings'
     },
 
     // --- Example sensor board: no settings, two sensor channels. No own
