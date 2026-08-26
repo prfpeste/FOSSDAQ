@@ -29,7 +29,7 @@ trap '' TTIN TTOU
 # -> only enter the actual ID without the underscore/number here.
 # ==========================================================================
 KNOWN_IDS=(
-    "ID"
+    "ID" # only for testing
     "do-PWM-1to6x"
     # add more IDs here, e.g.:
     # "MySensorBoard"
