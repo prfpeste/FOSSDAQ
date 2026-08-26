@@ -9,4 +9,4 @@ BindsTo=dev-%i.device
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/find_arduino.sh -s -p /dev/%i
+ExecStart=/usr/bin/setsid -w /bin/bash -c '/usr/local/bin/find_arduino.sh -s -p /dev/%i & wait $!'
