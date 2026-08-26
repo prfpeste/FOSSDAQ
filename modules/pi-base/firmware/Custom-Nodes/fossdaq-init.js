@@ -247,7 +247,7 @@ module.exports = function(RED) {
             }
 
             if (!node.idVerified && line.startsWith(node.prefix)) {
-                const receivedFullId = line.substring(2);
+                const receivedFullId = line;
                 if (receivedFullId !== node.expectedFullId) {
                     node.error(`ID mismatch: expected ${node.expectedFullId}, got ${receivedFullId}`);
                     node.status({ fill: "red", shape: "ring", text: "ID mismatch" });
