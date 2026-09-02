@@ -101,7 +101,7 @@ module.exports = {
     // --- Example sensor board: no settings, two sensor channels. No own
     // `label` -> default display name is simply "Sensor <index>", unless
     // the user assigns a custom name in fossdaq-init.
-    "ttyACM": {
+    "Sensor-Test": {
         kind: "sensor",
         settings: [],
         sensors: [
