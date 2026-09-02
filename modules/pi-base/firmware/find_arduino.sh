@@ -32,6 +32,7 @@ KNOWN_IDS=(
     "ID" # only for testing
     "do-PWM-1to6x"
     "ao-1to3x-0to10V"
+    "Sensor-Test"
     # add more IDs here, e.g.:
     # "MySensorBoard"
 )
