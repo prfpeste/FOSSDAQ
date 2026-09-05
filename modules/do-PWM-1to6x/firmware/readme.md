@@ -15,7 +15,7 @@ This script enables an Arduino to communicate with a Raspberry Pi (or another se
 
 ### Initialization Process
 1. **Initial State (`initStatus = 0`)**
-   The Arduino starts in this state, waiting for the `serveID` message from the Raspberry Pi. Upon receiving it, the Arduino generates or retrieves a unique ID, sends it to the Raspberry Pi, and transitions to `initStatus = 1`.
+   The Arduino starts in this state, waiting for the `serveID` message from the Raspberry Pi. Upon receiving it, the Arduino generates or retrieves a unique ID, sends it plus the       card specific identification string (e.g. do-PWM-1to6x) to the Raspberry Pi, and transitions to `initStatus = 1`.
 
 2. **Waiting for Initialization Start (`initStatus = 1`)**
    The Arduino waits for the `initStart` message. Once received, it transitions to `initStatus = 2`.
@@ -42,6 +42,7 @@ This script enables an Arduino to communicate with a Raspberry Pi (or another se
   - If the index or state is invalid, it triggers `errorStatus()`.
 
 #### `measure()`
+- not in use!
 - **Purpose**: Reads input values from sensors.
 - **Input Format**: A single integer representing the sensor index.
 - **Behavior**:
@@ -70,5 +71,7 @@ This script enables an Arduino to communicate with a Raspberry Pi (or another se
 - **Behavior**:
   - Generates or retrieves a unique ID from EEPROM.
   - Sends the ID to the Raspberry Pi and resets the `settings[]` array and `checksum`.
+  - calls `errorStatus()` and sets `ERROR = false` immediately afterwards
+  - resets `checksum` and `settings`. Sets `initStatus = 1` to restart the code
 
 ---
