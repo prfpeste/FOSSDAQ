@@ -153,15 +153,74 @@ module.exports = function(RED) {
     }
     RED.nodes.registerType("fossdaq-serial-port", FossdaqSerialPortNode);
 
+    // --- Startup barrier: hold every init node's "ready" output until ALL
+    // fossdaq-init nodes in the flow are done, then fire them all together.
+    // "Done" means either successfully ready, or a permanent config error
+    // that will never resolve on its own (no port / unknown board type) -
+    // such a node contributes to the count but never registers a send, so
+    // it can't produce a "ready" signal itself but also doesn't block the
+    // other, working, boards forever. Runtime handshake failures (ID/
+    // checksum mismatch, connection errors, ...) deliberately do NOT count
+    // as "done": the whole setup is in an error state at that point
+    // anyway (broadcastError already notified every board), so there is no
+    // meaningful "ready" to release.
+    //
+    // barrier is recomputed fresh on every deploy: activeInstances tracks
+    // how many node instances are currently alive, and once it drops back
+    // to 0 (all old instances closed before the new ones are created) the
+    // barrier is reset so the next deploy starts counting from scratch.
+    let barrier = null;       // { total, doneCount, pending: [fn, ...] }
+    let activeInstances = 0;
+
+    function getBarrier() {
+        if (!barrier) {
+            let total = 0;
+            RED.nodes.eachNode(n => { if (n.type === "fossdaq-init") total++; });
+            barrier = { total, doneCount: 0, pending: [] };
+        }
+        return barrier;
+    }
+
+    // sendFn is omitted for nodes that are "done" but have nothing to send
+    // (permanent config error before any hardware attempt).
+    function markNodeDone(sendFn) {
+        const b = getBarrier();
+        b.doneCount++;
+        if (sendFn) b.pending.push(sendFn);
+        if (b.doneCount >= b.total) {
+            const toSend = b.pending;
+            b.pending = [];
+            toSend.forEach(fn => fn()); // fired back-to-back -> as simultaneous as possible
+        }
+    }
+
     // --- Init node: establishes the connection (once) and does the handshake ---
     function FossdaqInitNode(config) {
         RED.nodes.createNode(this, config);
         const node = this;
 
+        activeInstances++;
+        node.doneReported = false; // guards markNodeDone() against double-counting on reconnects
+        function reportDoneOnce(sendFn) {
+            if (node.doneReported) return;
+            node.doneReported = true;
+            markNodeDone(sendFn);
+        }
+        node.on('close', function(done) {
+            activeInstances--;
+            if (activeInstances <= 0) {
+                activeInstances = 0;
+                barrier = null; // let the next deploy recompute the total
+            }
+            done();
+        });
+
         const portConfigNode = RED.nodes.getNode(config.port);
         if (!portConfigNode || !portConfigNode.path) {
             node.error("No serial port configured");
             node.status({ fill: "red", shape: "ring", text: "no port configured" });
+            portManager.broadcastError();
+            reportDoneOnce();
             return;
         }
 
@@ -182,6 +241,8 @@ module.exports = function(RED) {
         if (!node.cfgEntry) {
             node.error("No config found for board type: " + node.prefix);
             node.status({ fill: "red", shape: "ring", text: "unknown board type" });
+            portManager.broadcastError();
+            reportDoneOnce();
             return;
         }
 
@@ -197,8 +258,11 @@ module.exports = function(RED) {
             }
             portManager.setChannelConfig(node.portPath, channelConfig);
 
-            node.status({ fill: "green", shape: "dot", text: "ready" });
-            node.send({ payload: true, topic: "ready" });
+            node.status({ fill: "green", shape: "dot", text: "ready - waiting for other boards" });
+            reportDoneOnce(() => {
+                node.status({ fill: "green", shape: "dot", text: "ready" });
+                node.send({ payload: true, topic: "ready" });
+            });
         }
 
         node.status({ fill: "yellow", shape: "ring", text: "connecting..." });
@@ -207,50 +271,90 @@ module.exports = function(RED) {
         // only access it later via portManager.get(path).
         const conn = portManager.open(node.portPath, 9600);
 
-        const BOOT_WAIT_MS = 2000; // many boards reset on port open (DTR) -> wait for boot time
+        const BOOT_WAIT_MS = 5000;       // native-USB boards (RA4M1: Uno/Nano R4) run a
+                                          // bootloader with its own multi-second wait
+                                          // period after every reset before the sketch
+                                          // starts - 2s was enough for AVR/Optiboot
+                                          // (Uno/Mega) but too short for those.
+        const ID_RETRY_MS = 4000;        // slow, safe resend cadence: long enough that a
+                                          // response already in flight from the previous
+                                          // request has certainly arrived by the time we
+                                          // would resend (avoids confusing the board with
+                                          // an overlapping second "serveID").
+        const ID_MAX_ATTEMPTS = 4;       // ~16s of retrying after the initial boot wait
         let bootTimer = null;
+        let idRetryTimer = null;
+        let idAttempts = 0;
 
         function requestId() {
             node.status({ fill: "yellow", shape: "ring", text: "requesting ID" });
+            idAttempts++;
             portManager.write(node.portPath, "serveID\n").catch(err => {
                 node.error("Write error: " + err.message);
+                node.status({ fill: "red", shape: "ring", text: "write error" });
+                portManager.broadcastError();
+                reportDoneOnce();
             });
+            idRetryTimer = setTimeout(() => {
+                idRetryTimer = null;
+                if (node.idVerified) return; // already answered - nothing to do
+                if (idAttempts >= ID_MAX_ATTEMPTS) {
+                    node.error(`No ID response from board on ${node.portPath} after ${idAttempts} attempts (expected "${node.expectedFullId}")`);
+                    node.status({ fill: "red", shape: "ring", text: "no ID response" });
+                    portManager.broadcastError();
+                    reportDoneOnce();
+                    return;
+                }
+                requestId(); // slow resend - board may still have been booting/busy
+            }, ID_RETRY_MS);
         }
 
-        if (conn.serial.isOpen) {
+        if (conn.serial && conn.serial.isOpen) {
             // Reused an already-open connection (e.g. quick redeploy race in
             // portManager.open()) - the 'open' event already fired in the
             // past on this emitter and won't fire again for us, and no new
             // DTR reset happened either, so the board is already booted.
             // Skip the wait and ask right away.
             requestId();
-        } else {
-            conn.emitter.on('open', () => {
-                node.status({ fill: "yellow", shape: "ring", text: "waiting for boot" });
-                bootTimer = setTimeout(() => {
-                    bootTimer = null;
-                    requestId();
-                }, BOOT_WAIT_MS);
-            });
         }
+        // Also covers reconnects: portManager re-emits 'open' on this same
+        // emitter whenever the connection had to be automatically reopened
+        // (e.g. native-USB boards like the Nano/Uno R4 that fully drop off
+        // the USB bus and re-enumerate on every reset) - each time, restart
+        // the handshake cleanly against the fresh connection.
+        conn.emitter.on('open', () => {
+            if (idRetryTimer) { clearTimeout(idRetryTimer); idRetryTimer = null; }
+            if (bootTimer) { clearTimeout(bootTimer); bootTimer = null; }
+            node.idVerified = false;
+            idAttempts = 0;
+            node.status({ fill: "yellow", shape: "ring", text: "waiting for boot" });
+            bootTimer = setTimeout(() => {
+                bootTimer = null;
+                requestId();
+            }, BOOT_WAIT_MS);
+        });
 
         conn.emitter.on('error', (err) => {
             node.error("Connection error: " + err.message);
             node.status({ fill: "red", shape: "ring", text: "error" });
+            portManager.broadcastError();
         });
 
         conn.emitter.on('line', (line) => {
             if (line.startsWith("ERROR:")) {
                 node.error("Arduino reported: " + line);
                 node.status({ fill: "red", shape: "ring", text: "error" });
+                portManager.broadcastError();
                 return;
             }
 
             if (!node.idVerified && line.startsWith(node.prefix)) {
+                if (idRetryTimer) { clearTimeout(idRetryTimer); idRetryTimer = null; }
                 const receivedFullId = line;
                 if (receivedFullId !== node.expectedFullId) {
                     node.error(`ID mismatch: expected ${node.expectedFullId}, got ${receivedFullId}`);
                     node.status({ fill: "red", shape: "ring", text: "ID mismatch" });
+                    portManager.broadcastError();
                     return;
                 }
                 node.idVerified = true;
@@ -276,6 +380,7 @@ module.exports = function(RED) {
                     if (node.cfgEntry.settings.length > 0) {
                         node.error("Arduino reported 'noSettings' but settings were expected");
                         node.status({ fill: "red", shape: "ring", text: "checksum error" });
+                        portManager.broadcastError();
                         return;
                     }
                     publishReady();
@@ -287,6 +392,7 @@ module.exports = function(RED) {
                     if (receivedChecksum !== node.expectedChecksum) {
                         node.error(`Checksum mismatch: expected ${node.expectedChecksum}, got ${receivedChecksum}`);
                         node.status({ fill: "red", shape: "ring", text: "checksum error" });
+                        portManager.broadcastError();
                         return;
                     }
                     publishReady();
@@ -299,6 +405,7 @@ module.exports = function(RED) {
         // nodes never call close().
         node.on('close', function(done) {
             if (bootTimer) clearTimeout(bootTimer);
+            if (idRetryTimer) clearTimeout(idRetryTimer);
             portManager.close(node.portPath);
             done();
         });

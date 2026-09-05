@@ -32,11 +32,15 @@ module.exports = function(RED) {
             if (!portManager.isReady(node.portPath)) {
                 node.error("Port is not ready yet (init node not finished or not deployed)", msg);
                 node.status({ fill: "red", shape: "ring", text: "port not ready" });
+                portManager.broadcastError();
                 if (done) done();
                 return;
             }
 
             const channelConfig = portManager.getChannelConfig(node.portPath);
+
+            let anyClipped = false;
+            let anyError = false;
 
             try {
                 for (const row of node.rows) {
@@ -51,6 +55,7 @@ module.exports = function(RED) {
                     if (row.fromMsg) {
                         if (msg.payload === undefined || msg.payload === null) {
                             node.error(`Dynamic channel ${row.index}: msg.payload is missing`, msg);
+                            anyError = true;
                             continue;
                         }
                         value = msg.payload;
@@ -58,24 +63,51 @@ module.exports = function(RED) {
                         value = row.value;
                     }
 
-                    if (typeof value !== "boolean" && chCfg && (chCfg.min !== undefined || chCfg.max !== undefined)) {
-                        const min = chCfg.min !== undefined ? chCfg.min : -Infinity;
-                        const max = chCfg.max !== undefined ? chCfg.max : Infinity;
-                        if (value < min || value > max) {
-                            node.error(`Value ${value} for channel ${row.index} is outside the allowed range [${min}, ${max}]`, msg);
+                    if (row.fromMsg && chCfg && chCfg.valueType === "boolean" && typeof value !== "boolean") {
+                        if (value === 1 || value === "1" || value === "true") {
+                            value = true;
+                        } else if (value === 0 || value === "0" || value === "false") {
+                            value = false;
+                        } else {
+                            node.error(`Dynamic channel ${row.index}: msg.payload must be true/false or 1/0, got ${JSON.stringify(value)}`, msg);
+                            anyError = true;
                             continue;
                         }
+                    }
+
+                    let clipped = false;
+                    if (row.fromMsg && typeof value !== "boolean" && chCfg && (chCfg.min !== undefined || chCfg.max !== undefined)) {
+                        const min = chCfg.min !== undefined ? chCfg.min : -Infinity;
+                        const max = chCfg.max !== undefined ? chCfg.max : Infinity;
+                        if (value < min) {
+                            node.warn(`Dynamic channel ${row.index}: value ${value} is below the allowed range [${min}, ${max}], clipped to ${min}`, msg);
+                            value = min;
+                            clipped = true;
+                        } else if (value > max) {
+                            node.warn(`Dynamic channel ${row.index}: value ${value} is above the allowed range [${min}, ${max}], clipped to ${max}`, msg);
+                            value = max;
+                            clipped = true;
+                        }
+                        if (clipped) anyClipped = true;
                     }
 
                     const wireValue = typeof value === "boolean" ? (value ? 1 : 0) : value;
                     await portManager.write(node.portPath, `${row.index},${wireValue}\n`);
                     send({ ...msg, payload: value, topic: String(row.index) });
                 }
-                node.status({ fill: "green", shape: "dot", text: "ok" });
+                if (anyError) {
+                    node.status({ fill: "red", shape: "ring", text: "invalid value(s), see debug/error" });
+                    portManager.broadcastError();
+                } else if (anyClipped) {
+                    node.status({ fill: "yellow", shape: "dot", text: "clipped to range" });
+                } else {
+                    node.status({ fill: "green", shape: "dot", text: "ok" });
+                }
                 if (done) done();
             } catch (err) {
                 node.error("Write error: " + err.message, msg);
                 node.status({ fill: "red", shape: "ring", text: "write error" });
+                portManager.broadcastError();
                 if (done) done(err);
             }
         });

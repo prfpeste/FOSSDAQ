@@ -14,6 +14,7 @@ module.exports = function(RED) {
 
         if (!node.portConfigNode || !node.portConfigNode.path) {
             node.status({ fill: "red", shape: "ring", text: "no port configured" });
+            portManager.broadcastError();
             return;
         }
 
@@ -40,6 +41,7 @@ module.exports = function(RED) {
             if (!portManager.isReady(node.portPath)) {
                 node.error("Port is not ready yet (init node not finished or not deployed)", msg);
                 node.status({ fill: "red", shape: "ring", text: "port not ready" });
+                portManager.broadcastError();
                 if (done) done();
                 return;
             }
@@ -50,6 +52,7 @@ module.exports = function(RED) {
             // behavior for nodes with multiple outputs). Channels where an
             // error occurs stay null (= no msg on this output for this run).
             const outputs = new Array(node.rows.length).fill(null);
+            let anyError = false;
 
             try {
                 // Sequential: the next query only starts AFTER the response to
@@ -62,12 +65,14 @@ module.exports = function(RED) {
                     const raw = parseFloat(line);
                     if (isNaN(raw)) {
                         node.error(`Unexpected response for channel ${row.index}: "${line}"`, msg);
+                        anyError = true;
                         continue;
                     }
 
                     const chCfg = channelConfig.sensors[row.index];
                     if (!chCfg) {
                         node.error(`Sensor channel ${row.index} is not available (disabled or not configured in the fossdaq-init node)`, msg);
+                        anyError = true;
                         continue;
                     }
                     const formulaStr = chCfg.formula || "S";
@@ -88,12 +93,18 @@ module.exports = function(RED) {
                     };
                 }
                 send(outputs);
-                node.status({ fill: "green", shape: "dot", text: "ok" });
+                if (anyError) {
+                    node.status({ fill: "red", shape: "ring", text: "invalid response(s), see debug/error" });
+                    portManager.broadcastError();
+                } else {
+                    node.status({ fill: "green", shape: "dot", text: "ok" });
+                }
                 if (done) done();
             } catch (err) {
                 send(outputs);
                 node.error("Error during sensor query: " + err.message, msg);
                 node.status({ fill: "red", shape: "ring", text: "read error" });
+                portManager.broadcastError();
                 if (done) done(err);
             }
         });

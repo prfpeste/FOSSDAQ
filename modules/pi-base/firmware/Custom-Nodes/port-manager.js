@@ -36,15 +36,59 @@ function open(path, baudRate = 9600) {
     }
 
     const emitter = new EventEmitter();
-    const serial = new SerialPort({ path, baudRate }, (err) => {
-        if (err) emitter.emit('error', err);
-        else emitter.emit('open');
-    });
-    const parser = serial.pipe(new ReadlineParser({ delimiter: '\n' }));
-    parser.on('data', (line) => emitter.emit('line', line.trim()));
-    serial.on('error', (err) => emitter.emit('error', err));
+    const conn = { serial: null, parser: null, emitter, ready: false, pending: [], intentionalClose: false };
 
-    const conn = { serial, parser, emitter, ready: false, pending: [] };
+    // Native-USB boards (e.g. Arduino Nano R4 / Uno R4 - Renesas RA4M1) do a
+    // FULL USB disconnect + re-enumeration on every reset, including the
+    // reset that simply opening the port can trigger. That means the file
+    // descriptor we just opened can die within milliseconds, well before
+    // any handshake happens, and no amount of retrying at the application
+    // layer helps because the connection itself is gone. Boards with a
+    // separate USB-serial bridge chip (Uno/Mega) never do this - their USB
+    // link to the host stays up across a sketch reset.
+    //
+    // To handle both transparently, this reopens the same path automatically
+    // whenever the connection closes unexpectedly (not via close() below),
+    // and re-emits 'open' so the init node's handshake restarts cleanly
+    // against the fresh connection.
+    const MAX_RECONNECT_ATTEMPTS = 10;
+    const RECONNECT_DELAY_MS = 500;
+    let reconnectAttempts = 0;
+
+    function attemptOpen() {
+        const serial = new SerialPort({ path, baudRate }, (err) => {
+            if (err) {
+                if (conn.intentionalClose) return;
+                if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+                    emitter.emit('error', new Error(`Could not open ${path} after ${reconnectAttempts} attempts: ${err.message}`));
+                    return;
+                }
+                reconnectAttempts++;
+                setTimeout(attemptOpen, RECONNECT_DELAY_MS);
+                return;
+            }
+
+            reconnectAttempts = 0;
+            conn.serial = serial;
+            conn.parser = serial.pipe(new ReadlineParser({ delimiter: '\n' }));
+            conn.parser.on('data', (line) => emitter.emit('line', line.trim()));
+            serial.on('error', (err2) => emitter.emit('error', err2));
+
+            serial.on('close', () => {
+                if (conn.intentionalClose) return; // close() below was called deliberately
+                if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+                    emitter.emit('error', new Error(`Port ${path} closed unexpectedly and gave up reconnecting after ${MAX_RECONNECT_ATTEMPTS} attempts`));
+                    return;
+                }
+                reconnectAttempts++;
+                setTimeout(attemptOpen, RECONNECT_DELAY_MS);
+            });
+
+            emitter.emit('open');
+        });
+    }
+
+    attemptOpen();
 
     // Dedicated consumer for writeAndWaitForLine(): every incoming line is
     // passed to the oldest open "pending" request (FIFO). Runs independently
@@ -68,8 +112,9 @@ function get(path) {
 function close(path) {
     const conn = connections.get(path);
     if (conn) {
+        conn.intentionalClose = true; // suppress the auto-reconnect above
         conn.pending.forEach(entry => entry.reject(new Error('Port was closed')));
-        if (conn.serial.isOpen) conn.serial.close();
+        if (conn.serial && conn.serial.isOpen) conn.serial.close();
     }
     connections.delete(path);
     channelConfigs.delete(path);
@@ -87,11 +132,28 @@ function isReady(path) {
 
 function write(path, data) {
     const conn = connections.get(path);
-    if (!conn || !conn.serial.isOpen) {
+    if (!conn || !conn.serial || !conn.serial.isOpen) {
         return Promise.reject(new Error(`Port ${path} is not open - is the init node deployed?`));
     }
     return new Promise((resolve, reject) => {
         conn.serial.write(data, (err) => err ? reject(err) : resolve());
+    });
+}
+
+// Broadcasts "ERROR\n" to every currently open connection (every physical
+// Arduino board), regardless of its port path or ready state. Intended to
+// be called whenever a severe, flow-halting error occurs on any single
+// board (write error, connection error, handshake failure, an Arduino
+// itself reporting an error line, ...) - the other boards should be able
+// to react (e.g. go to a safe state) even though the problem happened on
+// a different port. Best-effort / fire-and-forget: write failures on
+// individual (already broken) connections are ignored here, since there
+// is nothing more we could do about them at this point.
+function broadcastError() {
+    connections.forEach((conn) => {
+        if (conn && conn.serial && conn.serial.isOpen) {
+            conn.serial.write("ERROR\n", () => {});
+        }
     });
 }
 
@@ -101,7 +163,7 @@ function write(path, data) {
 // otherwise responses get mixed up.
 function writeAndWaitForLine(path, data, timeoutMs = 3000) {
     const conn = connections.get(path);
-    if (!conn || !conn.serial.isOpen) {
+    if (!conn || !conn.serial || !conn.serial.isOpen) {
         return Promise.reject(new Error(`Port ${path} is not open - is the init node deployed?`));
     }
     return new Promise((resolve, reject) => {
@@ -141,5 +203,5 @@ function getChannelConfig(path) {
 
 module.exports = {
     open, get, close, markReady, isReady, write,
-    writeAndWaitForLine, setChannelConfig, getChannelConfig,
+    writeAndWaitForLine, setChannelConfig, getChannelConfig, broadcastError,
 };

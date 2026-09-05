@@ -137,6 +137,23 @@
             // Dropdown for dynamic mode: exactly ONE channel selectable,
             // whose setpoint then comes from msg.payload at runtime.
             const dynamicSelect = $("#node-input-dynamic-index");
+            const dynamicValueHint = $("#node-dynamic-value-hint");
+
+            function refreshDynamicValueHint() {
+                const idx = parseInt(dynamicSelect.val(), 10);
+                const info = channelInfoFor(node._entry, idx);
+                if (!info || !info.valueType) {
+                    dynamicValueHint.text("");
+                } else if (info.valueType === "boolean") {
+                    dynamicValueHint.text("valid msg.payload: true / false (boolean), 1 / 0 (int), \"true\" / \"false\" (string)");
+                } else {
+                    const min = info.min !== undefined ? info.min : "-\u221e";
+                    const max = info.max !== undefined ? info.max : "\u221e";
+                    dynamicValueHint.text(`valid msg.payload: ${min} \u2026 ${max} (out-of-range values are clipped)`);
+                }
+            }
+
+            dynamicSelect.on('change', refreshDynamicValueHint);
 
             function populateDynamicSelect(actuatorList, selectedIndex) {
                 dynamicSelect.empty();
@@ -146,6 +163,7 @@
                 if (selectedIndex !== null && selectedIndex !== undefined) {
                     dynamicSelect.val(selectedIndex);
                 }
+                refreshDynamicValueHint();
             }
 
             function applyDynamicVisibility(dynamicOn) {
@@ -182,6 +200,7 @@
                     !actuatorList.some(a => a.index === node.dynamicIndex)) {
                     dynamicSelect.val(actuatorList[0].index);
                 }
+                refreshDynamicValueHint();
 
                 applyDynamicVisibility(dynamicCheckbox.prop('checked'));
             }
@@ -267,11 +286,18 @@
         When "dynamic" is enabled, this node controls exactly <b>one</b> channel, which is set at runtime on every
         incoming msg to the value from <code>msg.payload</code> - simply pick the desired pin from the dropdown.
         Without "dynamic", instead any number of channels can be configured, each with a fixed value set here.
+        <br><br>
+        In dynamic mode, a numeric <code>msg.payload</code> outside the channel's allowed range is <b>not</b>
+        rejected - it is automatically clipped to the nearest bound (min or max) and sent, and the node shows a
+        yellow warning status ("clipped to range"). For boolean channels, <code>true</code>/<code>false</code>,
+        <code>1</code>/<code>0</code> and <code>"true"</code>/<code>"false"</code> are all accepted; any other
+        value is rejected and shown as an error/red status on this node.
     </div>
 
     <div id="node-dynamic-block" class="form-row" style="display:none">
         <label>Pin (dynamic)</label>
         <select id="node-input-dynamic-index" style="width:60%"></select>
+        <div id="node-dynamic-value-hint" class="form-tips" style="margin-top:4px;color:#888"></div>
     </div>
 
     <div id="node-rows-block">
@@ -289,13 +315,17 @@
 <script type="text/html" data-help-name="fossdaq-output">
     <p>Sets one or more actuator pins of an initialized Arduino board. Per pin, <code>&lt;index&gt;,&lt;value&gt;\n</code>
        is sent (for <code>boolean</code> channels, <code>true</code>/<code>false</code> is transmitted as
-       <code>1</code>/<code>0</code>). The node does <b>not</b> wait for a response from the Arduino.</p>
+       <code>1</code>/<code>0</code>). The node does <b>not</b> wait for a response from the Arduino. In dynamic
+       mode, if <code>msg.payload</code> for a boolean channel is not an actual boolean, the message is rejected
+       and the error is shown on <b>this</b> node (not on the fossdaq-init node).</p>
     <p>Whether a channel is shown as a number or as a checkbox (boolean) is derived automatically from the pin mode
        chosen in the associated <b>fossdaq-init</b> node (PWM/digital/off resp. static board default) - there is no
        separate setting for this here.</p>
-    <p>For number channels (<code>int</code>), the value range is fixed per board type (e.g. PWM: 0-255) and is both
-       clamped in the input field and checked server-side when sending - values outside the range are rejected
-       instead of sent.</p>
+    <p>For number channels (<code>int</code>), the value range is fixed per board type (e.g. PWM: 0-255). Fixed
+       values entered in the editor are clamped to this range directly in the input field. In <b>dynamic mode</b>,
+       a value received via <code>msg.payload</code> that is outside the range is <b>not</b> rejected: it is
+       automatically clipped to the nearest bound (min or max) before being sent, and the node shows a yellow
+       warning status ("clipped to range") for that message.</p>
     <p><b>Dynamic mode:</b> The "dynamic (from msg)" checkbox above lets you switch the node's behavior - when
        enabled, only a single pin dropdown is shown, and the value to set is read from <code>msg.payload</code> on
        every incoming msg instead of being fixed in the editor. In this mode, the node always controls exactly

@@ -9,7 +9,8 @@
     "nodes": {
       "fossdaq-init": "fossdaq-init.js",
       "fossdaq-input": "fossdaq-input.js",
-      "fossdaq-output": "fossdaq-output.js"
+      "fossdaq-output": "fossdaq-output.js",
+      "fossdaq-broadcast-error": "fossdaq-broadcast-error.js"
     }
   },
   "dependencies": {
