@@ -1,5 +1,5 @@
 
-# Arduino PWM Control Script
+# Arduino Script for `do-PWM-1to6x`
 
 ## Installation
 Upload this script to an Arduino board using the Arduino IDE. Ensure the correct board and port are selected in the IDE before uploading.
