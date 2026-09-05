@@ -36,7 +36,7 @@ and persist across Pi reboots. To back up, save `buttons.json`,
 
 ## Using admin mode
 
-- Click the "Admin" button top-right and enter the password.
+- Click the "Admin" button top-right and enter the password. The default is ´Password`.
 - In admin mode, every tile shows three icons: eye (show/hide), pencil
   (edit), ✕ (delete) — plus a "New button" tile at the end.
 - Hidden buttons are invisible to normal visitors and shown (semi-transparent)
@@ -49,3 +49,5 @@ and persist across Pi reboots. To back up, save `buttons.json`,
   persists across restarts.
 - A key icon (🔑) next to the Admin button lets you change the admin password
   (current password + new password, min. 4 characters, entered twice).
+- A network icon (📶) lets you change the Name (SSID) and password of the hotspot.
+  Changes only take affect after the RaspberryPI has been restarted.
