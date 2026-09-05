@@ -36,10 +36,7 @@ Subdirectories have their own `README.md` with more detail:
   `Custom-Nodes/fossdaq-config.js`. See `Custom-Nodes/README.md`.
 - **Teach `find_arduino.sh` to recognize a new board's identity string:**
   add it to the `KNOWN_IDS` array in `find_arduino.sh`.
-- **Change hotspot Wi-Fi name/password/IP range:** either use the dashboard's
-  admin UI (writes `lan-dashboard/hotspot_config.json`), or edit the
-  configuration block in `setup-hotspot.sh`.
+- **Change hotspot Wi-Fi name/password/IP range:** use the dashboard's
+  admin UI (writes `lan-dashboard/hotspot_config.json`).
 - **Change dashboard buttons/links:** use the dashboard's admin UI (writes
   `lan-dashboard/buttons.json`), see `lan-dashboard/README.md`.
-- **Change which system users things run as:** `DASHBOARD_USER` /
-  `NODERED_USER` environment variables passed to `install.sh`.
