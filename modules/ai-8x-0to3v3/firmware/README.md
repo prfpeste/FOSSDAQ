@@ -1,4 +1,4 @@
-# Arduino Script for `ai-8x-0to3v3
+# Arduino Script for `ai-8x-0to3v3`
 
 ## Installation
 Upload this script to an Arduino board using the Arduino IDE. Ensure the correct board and port are selected in the IDE before uploading.
