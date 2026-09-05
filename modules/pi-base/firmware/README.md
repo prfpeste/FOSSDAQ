@@ -6,13 +6,16 @@ Arduinos, runs Node-RED (with custom "fossdaq" nodes to talk to those
 Arduinos), serves a small local website (`lan-dashboard`), and finally opens a
 Wi-Fi hotspot with a captive portal that points visitors at that dashboard.  
 
-For installation details see `docs/how_to_setup.md`.
+For installation details see `install.sh` below (there is currently no separate
+setup guide — `docs/how_to_setup.md` referenced by older versions of this file
+no longer exists).
 
 Subdirectories have their own `README.md` with more detail:
 - **`Custom-Nodes/`** – custom Node-RED nodes for talking to Arduinos over
-  serial (`fossdaq-init`, `fossdaq-input`, `fossdaq-output`). **This is where
-  you add support for new Arduino/board types** (see
-  `Custom-Nodes/README.md`, section on `fossdaq-config.js`).
+  serial (`fossdaq-init`, `fossdaq-input`, `fossdaq-output`, plus the
+  `fossdaq-broadcast-error` action node). **This is where you add support for
+  new Arduino/board types** (see `Custom-Nodes/README.md`, section on
+  `fossdaq-config.js`).
 - **`lan-dashboard/`** – the Flask web app that shows the button/link
   dashboard reachable from the hotspot.
 
