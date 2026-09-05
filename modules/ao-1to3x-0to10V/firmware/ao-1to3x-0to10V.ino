@@ -48,7 +48,7 @@
 #define N 6                 // Enter the number of settings here. A setting can have many possible arguments (e.g., setting0=shape, setting1=color).
 #define noSettings 0        // If no settings are required, set 'noSettings' = 1. If settings are required, set 'noSettings' = 0.
 
-String ID="do-PWM-1to6x_";  // ID prefex of the specific Arduino. The '_' at the end is necessary!
+String ID="do-1to3x-0to10V_";  // ID prefex of the specific Arduino. The '_' at the end is necessary!
 // declare your own global constants here
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
