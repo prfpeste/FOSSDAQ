@@ -9,7 +9,7 @@ If you have **two or more** units of the same module, follow these steps. Otherw
 1. Open the **Serial Monitor** under **Tools** or by pressing `Ctrl+Shift+M`.
 2. Set the baud rate to **9600**.
 3. Type `serveID` and press **Enter**.
-4. Record the returned string (e.g., `module_id`). It is recommended to label it on the device for future reference.
+4. Record the returned string (e.g., `ai-8x-0to3v3`). It is recommended to label it on the device for future reference.
 
 ---
 
