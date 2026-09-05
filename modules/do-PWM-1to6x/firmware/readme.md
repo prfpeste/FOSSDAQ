@@ -67,7 +67,7 @@ This script enables an Arduino to communicate with a Raspberry Pi (or another se
   - If the command is invalid, it triggers `errorStatus()`.
 
 #### `startInit()`
-- **Purpose**: Handles the initial `serveID` message.
+- **Purpose**: Handles the initial `serveID` message and resets the Microcontroller.
 - **Behavior**:
   - Generates or retrieves a unique ID from EEPROM.
   - Sends the ID to the Raspberry Pi and resets the `settings[]` array and `checksum`.
