@@ -10,53 +10,18 @@ This guide describes how to establish a connection between a Raspberry Pi runnin
 4. Select the correct board and port under **Tools**.
 5. Click **Upload** to flash the code onto the Arduino.
 
-## 2. Retrieve the Arduino's Serial ID
+## 2. Retrieve the Arduino's identifier
+This step is necessary, if you intend to use more than one of the same kind of module.
 
 1. Open the **Serial Monitor** in the Arduino IDE.
-2. Make sure the baud rate matches the one used in the sketch.
+2. Make sure the baud rate is set to **9600**.
 3. Send the message `serveID` to the Arduino.
-4. The Arduino will respond with its ID.
-5. **Save/note down this ID** — it always stays the same for this specific Arduino.
-6. It is recommended to physically label the Arduino with this ID, so it can be identified easily later (e.g. when using multiple Arduinos).
+4. The Arduino will respond with its identifier. It consists of the type of module (e.g. ai-8x-0to3v3) and a serial number (e.g. 3845) connected by an underscore.
+5. **Save/note down this identifier** — the serial number will always stay the same for this specific Arduino. If the Arduino is flashed with another FOSSDAQ sketch, only the module identifier will change. The serial number will stay the same. 
+6. It is recommended to physically label the Arduino with this identifier, so it can be easily identified later (e.g. when using multiple Arduinos).
 
-## 3. Integration into Node-RED
+## 2. Integration into Node-RED
 
-The following steps show how to integrate the Arduino into Node-RED.
+To integrate the Arduino into Node-RED, simply connect the Arduino to the Raspberry PI via an USB cable. Drag a `FOSSDAQ init Node` into the flow. Double click the node. Add a port and select the module you want. 
 
-### Step 1 — Add the Serial Request node
-
-![Step 1](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_1.png)
-
-Scroll through the palette until you find the `serial request` node (1.a). Click and hold it, then drag it into the flow.
-
-### Step 2 — Open the node configuration
-
-![Step 2](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_2.png)
-
-Double-click the node icon (2.a) to open its configuration window.
-
-### Step 3 — Create a new serial port configuration
-
-![Step 3](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_3.png)
-
-Click the plus icon (3.a) in the panel on the right to create a new serial port configuration.
-
-### Step 4 — Configure the serial connection
-
-![Step 4](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_4.png)
-
-Give the Arduino a custom name (4.a). If left empty, the value from 4.b will be used as the name instead.
-
-Set the serial port in 4.b. The port always starts with `bin/arduino/`, followed by the ID you noted down earlier. The value shown in the image is just an example.
-
-Set the baud rate to `9600` (4.c).
-
-Click **Add** (4.d) to save the configuration.
-
-### Step 5 — Select the configured Arduino
-
-![Step 5](https://github.com/prfpeste/FOSSDAQ/blob/Alexander_Gschlecht_Test/modules/pi-base/images/NodeRed_Arduino_5.png)
-
-Select the Arduino you just configured from the dropdown menu (5.a).
-
-Click **Done** to finish (5.b).
+`FOSSDAQ init` will show you all the possible settings for this specific module. 
