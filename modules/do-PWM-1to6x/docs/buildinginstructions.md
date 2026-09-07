@@ -28,8 +28,8 @@ The measurements are:
 |<img src="../images/wire_up.png" alt="" width="160" />|wire exiting on top of the PCB|
 |<img src="../images/resistor.png" alt="" width="160" />|electrical resistor (10 kOhm)|
 |<img src="../images/diode.png" alt="" width="160" />|diode (Taiwan Semiconductor Company - 1N5819)|
-|<img src="../images/transistor.png" alt="" width="160" />|transistor (STMicroelectronics - TIP41C)|
-|<img src="../images/mosfet.png" alt="" width="160" />|mosfet (infineon - IRLZ 44N)|
+|<img src="../images/transistor.png" alt="" width="160" />|transistor; arrows pointing in the direction of the writing on the transistor (STMicroelectronics - TIP41C)|
+|<img src="../images/mosfet.png" alt="" width="160" />|mosfet; arrows pointing in the direction of the writing on the mosfet (infineon - IRLZ 44N)|
 
 ## Assembly
 
