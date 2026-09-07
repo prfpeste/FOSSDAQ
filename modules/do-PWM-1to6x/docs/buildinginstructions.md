@@ -33,6 +33,6 @@ The measurements are:
 
 ## Assembly
 
-For this assembly place PCB 1 with the copper side facing down.
+Make sure that the copper side faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
 
 ![Assembled PCB](../images/PCB_6x.png)
