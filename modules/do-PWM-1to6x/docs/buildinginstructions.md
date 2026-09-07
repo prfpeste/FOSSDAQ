@@ -23,9 +23,10 @@ The measurements are:
 ## Description of used symbols
 |symbol|description|
 |---|---|
+|<img src="../images/pin.png" alt="" width="200" />| |
 |![](../images/pin.png)|jumper pin|
-|![](../images/wire_up.png)|wire going down|
-|![](../images/wire_down.png)|wire going up|
+|![](../images/wire_up.png)|wire exiting underneath the PCB|
+|![](../images/wire_down.png)|wire exiting on top of the PCB|
 |![](../images/resistor.png)|electrical resistor (10 kOhm)|
 |![](../images/diode.png)|diode (Taiwan Semiconductor Company - 1N5819)|
 |![](../images/transistor.png)|transistor (STMicroelectronics - TIP41C)|
