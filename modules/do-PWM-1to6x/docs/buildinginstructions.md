@@ -23,14 +23,13 @@ The measurements are:
 ## Description of used symbols
 |symbol|description|
 |---|---|
-|<img src="../images/pin.png" alt="" width="200" />| |
-|![](../images/pin.png)|jumper pin|
-|![](../images/wire_up.png)|wire exiting underneath the PCB|
-|![](../images/wire_down.png)|wire exiting on top of the PCB|
-|![](../images/resistor.png)|electrical resistor (10 kOhm)|
-|![](../images/diode.png)|diode (Taiwan Semiconductor Company - 1N5819)|
-|![](../images/transistor.png)|transistor (STMicroelectronics - TIP41C)|
-|![](../images/mosfet.png)|mosfet (infineon - IRLZ 44N)|
+|<img src="../images/pin.png" alt="" width="160" />|jumper pin|
+|<img src="../images/wire_down.png" alt="" width="160" />|wire exiting underneath the PCB|
+|<img src="../images/wire_up.png" alt="" width="160" />|wire exiting on top of the PCB|
+|<img src="../images/resistor.png" alt="" width="160" />|electrical resistor (10 kOhm)|
+|<img src="../images/diode.png" alt="" width="160" />|diode (Taiwan Semiconductor Company - 1N5819)|
+|<img src="../images/transistor.png" alt="" width="160" />|transistor (STMicroelectronics - TIP41C)|
+|<img src="../images/mosfet.png" alt="" width="160" />|mosfet (infineon - IRLZ 44N)|
 
 ## Assembly
 
