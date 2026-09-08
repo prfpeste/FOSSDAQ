@@ -53,6 +53,14 @@ It is important that, in the end, all legs are more or less parallel to each oth
 
 <img src="../images/PCB_6x.png" alt="Assembled PCB" width="700" />
 
+If fewer than six outputs are required, consider the following alternatives (greyed-out sections are for reference only and do not require soldering).
+
+- ![5x](../images/PCB_5x.png)
+- ![4x](../images/PCB_4x.png)
+- ![3x](../images/PCB_3x.png)
+- ![2x](../images/PCB_2x.png)
+- ![1x](../images/PCB_1x.png)
+
 It is recommended to insert all the jumper pins first. Do not solder them immediately.
 
 Take the second PCB and align it on top of the first PCB as shown.
@@ -67,4 +75,16 @@ All the jumper pins should now be placed through both PCBs. Completely solder tw
 - 4 -> metal part of jumper pins
 - 5 -> plastic part of jumper pins
 
-Your 
+> IMPORTANT:  
+> Now, flip the PCB to the opposite side from its current position.
+
+<img src="../images/assemble_inv.png" alt="" width="700" />
+
+Solder the DIL-14 socket as depicted in the image above. Insert the 74HCT14TI chip into the socket, ensuring the notch is oriented upward.
+
+> IMPORTANT:  
+> Now, flip the PCB to the opposite side from its current position.
+
+After assembling all components as previously described and connecting both PCBs, your setup should resemble the following, excluding the six wires and the cut copper traces. Add them.
+
+<img src="../images/PCB_1_2_w_inv.png" alt="" width="700" />
