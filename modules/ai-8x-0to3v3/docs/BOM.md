@@ -2,10 +2,7 @@
 <table>
   <tr>
     <td rowspan="1">Part</td>
-    <td colspan="6">number of parts per number of outputs</td>
-  </tr>
-  <tr>
-    <th></th><th>6x</th><th>5x</th><th>4x</th><th>3x</th><th>2x</th><th>1x</th>
+    <td colspan="6">number of parts</td>
   </tr>
   <tr>
     <td rowspan="1"><a href="https://www.reichelt.com/de/en/shop/product/arduino_nano_r4_ra4m1_witdout_header-406592#closemodal">Arduino Nano R4</td>
