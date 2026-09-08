@@ -111,6 +111,6 @@ Connect the pins with wires short wires. Add one pair of long wires (approximate
 
 ### Output terminal
 
-<img src="../images/terminal_out.png" alt="" width="400" />  
+<img src="../images/terminal_out.png" alt="" width="600" />  
 
 The image above shows the placement of the 6-pole spring-loaded terminal on the previously cut PCB. The orange circles indicate the terminal pins, and the arrows denote the direction of the terminal ports.
