@@ -1,7 +1,7 @@
 # Bill Of Materials
 <table>
   <tr>
-    <th rowspan="2">Part</th>
+    <th rowspan="1">Part</th>
     <th colspan="6">Number of outputs</th>
   </tr>
   <tr>
