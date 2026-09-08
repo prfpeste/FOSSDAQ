@@ -56,6 +56,10 @@
     <td colspan="6">2</td>
   </tr>
   <tr>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/sync-_ladekabel_usb-a_usb-c_100_w_0_25_m-372362">USB-c to USB-A cable (0.25 m)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">insulated copper stranded wire (≥ 0,5 mm²; 3-4 colors recomended; ca. 1 m each)</td>
     <td colspan="6">1</td>
   </tr>
