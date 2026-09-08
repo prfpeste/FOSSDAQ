@@ -90,7 +90,9 @@ Solder the DIL-14 socket as depicted in the image above. Insert the 74HCT14TI ch
 After assembling all components as previously described and connecting both PCBs, your setup should resemble the following, excluding the six wires and the cut copper traces. Add them.
 
 All wires are described in the image below. You can either tag them now with a small sticky note or refer back to the image later to identify their connections.
-<img src="../images/PCB_1_2_w_inv.png" alt="" width="700" />
+
+
+<img src="../images/PCB_1_2_w_inv.png" alt="" width="700" />  
 
 
 ## Terminals
