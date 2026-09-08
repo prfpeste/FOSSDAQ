@@ -64,7 +64,7 @@
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">3D-printer filament for tde case</td>
+    <td rowspan="1">3D-printer filament for case</td>
     <td colspan="6"> </td>
   </tr>
   </tr>
