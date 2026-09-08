@@ -104,7 +104,7 @@ All wires are described in the image below. You can either tag them now with a s
 The image above shows the placement of the 4-pole spring-loaded terminal on the previously cut PCB. The orange circles indicate the terminal pins, and the arrows denote the direction of the terminal ports.
 Connect the pins with wires short wires. Add one pair of long wires (approximately 20 cm) for one pair of pins. It is recommended to use red for 24 V and black for GND. See the image below for clarity.
 
-<img src="../images/Terminal_24V_real.png" alt="" width="300" />
+<img src="../images/Terminal_24V_real.jpeg" alt="" width="300" />
 
 
 ### Output terminal
