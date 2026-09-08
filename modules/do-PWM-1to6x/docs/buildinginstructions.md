@@ -33,6 +33,15 @@ The measurements are:
 |<img src="../images/mosfet.png" alt="" width="160" />|mosfet; arrows pointing in the direction of the writing on the mosfet (infineon - IRLZ 44N)|
 |red lines| cut the copper strips with a sharp knife|
 
+## Modulation of transistor
+To manufacture the main PCB, the right legs of the transistors must be bent outward as shown in Figure below.
+
+For this, the leg should be bent to the right directly below the edge (A), where the leg becomes thicker. Approximately three to five millimeters further down (B), the leg should then be bent to the left again. The leg does not need to fit into the PCB's hole grid on the first attempt. The end of the leg (C) can simply be pulled down or pushed up. This adjusts the distance between the legs, making it smaller or larger.
+
+It is important that, in the end, all legs are more or less parallel to each other and that there is one row on the PCB free between the right and middle legs.
+
+<img src="../images/transistor_modulation.png" alt="Modulation of transistor" width="400" />
+
 ## Assembly
 
 Make sure that the copper side faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
