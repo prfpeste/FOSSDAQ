@@ -5,7 +5,7 @@
 Make sure that the copper side faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
 The PCBs can be cut with a regular metal saw. It is recommended to deburr the freshly cut edges.
 
-![PCB 1](../images/PCB_cutout_1.png)
+<img src="../images/PCB_cutout_1.png" alt="PCB 1" width="400" />
 The measurements are: 
 - a -> 39 holes
 - b -> 26 holes
@@ -14,7 +14,7 @@ The measurements are:
 - e -> 14 holes
 - f -> 7 holes
 
-![PCB 2](../images/PCB_cutout_2.png)
+<img src="../images/PCB_cutout_2.png" alt="PCB 2" width="400" />
 The measurements are:
 - g -> 11 holes
 - h -> 39 holes
@@ -35,4 +35,16 @@ The measurements are:
 
 Make sure that the copper side faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
 
-![Assembled PCB](../images/PCB_6x.png)
+<img src="../images/PCB_6x.png" alt="Assembled PCB" width="400" />
+
+It is recommended to insert all the jumper pins first. Do not solder them immediately.
+
+Take the second PCB and align it on top of the first PCB as shown.
+
+All the jumper pins should now be placed through both PCBs. Completely solder two jumper pins to mechanically connect the two PCBs and prevent the other jumper pins from falling out.
+<img src="../images/connection_PCB_1_2.png" alt="" width="400" />
+- 1 -> PCB 1
+- 2 -> PCB2
+- 3 -> copper lines
+- 4 -> metal part of jumper pins
+- 5 -> plastic part of jumper pins
