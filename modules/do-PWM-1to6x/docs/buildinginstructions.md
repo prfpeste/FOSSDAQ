@@ -2,8 +2,9 @@
 
 ## cutting PCBs to size
 
-Make sure that the copper side faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
-The PCBs can be cut with a regular metal saw. It is recommended to deburr the freshly cut edges.
+> IMPORTANT:
+> Make sure that the copper side of the larger PCB faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
+> The copper lines of the larger PCB always face down, until written otherwise!
 
 <img src="../images/PCB_cutout_1.png" alt="PCB 1" width="700" />
 The measurements are:
@@ -25,8 +26,8 @@ The measurements are:
 |symbol|description|
 |---|---|
 |<img src="../images/pin.png" alt="" width="160" />|jumper pin|
-|<img src="../images/wire_down.png" alt="" width="160" />|wire exiting underneath the PCB|
-|<img src="../images/wire_up.png" alt="" width="160" />|wire exiting on top of the PCB|
+|<img src="../images/wire_down.png" alt="" width="160" />|wire exiting underneath the PCB (approximately 20 cm)|
+|<img src="../images/wire_up.png" alt="" width="160" />|wire exiting on top of the PCB (approximately 20 cm)|
 |<img src="../images/resistor.png" alt="" width="160" />|electrical resistor (10 kOhm)|
 |<img src="../images/diode.png" alt="" width="160" />|diode (Taiwan Semiconductor Company - 1N5819)|
 |<img src="../images/transistor.png" alt="" width="160" />|transistor; arrows pointing in the direction of the writing on the transistor (STMicroelectronics - TIP41C)|
@@ -44,9 +45,11 @@ It is important that, in the end, all legs are more or less parallel to each oth
 
 <img src="../images/transistor_modulation.png" alt="Modulation of transistor" width="400" />
 
-## Assembly
+## PCB assembly
 
-Make sure that the copper side faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
+> IMPORTANT:
+> Make sure that the copper side of the larger PCB faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
+> The copper lines of the larger PCB always face down, until written otherwise!
 
 <img src="../images/PCB_6x.png" alt="Assembled PCB" width="700" />
 
@@ -63,3 +66,5 @@ All the jumper pins should now be placed through both PCBs. Completely solder tw
 - 3 -> copper lines
 - 4 -> metal part of jumper pins
 - 5 -> plastic part of jumper pins
+
+Your 
