@@ -74,8 +74,16 @@
     <td colspan="6">1</td>
   </tr>
   <tr>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/sync-_ladekabel_usb-a_usb-c_100_w_0_25_m-372362">USB-c to USB-A cable (0.25 m)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
     <td rowspan="1"><a href="https://www.amazon.de/Blechschrauben-Selbstschneidende-Schrauben-Holzbauschrauben-Selbstbohrschrauben/dp/B0G6YNG9CW">self-tapping Torx screws (M2.3 x 6 mm) (set)</td>
     <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)</td>
+    <td colspan="6">2</td>
   </tr>
   <tr>
     <td rowspan="1">3D-printer filament for case</td>
