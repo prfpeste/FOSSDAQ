@@ -52,7 +52,7 @@
     <td colspan="6">2</td>
   </tr>
   <tr>
-    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (2.54 mm; 80 x 20 mm)</td>
     <td colspan="6">2</td>
   </tr>
   <tr>
