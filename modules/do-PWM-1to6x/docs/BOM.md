@@ -2,7 +2,7 @@
 <table>
   <tr>
     <td rowspan="1">Part</td>
-    <td colspan="6">number of parts</td>
+    <td colspan="6">number of parts per number of outputs</td>
   </tr>
   <tr>
     <th></th><th>6x</th><th>5x</th><th>4x</th><th>3x</th><th>2x</th><th>1x</th>
@@ -14,7 +14,7 @@
     <td><a href="https://www.reichelt.de/de/de/shop/produkt/hf-bipolartransistor_npn_100v_6a_65w_to-220-217329">transistor (TIP41C)</a></td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td>
   </tr>
   <tr>
-    <td><a href="https://www.reichelt.de/de/de/shop/produkt/schottkydiode_40_v_1_a_do-41-219559">diode (1N5819)</a></td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td>
+    <td><a href="https://www.reichelt.de/de/de/shop/produkt/schottkydiode_40_v_1_a_do-41-219559">diode (Taiwan Semiconductor - 1N5819)</a></td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td>
   </tr>
   <tr>
     <td><a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_10_0_kohm_0207_0_6_w_1_-11449">resistor (10 kOhm)</a></td><td>12</td><td>10</td><td>8</td><td>6</td><td>4</td><td>2</td>
