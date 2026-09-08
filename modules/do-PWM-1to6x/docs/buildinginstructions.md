@@ -32,6 +32,8 @@ The measurements are:
 |<img src="../images/transistor.png" alt="" width="160" />|transistor; arrows pointing in the direction of the writing on the transistor (STMicroelectronics - TIP41C)|
 |<img src="../images/mosfet.png" alt="" width="160" />|mosfet; arrows pointing in the direction of the writing on the mosfet (infineon - IRLZ 44N)|
 |red lines| cut the copper strips with a sharp knife|
+|large white dots|soldering points|
+|small white dots|open PCB holes|
 
 ## Modulation of transistor
 To manufacture the main PCB, the right legs of the transistors must be bent outward as shown in Figure below.
