@@ -55,11 +55,11 @@ It is important that, in the end, all legs are more or less parallel to each oth
 
 If fewer than six outputs are required, consider the following alternatives (greyed-out sections are for reference only and do not require soldering).
 
-- ![5x](../images/PCB_5x.png)
-- ![4x](../images/PCB_4x.png)
-- ![3x](../images/PCB_3x.png)
-- ![2x](../images/PCB_2x.png)
-- ![1x](../images/PCB_1x.png)
+- [5x](../images/PCB_5x.png)
+- [4x](../images/PCB_4x.png)
+- [3x](../images/PCB_3x.png)
+- [2x](../images/PCB_2x.png)
+- [1x](../images/PCB_1x.png)
 
 It is recommended to insert all the jumper pins first. Do not solder them immediately.
 
