@@ -2,10 +2,10 @@
 <table>
   <tr>
     <td rowspan="1">Part</td>
-    <td colspan="6">number of parts for number of outputs</td>
+    <td colspan="6">number of parts</td>
   </tr>
   <tr>
-    <td> </td><td>6x</td><td>5x</td><td>4x</td><td>3x</td><td>2x</td><td>1x</td>
+    <th> </th><th>number of outputs</th><th>6x</th><th>5x</th><th>4x</th><th>3x</th><th>2x</th><th>1x</th>
   </tr>
   <tr>
     <td><a href="https://www.reichelt.de/de/de/shop/produkt/mosfet_n-ch_55v_47a_110w_to-220ab-129819">mosfet (IRLZ44NPBF)</a></td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td>
