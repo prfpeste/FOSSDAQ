@@ -7,6 +7,7 @@ The PCBs can be cut with a regular metal saw. It is recommended to deburr the fr
 
 <img src="../images/PCB_cutout_1.png" alt="PCB 1" width="700" />
 The measurements are:
+
 - a -> 39 holes
 - b -> 26 holes
 - c -> 19 holes
@@ -16,6 +17,7 @@ The measurements are:
 
 <img src="../images/PCB_cutout_2.png" alt="PCB 2" width="700" />
 The measurements are:
+
 - g -> 11 holes
 - h -> 39 holes
 
