@@ -54,6 +54,10 @@
     <td colspan="6">1</td>
   </tr>
   <tr>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/dc_dc-wandler_tmh_2_w_12_v_80_ma_sil-7-121355">DCDC 24 V to ±12 V (TRACO POWER TMH 2412D)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_6-pol_0_08_-_1_mm_rm_5_0-72191">Spring-loaded terminal (6-pole)</td>
     <td colspan="6">1</td>
   </tr>
