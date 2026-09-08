@@ -2,7 +2,7 @@
 
 ## cutting PCBs to size
 
-> IMPORTANT:
+> IMPORTANT:  
 > Make sure that the copper side of the larger PCB faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
 > The copper lines of the larger PCB always face down, until written otherwise!
 
@@ -47,7 +47,7 @@ It is important that, in the end, all legs are more or less parallel to each oth
 
 ## PCB assembly
 
-> IMPORTANT:
+> IMPORTANT:  
 > Make sure that the copper side of the larger PCB faces down and that the copper lines are directed in the direction of the blue arrow in the upper left corner.
 > The copper lines of the larger PCB always face down, until written otherwise!
 
