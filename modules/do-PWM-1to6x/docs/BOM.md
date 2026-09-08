@@ -60,7 +60,7 @@
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1"><a href="https://www.amazon.de/Blechschrauben-Selbstschneidende-Schrauben-Holzbauschrauben-Selbstbohrschrauben/dp/B0G6YNG9CW">self-tapping Torx screws (M2.3 x 6 mm)</td>
+    <td rowspan="1"><a href="https://www.amazon.de/Blechschrauben-Selbstschneidende-Schrauben-Holzbauschrauben-Selbstbohrschrauben/dp/B0G6YNG9CW">self-tapping Torx screws (M2.3 x 6 mm) (set)</td>
     <td colspan="6">1</td>
   </tr>
   <tr>
