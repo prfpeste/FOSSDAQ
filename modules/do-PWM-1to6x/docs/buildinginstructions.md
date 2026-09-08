@@ -22,6 +22,8 @@ The measurements are:
 - g -> 11 holes
 - h -> 39 holes
 
+<img src="../images/terminal_24V_cutout.png" alt="24 V terminal cutout" width="300" />
+
 ## Description of used symbols
 |symbol|description|
 |---|---|
@@ -87,4 +89,17 @@ Solder the DIL-14 socket as depicted in the image above. Insert the 74HCT14TI ch
 
 After assembling all components as previously described and connecting both PCBs, your setup should resemble the following, excluding the six wires and the cut copper traces. Add them.
 
+All wires are described in the image below. You can either tag them now with a small sticky note or refer back to the image later to identify their connections.
 <img src="../images/PCB_1_2_w_inv.png" alt="" width="700" />
+
+
+## Terminals
+> IMPORTANT:
+> The terminal pins do not fit into the PCB holes. Carefully file the diameter down slightly.
+
+### 24 V terminal
+<img src="../images/Terminal_24V.png" alt="" width="300" />
+The image above shows the placement of the 4-pole spring-loaded terminal on the previously cut PCB. The orange circles indicate the terminal pins, and the arrows denote the direction of the terminal ports.
+Connect the pins with wires. Use one pair of long wires (approximately 20 cm) for one pair of pins. It is recommended to use red for 24 V and black for GND.
+
+### Output terminal
