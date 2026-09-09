@@ -168,7 +168,7 @@ The measurements are:
 
 ## 5 setting DCDC voltage
 
-- Plug the DCDC into the 24V power supply.
+- Plug the DCDC (Pos 7) into the 24V power supply.
 - Verify the LED display shows 24 V.
 - Press the button in the lower right corner.
 - Use a small flathead screwdriver to turn the brass screw on top of the blue box.
