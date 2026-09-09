@@ -51,7 +51,7 @@ The measurements are:
 
 ## 2 Pre-assembly of transistor
 
-- To manufacture the main PCB, bend the right legs of the transistors outward as shown in the figure below.
+- To manufacture the main PCB, bend the right legs of the transistors (Pos 2) outward as shown in the figure below.
 
 - Bend the leg to the right directly below the edge (A), where the leg becomes thicker.
 - Approximately 3–5 mm further down (B), bend the leg to the left again.
