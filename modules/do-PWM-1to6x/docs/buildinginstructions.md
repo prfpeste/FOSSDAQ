@@ -166,7 +166,17 @@ The measurements are:
   - Arrows denote the direction of the terminal ports.
 - Solder the placed terminals.
 
-## connecting all components
+## 5 setting DCDC voltage
+
+- Plug the DCDC into the 24V power supply.
+- Verify the LED display shows 24 V.
+- Press the button in the lower right corner.
+- Use a small flathead screwdriver to turn the brass screw on top of the blue box.
+- Adjust until the display shows the desired voltage.
+  - Voltage must be between 6 V and 20 V.
+  - Voltages outside this range will damage the Arduino.
+
+## 6 connecting all components
 
 ![kiCAD](../images/kiCAD_PWM.png)
 
