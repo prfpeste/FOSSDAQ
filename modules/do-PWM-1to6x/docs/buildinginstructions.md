@@ -117,4 +117,4 @@ The image above shows the placement of the 6-pole spring-loaded terminal on the 
 
 ## connecting all components
 
-<img src="../images/kiCAS_PWM.pdf" alt="" width="1000" />
+<img src="../images/kiCAD_PWM.pdf" alt="" width="1000" />
