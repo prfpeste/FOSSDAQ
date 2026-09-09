@@ -1,7 +1,7 @@
 # do-PWM-1to6x
 
 ## 0 - 3D printing case
-- Start printing the case and all additional 3D components.
+- Start printing the case and all additional [3D components](../hardware).
 
 ## 1 - cutting PCBs to size
 - **IMPORTANT:**
