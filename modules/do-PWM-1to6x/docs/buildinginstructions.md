@@ -14,6 +14,8 @@
 2. Cut it to the required size using a metal saw.
 <img src="../images/PCB_cutout_1.png" alt="PCB 1" width="700" />
 The measurements are:
+|index|measurement|
+|---|---|
 |a|39 holes|
 |b|26 holes|
 |c|19 holes|
@@ -28,6 +30,8 @@ The measurements are:
 
 <img src="../images/PCB_cutout_2.png" alt="PCB 2" width="700" />
 The measurements are:
+|index|measurement|
+|---|---|
 |g|11 holes|
 |h|39 holes|
 
