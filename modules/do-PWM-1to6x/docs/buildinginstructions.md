@@ -4,7 +4,7 @@
 - **IMPORTANT:**
   Ensure the copper side of PCBs face down.
   Align the copper lines with the direction of the blue arrow in the upper left corner.
-  The copper lines of the larger PCB must always face down unless specified otherwise.
+  The copper lines of PCB 1 must always face down unless specified otherwise.
 
 ### 1.1 PCB 1
 1. Take one Strip-Grid PCB (Pos 5).
@@ -67,7 +67,7 @@ The measurements are:
 - **IMPORTANT:**
   Ensure the copper side of **PCB 1** faces down.
   Align the copper lines with the direction of the blue arrow in the upper left corner.
-  The copper lines of the larger PCB must always face down unless specified otherwise.
+  The copper lines of PCB 1 must always face down unless specified otherwise.
 
 <img src="../images/PCB_6x.png" alt="Assembled PCB" width="700" />
 
