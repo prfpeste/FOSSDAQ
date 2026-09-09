@@ -30,7 +30,6 @@ The `do-PWM-1to6x` module is the first fully developed digital output card of th
 - `hardware/` – KiCad files, CAD files, exported manufacturing files
 - `firmware/` – microcontroller code for this module
 - `docs/` – build notes, technical documentation, test instructions
-- `bom/` – parts list for the module
 - `images/` – photos and renders
 
 **BOM** stands for **Bill of Materials** and refers to the module's parts list.
