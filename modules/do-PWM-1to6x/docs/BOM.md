@@ -82,7 +82,7 @@
   </tr>
   <tr>
     <td rowspan="1">17</td>
-    <td rowspan="1">3D-printer filament for case</td>
+    <td rowspan="1">3D printing PLA filament for case</td>
     <td colspan="6"> </td>
   </tr>
   </tr>
