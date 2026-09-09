@@ -74,15 +74,15 @@ The measurements are:
 - If fewer than six outputs are required, use the following alternatives:
   - Greyed-out sections are for reference only.
   - Do not assemble greyed-out sections.
-- [5x](../images/PCB_5x.png)
-- [4x](../images/PCB_4x.png)
-- [3x](../images/PCB_3x.png)
-- [2x](../images/PCB_2x.png)
-- [1x](../images/PCB_1x.png)
+  - [5x](../images/PCB_5x.png)
+  - [4x](../images/PCB_4x.png)
+  - [3x](../images/PCB_3x.png)
+  - [2x](../images/PCB_2x.png)
+  - [1x](../images/PCB_1x.png)
 
 - Insert all jumper pins (Pos 12) first. Do not solder them yet.
 - Align PCB 2 on top of PCB 1 as shown.
-  - PCB 2 must cover the cutout in PCB 1.
+  - PCB 2 must cover the cutout in PCB 1 completely.
   - PCB 2 and PCB 1 must be flush on three edges.
   - PCB 2 must not overhang any edges of PCB 1.
 - Ensure all jumper pins pass through both PCBs.
@@ -112,7 +112,7 @@ The measurements are:
   Flip the PCB to the opposite side from its current position.
 
   
-- After assembling all components (Pos 1, 2, 3, 4, 5, 8 and 9) as described and connecting both PCBs, the setup should match the reference, excluding the six wires (Pos 15) and cut copper traces. Add these now.
+- After assembling all components (Pos 1, 2, 3, 4, 5, 8 and 9) as described and connecting both PCBs, the setup should match the reference, excluding six green wires (Pos 15) and cut copper traces. Add these now.
 
 - All wires are described in the image below.
 - Option 1: Tag each wire with a small sticky note for identification.
@@ -133,7 +133,7 @@ The measurements are:
 
 <img src="../images/Terminal_24V.png" alt="" width="300" />  
 
-- Place the 4-pole spring-loaded terminal on the previously cut PCB as shown in the image above.
+- Place the 4-pole spring-loaded terminal (Pos 11) on the previously cut PCB as shown in the image above.
   - Orange circles indicate the terminal pins.
   - Arrows denote the direction of the terminal ports.
 
@@ -152,7 +152,7 @@ The measurements are:
 
 <img src="../images/terminal_out.png" alt="" width="700" />  
 
-- Place the 6-pole spring-loaded terminal on the previously cut PCB as shown in the image above.
+- Place the 6-pole spring-loaded terminal (Pos 10) on the previously cut PCB as shown in the image above.
   - Orange circles indicate the terminal pins.
   - Arrows denote the direction of the terminal ports.
 - Solder the placed terminals.
