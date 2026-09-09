@@ -1,5 +1,8 @@
 # do-PWM-1to6x
 
+## 0 3D printing case
+- Start printing the case and all additional 3D components.
+
 ## 1 cutting PCBs to size
 - **IMPORTANT:**
   Ensure the copper side of PCBs face down.
