@@ -101,18 +101,20 @@ The measurements are:
 - Ensure all jumper pins pass through both PCBs.
 - Fully solder two jumper pins (Pos 12) to mechanically connect the two PCBs and prevent the remaining jumper pins from falling out.
 
-### 3.3 - assembling parts on PCB 1
-
-- Fully solder the remaining jumper pins (Pos 12).
-- Solder the remaining parts (Pos 1, 2, 3 and 4) as shown in the layout.
-
 <img src="../images/connection_PCB_1_2.png" alt="" width="700" />
 
-|1||PCB 1|
+|index|name|
+|---|---|
+|1|PCB 1|
 |2|PCB2|
 |3|copper lines|
 |4|metal part of jumper pins|
 |5|plastic part of jumper pins|
+
+### 3.3 - assembling parts on PCB 1
+
+- Fully solder the remaining jumper pins (Pos 12).
+- Solder the remaining parts (Pos 1, 2, 3 and 4) as shown in the layout.
 
 ### 3.4 - assembling inverter
 
