@@ -156,8 +156,8 @@ The measurements are:
   - Orange circles indicate the terminal pins.
   - Arrows denote the direction of the terminal ports.
 
-- Connect both 24 V pins with short red wires.
-- Connect both GND pins with short black wires.
+- Connect both 24 V pins with one short red wire.
+- Connect both GND pins with one short black wire.
 - Ensure no connection exists between any 24 V pin and any GND pin.
 - Add one pair of long wires (approximately 20 cm) for one pair of pins.
   - Use red for 24 V.
