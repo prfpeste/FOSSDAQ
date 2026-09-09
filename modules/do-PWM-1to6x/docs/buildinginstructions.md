@@ -1,15 +1,15 @@
 # do-PWM-1to6x
 
-## 0 3D printing case
+## 0 - 3D printing case
 - Start printing the case and all additional 3D components.
 
-## 1 cutting PCBs to size
+## 1 - cutting PCBs to size
 - **IMPORTANT:**
   Ensure the copper side of PCBs face down.
   Align the copper lines with the direction of the blue arrow in the upper left corner.
   The copper lines of PCB 1 must always face down unless specified otherwise.
 
-### 1.1 PCB 1
+### 1.1 - PCB 1
 1. Take one Strip-Grid PCB (Pos 5).
 2. Cut it to the required size using a metal saw.
 <img src="../images/PCB_cutout_1.png" alt="PCB 1" width="700" />
@@ -24,7 +24,7 @@ The measurements are:
 |e|14 holes|
 |f|7 holes|
 
-### 1.2 PCB 2
+### 1.2 - PCB 2
 
 - Take one Strip-Grid PCB (Pos 5).
 - Cut it to the required size using a metal saw.
@@ -37,7 +37,7 @@ The measurements are:
 |g|11 holes|
 |h|39 holes|
 
-### 1.3 PCB 24 V Terminal
+### 1.3 - PCB 24 V Terminal
 
 - Take one perforated circuit board (2.54 mm; 80 x 20 mm) (Pos 13).
 - Cut it to the required size using a metal saw.
@@ -58,7 +58,7 @@ The measurements are:
 ||large white dots|soldering points|
 ||small white dots|open PCB holes|
 
-## 2 Pre-assembly of transistor
+## 2 - Pre-assembly of transistor
 
 - To manufacture the main PCB, bend the right legs of the transistors (Pos 2) outward as shown in the figure below.
 
@@ -72,11 +72,13 @@ The measurements are:
 
 <img src="../images/transistor_modulation.png" alt="Modulation of transistor" width="400" />
 
-## 3 PCB assembly
+## 3 - PCB assembly
 - **IMPORTANT:**
   Ensure the copper side of **PCB 1** faces down.
   Align the copper lines with the direction of the blue arrow in the upper left corner.
   The copper lines of PCB 1 must always face down unless specified otherwise.
+
+### 3.1 - selecting layout
 
 <img src="../images/PCB_6x.png" alt="Assembled PCB" width="700" />
 
@@ -89,6 +91,8 @@ The measurements are:
   - [2x](../images/PCB_2x.png)
   - [1x](../images/PCB_1x.png)
 
+### 3.2 - connecting PCB 1 & PCB 2
+
 - Insert all jumper pins (Pos 12) first. Do not solder them yet.
 - Align PCB 2 on top of PCB 1 as shown.
   - PCB 2 must cover the cutout in PCB 1 completely.
@@ -96,6 +100,8 @@ The measurements are:
   - PCB 2 must not overhang any edges of PCB 1.
 - Ensure all jumper pins pass through both PCBs.
 - Fully solder two jumper pins (Pos 12) to mechanically connect the two PCBs and prevent the remaining jumper pins from falling out.
+
+### 3.3 - assembling parts on PCB 1
 
 - Fully solder the remaining jumper pins (Pos 12).
 - Solder the remaining parts (Pos 1, 2, 3 and 4) as shown in the layout.
@@ -108,18 +114,20 @@ The measurements are:
 |4|metal part of jumper pins|
 |5|plastic part of jumper pins|
 
+### 3.4 - assembling inverter
+
 - **IMPORTANT:**
   Flip the PCB to the opposite side from its current position.
 
+- Solder the DIL-14 socket (Pos 9) without the 74HCT14TI chip (Pos 8) inserted.
+- Insert the 74HCT14TI chip (Pos 8) into the socket with the notch facing away from the rest of the PCB.
+- The final assembly of the 74HCT14TI chip and DIL-14 socket must match the image below.
 <img src="../images/assemble_inv.png" alt="" width="700" />
 
-- Solder the DIL-14 (Pos 9) socket as shown in the image above.
-- Insert the 74HCT14TI (Pos 8) chip into the socket with the notch facing upward.
-
-
 - **IMPORTANT:**
   Flip the PCB to the opposite side from its current position.
 
+### 3.5 - finishing PCB 2
   
 - After assembling all components (Pos 1, 2, 3, 4, 5, 8 and 9) as described and connecting both PCBs, the setup should match the reference, excluding six green wires (Pos 15) and cut copper traces. Add these now.
 
@@ -131,7 +139,7 @@ The measurements are:
 <img src="../images/PCB_1_2_w_inv.png" alt="" width="700" />  
 
 
-## 4 Terminals
+## 4 - Terminals
 
 ### 4.1 Pre-assembling the Terminals
 
