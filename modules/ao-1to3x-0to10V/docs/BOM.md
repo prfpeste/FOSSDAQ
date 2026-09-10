@@ -39,7 +39,7 @@
     <td>10</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">pin header (16x1; 2,54 mm)</td><td>3</td><td>3</td><td>2</td>
   </tr>
   <tr>
-    <td>11</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_8-polig_doppelter_federkontakt-8230">IC-Socket (8 pols)</td><td>3</td><td>3</td><td>2</td>
+    <td>11</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_8-polig_doppelter_federkontakt-8230">IC-Socket (8 pols)</td><td>6</td><td>4</td><td>2</td>
   </tr>
   <tr>
     <td rowspan="1">12</td>
