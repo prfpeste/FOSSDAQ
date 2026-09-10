@@ -176,3 +176,73 @@ This PCB will form now on be referenced as PCB 5.
 - shorten the wire of the resistors using small side-cutting pliers
 
 <img src="../images/step_1-2.png" alt="" width="700" />
+
+
+
+### 1.3 - Step 3: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-3.png" alt="" width="700" />
+
+
+
+
+### 1.4 - Step 4: soldering 3.8 kOhm resistors onto PCB 1 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|4|<a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_3_83_kohm_0207_0_6_w_1_-11704">resistor (3.8 kOhm)|3| |small side-cutting pliers|
+
+- mount the resistors (3.8 kOhm) (BOM Pos 4) on PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+    - make sure that the resistor and its wires lay on top of PCB 1 exactly as shown. 
+- solder them in place using a soldering iron
+- shorten the wire of the resistors using small side-cutting pliers
+
+<img src="../images/step_1-4.png" alt="" width="700" />
+
+
+
+### 1.5 - Step 5: soldering 820 Ohm resistors onto PCB 1 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|3|<a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_820_ohm_0207_0_6_w_1_-12002">resistor (820 Ohm)|3| |small side-cutting pliers|
+
+- mount the resistors (820 Ohm) (BOM Pos 3) on PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+    - make sure that the resistor and its wires lay on top of PCB 1 exactly as shown. 
+- solder them in place using a soldering iron
+- shorten the wire of the resistors using small side-cutting pliers
+
+<img src="../images/step_1-4.png" alt="" width="700" />
+
+
+
+### 1.6 - Step 6: soldering diode onto PCB 1 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|2|<a href="https://www.reichelt.de/de/de/shop/produkt/schottkydiode_40_v_1_a_do-41-219559">diode (Taiwan Semiconductor - 1N5819)</a>|3| |small side-cutting pliers|
+
+- mount the diode (BOM Pos 2) on PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+    - make sure that the resistor and its wires lay on top of PCB 1 exactly as shown. 
+- solder them in place using a soldering iron
+- shorten the wire of the resistors using small side-cutting pliers
+
+<img src="../images/step_1-4.png" alt="" width="700" />
