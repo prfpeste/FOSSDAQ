@@ -39,23 +39,21 @@
     <td>10</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">pin header (16x1; 2,54 mm)</td><td>3</td><td>3</td><td>2</td>
   </tr>
   <tr>
-    <td rowspan="1">11</td>
+    <td>11</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_8-polig_doppelter_federkontakt-8230">IC-Socket (8 pols)</td><td>3</td><td>3</td><td>2</td>
+  </tr>
+  <tr>
+    <td rowspan="1">12</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277">Strip-Grid PCB (2.54 mm; 39 x 39 holes)</td>
     <td colspan="6">2</td>
   </tr>
   <tr>
-    <td rowspan="1">12</td>
+    <td rowspan="1">13</td>
     <td rowspan="1"><a href="https://www.reichelt.com/de/en/shop/product/arduino_nano_r4_ra4m1_witdout_header-406592#closemodal">Arduino Nano R4</td>
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1">13</td>
-    <td rowspan="1"><a href="https://www.reichelt.com/de/en/shop/product/developer_boards_-_voltage_regulators_dc_dc_converters-333853#closemodal">DCDC converter (SBC-BUCK01)</td>
-    <td colspan="6">1</td>
-  </tr>
-  <tr>
     <td rowspan="1">14</td>
-    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_8-polig_doppelter_federkontakt-8230">IC-Socket (8 pols)</td>
+    <td rowspan="1"><a href="https://www.reichelt.com/de/en/shop/product/developer_boards_-_voltage_regulators_dc_dc_converters-333853#closemodal">DCDC converter (SBC-BUCK01)</td>
     <td colspan="6">1</td>
   </tr>
   <tr>
@@ -95,11 +93,6 @@
   </tr>
   <tr>
     <td rowspan="1">22</td>
-    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)</td>
-    <td colspan="6">2</td>
-  </tr>
-  <tr>
-    <td rowspan="1">23</td>
     <td rowspan="1">3D printing PLA filament for case</td>
     <td colspan="6"> </td>
   </tr>
