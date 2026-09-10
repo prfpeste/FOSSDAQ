@@ -96,7 +96,7 @@ Youll need to print the following components:
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
-|12|[Strip-Grid PCB (2.54 mm; 39 x 39 holes)](https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277)|      |metalsaw|
+|12|[Strip-Grid PCB (2.54 mm; 39 x 39 holes)](https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277)|2|      |metalsaw|
 | | | | |vise (recommended)|
 
 
