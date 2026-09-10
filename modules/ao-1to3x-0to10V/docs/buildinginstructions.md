@@ -17,7 +17,7 @@ Youll need to print the following components:
   <tr>
     <td rowspan="1">Pos in BOM</td>
     <td rowspan="1">Part</td>
-    <td colspan="6">number of parts per number of outputs</td>
+    <td colspan="3">number of parts per number of outputs</td>
   </tr>
   <tr>
     <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
@@ -58,17 +58,28 @@ Youll need to print the following components:
   <tr>
     <td rowspan="1">12</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277">Strip-Grid PCB (2.54 mm; 39 x 39 holes)</td>
-    <td colspan="6">2</td>
+    <td colspan="3">2</td>
   </tr>
   <tr>
     <td rowspan="1">15</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/dc_dc-wandler_tmh_2_w_12_v_80_ma_sil-7-121355">DCDC converter 24 V to ±12 V (TRACO POWER TMH 2412D)</td>
-    <td colspan="6">1</td>
+    <td colspan="3">1</td>
   </tr>
   <tr>
-    <td rowspan="1">19</td>
-    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">insulated copper stranded wire (≥ 0,5 mm²; 3-4 colors recomended; ca. 1 m each)</td>
-    <td colspan="6">1</td>
+    <td rowspan="1">19.1</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</td>
+    <td colspan="3">3</td>
+  </tr>
+  <tr>
+    <td rowspan="1">19.2</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</td>
+    <td colspan="3">3</td>
+  </tr>
+  <tr>
+    <td>19.3</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">green insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</a><td>7</td><td>6</td><td>5</td>
+  </tr>
+  <tr>
+    <td>19.4</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">blue insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</a><td>3</td><td>2</td><td>1</td>
   </tr>
   </tr>
 </table>
