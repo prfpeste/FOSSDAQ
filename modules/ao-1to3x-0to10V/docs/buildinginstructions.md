@@ -3,10 +3,12 @@
 ## 0 - 3D-printing
 Youll need to print the following components: 
 
-|1|<img src="../images/mosfet.png" alt="" width="160" />|[Case](../hardware)|
-|2|<img src="../images/transistor.png" alt="" width="160" />|[Lid](../hardware)|
-|3|<img src="../images/diode.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware)|
-|4|<img src="../images/resistor.png" alt="" width="160" />|Mounting Plate PCB(../hardware)|
+|image|Name and Link|
+|---|---|
+|<img src="../images/mosfet.png" alt="" width="160" />|[Case](../hardware)|
+|<img src="../images/transistor.png" alt="" width="160" />|[Lid](../hardware)|
+|<img src="../images/diode.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware)|
+|<img src="../images/resistor.png" alt="" width="160" />|Mounting Plate PCB(../hardware)|
 
 ## PCB Assembly
 
