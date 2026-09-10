@@ -227,7 +227,7 @@ This PCB will form now on be referenced as PCB 5.
 - solder them in place using a soldering iron
 - shorten the wire of the resistors using small side-cutting pliers
 
-<img src="../images/step_1-4.png" alt="" width="700" />
+<img src="../images/step_1-5.png" alt="" width="700" />
 
 
 
@@ -241,8 +241,8 @@ This PCB will form now on be referenced as PCB 5.
 - mount the diode (BOM Pos 2) on PCB 1 as shown below.
     - the copper side faces downward.
     - the pink arrow indicates the direction of the copper stripes.
-    - make sure that the resistor and its wires lay on top of PCB 1 exactly as shown. 
+    - make sure that the ring of the diode faces the same direction as shown.
 - solder them in place using a soldering iron
 - shorten the wire of the resistors using small side-cutting pliers
 
-<img src="../images/step_1-4.png" alt="" width="700" />
+<img src="../images/step_1-6.png" alt="" width="700" />
