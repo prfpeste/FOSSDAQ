@@ -10,7 +10,7 @@ Youll need to print the following components:
 |<img src="../images/diode.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware)|
 |<img src="../images/resistor.png" alt="" width="160" />|[Mounting Plate PCB](../hardware)|
 
-## PCB Assembly
+## 1 - PCB Assembly
 
 ### Materials
 <table>
@@ -80,6 +80,39 @@ Youll need to print the following components:
   </tr>
   <tr>
     <td>19.4</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">blue insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</a><td>3</td><td>2</td><td>1</td>
+  </tr>
+  </tr>
+</table>
+
+### Tools 
+
+- soldering iron
+- sharp knife
+- metalsaw
+- vise (recommended)
+- small flathead screwdriver
+
+### 1.1 - Step 1: cutting PCB to size
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|12|[Strip-Grid PCB (2.54 mm; 39 x 39 holes)](https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277)|      |metalsaw|
+| | | | |vise (recommended)|
+
+
+### 1.1 - Step 1: soldering 10 kOhm resisitors
+**Materials for this step**
+<table>
+  <tr>
+    <td rowspan="1">Pos in BOM</td>
+    <td rowspan="1">Part</td>
+    <td colspan="3">number of parts per number of outputs</td>
+  </tr>
+  <tr>
+    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
+  </tr>
+  <tr>
+    <td>5</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_10_0_kohm_0207_0_6_w_1_-11449">resistor (10 kOhm)</a><td>7</td><td>6</td><td>5</td>
   </tr>
   </tr>
 </table>
