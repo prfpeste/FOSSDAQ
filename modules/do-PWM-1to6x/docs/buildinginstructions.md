@@ -115,6 +115,10 @@ The measurements are:
 
 - Fully solder the remaining jumper pins (Pos 12).
 - Solder the remaining parts (Pos 1, 2, 3 and 4) as shown in the layout.
+  - Use red wire for the left and right wires in the middle of the PCB.
+  - Use black wire for the middle of the three wires in the middle of the PCB.
+  - Use blue wire for the wires exiting underneath the PCB at the bottom of the PCB.
+  - Use green wire for the wires exiting on top of the PCB at the bottom of the PCB.
 
 ### 3.4 - assembling inverter
 
