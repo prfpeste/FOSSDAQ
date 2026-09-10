@@ -8,7 +8,7 @@ Youll need to print the following components:
 |<img src="../images/mosfet.png" alt="" width="160" />|[Case](../hardware)|
 |<img src="../images/transistor.png" alt="" width="160" />|[Lid](../hardware)|
 |<img src="../images/diode.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware)|
-|<img src="../images/resistor.png" alt="" width="160" />|Mounting Plate PCB(../hardware)|
+|<img src="../images/resistor.png" alt="" width="160" />|[Mounting Plate PCB](../hardware)|
 
 ## PCB Assembly
 
