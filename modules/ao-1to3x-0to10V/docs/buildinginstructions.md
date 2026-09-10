@@ -86,33 +86,93 @@ Youll need to print the following components:
 
 ### Tools 
 
-- soldering iron
+- soldering iron with solder
 - sharp knife
-- metalsaw
+- metal saw
 - vise (recommended)
 - small flathead screwdriver
+- small side-cutting pliers
 
 ### 1.1 - Step 1: cutting PCB to size
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
-|12|[Strip-Grid PCB (2.54 mm; 39 x 39 holes)](https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277)|2|      |metalsaw|
+|12|[Strip-Grid PCB (2.54 mm; 39 x 39 holes)](https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277)|2|      |metal saw|
 | | | | |vise (recommended)|
 
+- Take one Strip-Grid PCB (BOM Pos 12)
+- cut it to size using a metal saw
+    - measurements are written down below.
+        - the copper side faces downward.
+        - the pink arrow indicates the direction of the copper stripes.
+    - dont use much force at the end of the cut. Otherwise the Strip-Grid PCB will break.
+<img src="../images/PCB1.png" alt="" width="700" />
 
-### 1.1 - Step 1: soldering 10 kOhm resisitors
-**Materials for this step**
-<table>
-  <tr>
-    <td rowspan="1">Pos in BOM</td>
-    <td rowspan="1">Part</td>
-    <td colspan="3">number of parts per number of outputs</td>
-  </tr>
-  <tr>
-    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
-  </tr>
-  <tr>
-    <td>5</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_10_0_kohm_0207_0_6_w_1_-11449">resistor (10 kOhm)</a><td>7</td><td>6</td><td>5</td>
-  </tr>
-  </tr>
-</table>
+|index|measurement in number of holes|
+|---|---|
+|a|26|
+|b|39|
+
+This PCB will form now on be referenced as PCB 1.
+
+
+- Take one Strip-Grid PCB (BOM Pos 12)
+- cut it into four pieces using a metal saw
+    - measurements are written down below.
+        - the copper side faces down.
+        - the pink arrow indicates the direction of the copper stripes.
+    - dont use much force at the end of the cut. Otherwise the Strip-Grid PCB will break.
+
+ 
+<img src="../images/PCB2.png" alt="" width="700" />
+
+|index|measurement in number of holes|
+|---|---|
+|c|25|
+|d|7|
+
+This PCB will form now on be referenced as PCB 2.
+
+
+<img src="../images/PCB3.png" alt="" width="700" />
+
+|index|measurement in number of holes|
+|---|---|
+|c|25|
+|e|7|
+
+This PCB will form now on be referenced as PCB 3.
+
+
+<img src="../images/PCB4.png" alt="" width="700" />
+
+|index|measurement in number of holes|
+|---|---|
+|c|25|
+
+This PCB will form now on be referenced as PCB 4.
+
+
+<img src="../images/PCB5.png" alt="" width="700" />
+|index|measurement in number of holes|
+|---|---|
+|c|25|
+
+This PCB will form now on be referenced as PCB 5.
+
+
+
+### 1.2 - Step 2: soldering 10 kOhm resisitors onto PCB 1
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|5|<a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_10_0_kohm_0207_0_6_w_1_-11449">resistor (10 kOhm)|7| |small side-cutting pliers|
+
+- mount the resistors (10 kOhm) (BOM Pos 5) on PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+- solder them in place using a soldering iron
+- shorten the wire of the resistors using small side-cutting pliers
+
+<img src="../images/step_1-2.png" alt="" width="700" />
