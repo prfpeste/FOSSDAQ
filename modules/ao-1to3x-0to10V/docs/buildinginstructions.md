@@ -689,6 +689,7 @@ This PCB will form now on be referenced as PCB 5.
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
 |17|<a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_4-pol_0_08_-_1_mm_rm_5_0-72189">Spring-loaded terminal (4-pole)|1| |small metal file|
+| | | | |vise (recommended)|
 
 - The terminal pins are too large for the PCB holes.
 - Carefully file down the edges of the pins until they fit into the holes of the perforated circuit board (80 x 20 mm) (BOM Pos 18).
@@ -730,7 +731,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 
 
 
-### 2.4 - Step 4: soldering Spring-loaded terminal (4-pole)
+### 2.4 - Step 4: soldering insulated copper stranded wire to 24 V Terminal PCB
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
@@ -795,6 +796,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
 |16|<a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_6-pol_0_08_-_1_mm_rm_5_0-72191">Spring-loaded terminal (6-pole)|1| |small metal file|
+| | | | |vise (recommended)|
 
 - The terminal pins are too large for the PCB holes.
 - Carefully file down the edges of the pins until they fit into the holes of the perforated circuit board (80 x 20 mm) (BOM Pos 18).
