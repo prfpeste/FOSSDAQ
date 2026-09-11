@@ -477,7 +477,7 @@ This PCB will form now on be referenced as PCB 5.
 
 
 
-### 1.20 - Step 20: soldering DCDC converter 24 V to ±12 V
+### 1.20 - Step 20: soldering digital to analog converter
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
