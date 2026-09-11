@@ -50,7 +50,10 @@ Youll need to print the following components:
     <td>9</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/d_a-wandler_12-bit_1-kanal_spi_u-referenz_dip-8-280824">digital to analog converter (Microchip Technology - MCP 4821)</a><td>3</td><td>2</td><td>1</td>
   </tr>
   <tr>
-    <td>10</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">pin header (16x1; 2,54 mm)</td><td>3</td><td>3</td><td>2</td>
+    <td>10.1</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">single pin header (1x1; 2,54 mm)</td><td>40</td><td>31</td><td>24</td>
+  </tr>
+  <tr>
+    <td>10.2</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">double pin header (2x1; 2,54 mm)</td><td>3</td><td>2</td><td>1</td>
   </tr>
   <tr>
     <td>11</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_8-polig_doppelter_federkontakt-8230">IC-Socket (8 pols)</td><td>6</td><td>4</td><td>2</td>
@@ -110,8 +113,8 @@ Youll need to print the following components:
 
 |index|measurement in number of holes|
 |---|---|
-|a|26|
-|b|39|
+|vertical|39|
+|horizontal|26|
 
 This PCB will form now on be referenced as PCB 1.
 
@@ -126,10 +129,10 @@ This PCB will form now on be referenced as PCB 1.
  
 <img src="../images/PCB2.png" alt="" width="700" />
 
-|index|measurement in number of holes|
+| |measurement in number of holes|
 |---|---|
-|c|25|
-|d|7|
+|vertical|7|
+|horizontal|25|
 
 This PCB will form now on be referenced as PCB 2.
 
@@ -138,8 +141,8 @@ This PCB will form now on be referenced as PCB 2.
 
 |index|measurement in number of holes|
 |---|---|
-|c|25|
-|e|7|
+|vertical|4|
+|horizontal|25|
 
 This PCB will form now on be referenced as PCB 3.
 
@@ -148,7 +151,8 @@ This PCB will form now on be referenced as PCB 3.
 
 |index|measurement in number of holes|
 |---|---|
-|c|25|
+|vertical|2|
+|horizontal|25|
 
 This PCB will form now on be referenced as PCB 4.
 
@@ -156,7 +160,8 @@ This PCB will form now on be referenced as PCB 4.
 <img src="../images/PCB5.png" alt="" width="700" />
 |index|measurement in number of holes|
 |---|---|
-|c|25|
+|vertical|1|
+|horizontal|25|
 
 This PCB will form now on be referenced as PCB 5.
 
@@ -246,3 +251,379 @@ This PCB will form now on be referenced as PCB 5.
 - shorten the wire of the resistors using small side-cutting pliers
 
 <img src="../images/step_1-6.png" alt="" width="700" />
+
+
+
+### 1.7 - Step 7: preparation for connection of PCB 1 and PCB 2 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      ||
+|10.1|<a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">single pin header (1x1; 2,54 mm)</a>|18| ||
+
+- Place the single pin headers (1x1; 2,54 mm) (BOM Pos 10.1) in the holes of PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+- do **not** solder them in at this time. 
+
+<img src="../images/step_1-7.png" alt="" width="700" />
+
+
+
+### 1.8 - Step 8: connecting PCB 1 and PCB 2 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|N/A|PCB 2|1| ||
+
+- Place PCB 2 on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the copper side of PCB 2 faces upward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - make sure all pins pass through both PCBs 
+- solder two pins to both PCBs to mechanically connect both PCBs.
+    - these two pins should be as far away from each other as possible.
+- solder the remaining pins.
+
+<img src="../images/step_1-8.png" alt="" width="700" />
+
+
+
+### 1.9 - Step 9: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-9.png" alt="" width="700" />
+
+
+
+### 1.10 - Step 10: preparation for connection of PCB 1 and PCB 3 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      ||
+|10.1|<a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">single pin header (1x1; 2,54 mm)</a>|10| ||
+|10.2|<a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">double pin header (2x1; 2,54 mm)</a>|3| ||
+
+- Place the single pin headers (1x1; 2,54 mm) (BOM Pos 10.1) and double pin headers (2x1; 2,54 mm) (BOM Pos 10.2) in the holes of PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+- do **not** solder them in at this time. 
+
+<img src="../images/step_1-10.png" alt="" width="700" />
+
+
+
+### 1.11 - Step 11: connecting PCB 1 and PCB 3 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|N/A|PCB 3|1| ||
+
+- Place PCB 3 on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the copper side of PCB 3 faces upward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - make sure all pins pass through both PCBs 
+- solder two pins to both PCBs to mechanically connect both PCBs.
+    - these two pins should be as far away from each other as possible.
+- solder the remaining pins.
+
+<img src="../images/step_1-11.png" alt="" width="700" />
+
+
+
+### 1.12 - Step 12: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-12.png" alt="" width="700" />
+
+
+
+### 1.13 - Step 13: preparation for connection of PCB 1 and PCB 4 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      ||
+|10.1|<a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">single pin header (1x1; 2,54 mm)</a>|4| ||
+
+- Place the single pin headers (1x1; 2,54 mm) (BOM Pos 10.1) in the holes of PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+- do **not** solder them in at this time. 
+
+<img src="../images/step_1-13.png" alt="" width="700" />
+
+
+
+### 1.14 - Step 14: connecting PCB 1 and PCB 4 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|N/A|PCB 4|1| ||
+
+- Place PCB 4 on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the copper side of PCB 4 faces upward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - make sure all pins pass through both PCBs 
+- solder two pins to both PCBs to mechanically connect both PCBs.
+    - these two pins should be as far away from each other as possible.
+- solder the remaining pins.
+
+<img src="../images/step_1-14.png" alt="" width="700" />
+
+
+
+### 1.15 - Step 15: preparation for connection of PCB 1 and PCB 5
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      ||
+|10.1|<a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">single pin header (1x1; 2,54 mm)</a>|7| ||
+
+- Place the single pin headers (1x1; 2,54 mm) (BOM Pos 10.1) in the holes of PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+- do **not** solder them in at this time. 
+
+<img src="../images/step_1-15.png" alt="" width="700" />
+
+
+
+### 1.16 - Step 16: connecting PCB 1 and PCB 5
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|N/A|PCB 4|1| ||
+
+- Place PCB 5 on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the copper side of PCB 5 faces upward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - make sure all pins pass through both PCBs 
+- solder two pins to both PCBs to mechanically connect both PCBs.
+    - these two pins should be as far away from each other as possible.
+- solder the remaining pins.
+
+<img src="../images/step_1-16.png" alt="" width="700" />
+
+
+
+### 1.17 - Step 17: soldering DCDC converter 24 V to ±12 V
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|15|<a href="https://www.reichelt.de/de/de/shop/produkt/dc_dc-wandler_tmh_2_w_12_v_80_ma_sil-7-121355">DCDC converter 24 V to ±12 V (TRACO POWER TMH 2412D)|1| ||
+
+- Solder the DCDC converter 24 V to ±12 V (TRACO POWER TMH 2412D) (BOM Pos 15) on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+
+<img src="../images/step_1-17.png" alt="" width="700" />
+
+
+
+### 1.18 - Step 18: soldering operation amplifyer
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|11|<a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_8-polig_doppelter_federkontakt-8230">IC-Socket (8 pols)|3| ||
+|8|<a href="https://www.reichelt.de/de/de/shop/produkt/operationsverstaerker_1-fach_dip-8-21555">operation amplifyer (Texas Instruments - TL071CP)|3| ||
+
+- Solder the IC-Socket (8 pols) (BOM Pos 11) on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+- Place the operation amplifyer (Texas Instruments - TL071CP) (BOM Pos 8) into the soldered IC-Socket (8 pols) (BOM Pos 11).
+    - the notch must face in the same direction as shown below.
+
+<img src="../images/step_1-18.png" alt="" width="700" />
+
+
+
+### 1.19 - Step 19: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-19.png" alt="" width="700" />
+
+
+
+### 1.20 - Step 20: soldering DCDC converter 24 V to ±12 V
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|11|<a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_8-polig_doppelter_federkontakt-8230">IC-Socket (8 pols)|3| ||
+|9|<a href="https://www.reichelt.de/de/de/shop/produkt/d_a-wandler_12-bit_1-kanal_spi_u-referenz_dip-8-280824">digital to analog converter (Microchip Technology - MCP 4821)</a>|3| ||
+
+- Solder the IC-Socket (8 pols) (BOM Pos 11) on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+- Place the digital to analog converter (Microchip Technology - MCP 4821) (BOM Pos 9) into the soldered IC-Socket (8 pols) (BOM Pos 11).
+    - the notch must face in the same direction as shown below.
+
+<img src="../images/step_1-20.png" alt="" width="700" />
+
+
+
+### 1.21 - Step 21: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-21.png" alt="" width="700" />
+
+
+
+### 1.22 - Step 22: soldering condensatore (ceramic 0.1 µF)
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|7|<a href="https://www.reichelt.de/de/de/shop/produkt/keramik-kondensator_500v_100p-9316">condensatore (ceramic 0.1 µF)|6| ||
+
+- Solder the condensatore (ceramic 0.1 µF) (BOM Pos 7) on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - the condensator is located above the wire of the resistor. The wires of both components must noch touch.
+
+<img src="../images/step_1-22.png" alt="" width="700" />
+
+
+
+### 1.23 - Step 23: soldering condensatore (tantnal 10 µF)
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|6|<a href="https://www.reichelt.de/de/de/shop/produkt/tantal_bedrahtet_10_f_10v_125_c-393673">condensatore (tantnal 10 µF)</a>|3| ||
+
+- Solder the condensatore (ceramic 0.1 µF) (BOM Pos 7) on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+
+<img src="../images/step_1-23.png" alt="" width="700" />
+
+
+
+### 1.24 - Step 24: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-24.png" alt="" width="700" />
+
+
+
+### 1.25 - Step 25: soldering transistor (MOSPEC - TIP41C)
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|1|<a href="https://www.reichelt.de/de/de/shop/produkt/hf-bipolartransistor_npn_100v_6a_65w_to-220-217329">transistor (MOSPEC - TIP41C)</a>|3| ||
+
+- Solder the transistor (MOSPEC - TIP41C) (BOM Pos 1) on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - the transistor must face with its printed side in the direction of the black arrows.
+
+<img src="../images/step_1-25.png" alt="" width="700" />
+
+
+
+### 1.26 - Step 26: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-26.png" alt="" width="700" />
+
+
+
+### 1.27 - Step 27: soldering cables
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|19.1|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|3| ||
+|19.2|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|3| ||
+|19.3|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">green insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|7| ||
+|19.4|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">blue insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|3| ||
+
+- Solder the insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19) to PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - the wire colour should match the one shown below.
+
+|image|meaning|
+|---|---|
+|<img src="../images/wire_down.png" alt="" width="160" />|wire exits PCB 1 on the side of PCB 1s copper strips|
+|<img src="../images/wire_up.png" alt="" width="160" />|wire exits PCB 1 on the side with no copper strips|
+
+<img src="../images/step_1-27.png" alt="" width="700" />
+
+
+
+### 1.28 - Step 28: soldering cables
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|19.1|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|3| ||
+
+- Solder the red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19) to **PCB 5** as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+
+|image|meaning|
+|---|---|
+|<img src="../images/wire_up.png" alt="" width="160" />|wire exits PCB 1 on the side with no copper strips|
+
+<img src="../images/step_1-28.png" alt="" width="700" />
