@@ -624,6 +624,6 @@ This PCB will form now on be referenced as PCB 5.
 
 |image|meaning|
 |---|---|
-|<img src="../images/wire_up.png" alt="" width="160" />|wire exits PCB 1 on the side with no copper strips|
+|<img src="../images/wire_up.png" alt="" width="160" />|wire exits PCB 5 on the side where PCB 1 has no copper strips|
 
 <img src="../images/step_1-28.png" alt="" width="700" />
