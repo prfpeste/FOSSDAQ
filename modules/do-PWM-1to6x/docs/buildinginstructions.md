@@ -1,19 +1,107 @@
 # do-PWM-1to6x
 
-## 0 - 3D printing case
-- Start printing the case and all additional [3D components](../hardware).
+## 0 - 3D-printing
+Youll need to print the following components: 
 
-## 1 - cutting PCBs to size
-- **IMPORTANT:**
-  Ensure the copper side of PCBs face down.
-  Align the copper lines with the direction of the blue arrow in the upper left corner.
-  The copper lines of PCB 1 must always face down unless specified otherwise.
+|image|Name and Link|
+|---|---|
+|<img src="../images/mosfet.png" alt="" width="160" />|[Case](../hardware)|
+|<img src="../images/transistor.png" alt="" width="160" />|[Lid](../hardware)|
+|<img src="../images/diode.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware)|
+|<img src="../images/resistor.png" alt="" width="160" />|[Mounting Plate PCB](../hardware)|
 
-### 1.1 - PCB 1
-1. Take one Strip-Grid PCB (Pos 5).
-2. Cut it to the required size using a metal saw.
+## 1 - PCB Assembly
+
+### Materials 
+
+<table>
+  <tr>
+    <td rowspan="1">Pos</td>
+    <td rowspan="1">Part</td>
+    <td colspan="6">number of parts per number of outputs</td>
+  </tr>
+  <tr>
+    <th></th><th></th><th>6x</th><th>5x</th><th>4x</th><th>3x</th><th>2x</th><th>1x</th>
+  </tr>
+  <tr>
+    <td>1</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/mosfet_n-ch_55v_47a_110w_to-220ab-129819">mosfet (Infineon - IRLZ44NPBF)</a></td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td>
+  </tr>
+  <tr>
+    <td>2</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/hf-bipolartransistor_npn_100v_6a_65w_to-220-217329">transistor (MOSPEC - TIP41C)</a></td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td>
+  </tr>
+  <tr>
+    <td>3</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/schottkydiode_40_v_1_a_do-41-219559">diode (Taiwan Semiconductor - 1N5819)</a></td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td>
+  </tr>
+  <tr>
+    <td>4</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_10_0_kohm_0207_0_6_w_1_-11449">resistor (10 kOhm)</a></td><td>12</td><td>10</td><td>8</td><td>6</td><td>4</td><td>2</td>
+  </tr>
+  <tr>
+    <td rowspan="1">5</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277">Strip-Grid PCB (39 x 39 holes)</td>
+    <td colspan="6">2</td>
+  </tr>
+  <tr>
+    <td rowspan="1">8</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/hex-schmitt-trigger-inverter_2_6_v_dil-14-290494">Hex-Schmitt-Trigger-Inverter (Texas Instruments - 74HC 14 TI)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">9</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_14-polig_doppelter_federkontakt-8206">IC-Socket (DIL-14)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">12.1</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">single pin header (1x1; 2,54 mm)</td>
+    <td colspan="6">26</td>
+  </tr>
+  <tr>
+    <td rowspan="1">15.1</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)</td>
+    <td colspan="6">2</td>
+  </tr>
+  <tr>
+    <td rowspan="1">15.2</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)</td>
+    <td colspan="6">2</td>
+  </tr>
+  <tr>
+    <td rowspan="1">15.3</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">green insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)</td>
+    <td colspan="6">12</td>
+  </tr>
+  <tr>
+    <td rowspan="1">15.4</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">blue insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)</td>
+    <td colspan="6">6</td>
+  </tr>
+  </tr>
+</table>
+
+### Tools 
+
+- soldering iron with solder
+- sharp knife
+- metal saw
+- vise (recommended)
+- small side-cutting pliers
+- small needle-nose pliers
+
+### 1.1 - Step 1: cutting PCB to size
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|5|[Strip-Grid PCB (2.54 mm; 39 x 39 holes)](https://www.reichelt.de/de/de/shop/produkt/streifenrasterplatine_hartpapier_100x100mm-8277)|2|      |metal saw|
+| | | | |vise (recommended)|
+
+- Take one Strip-Grid PCB (BOM Pos 5)
+- cut it to size using a metal saw
+    - measurements are written down below.
+        - the copper side faces downward.
+        - the pink arrow indicates the direction of the copper stripes.
+    - dont use much force at the end of the cut. Otherwise the Strip-Grid PCB will break.
+
 <img src="../images/PCB_cutout_1.png" alt="PCB 1" width="700" />
-The measurements are:
 
 |index|measurement|
 |---|---|
@@ -24,25 +112,502 @@ The measurements are:
 |e|14 holes|
 |f|7 holes|
 
-### 1.2 - PCB 2
+This PCB will form now on be referenced as PCB 1.
 
-- Take one Strip-Grid PCB (Pos 5).
-- Cut it to the required size using a metal saw.
+
+- Take one Strip-Grid PCB (BOM Pos 5)
+- cut it into four pieces using a metal saw
+    - measurements are written down below.
+        - the copper side faces down.
+        - the pink arrow indicates the direction of the copper stripes.
+    - dont use much force at the end of the cut. Otherwise the Strip-Grid PCB will break.
 
 <img src="../images/PCB_cutout_2.png" alt="PCB 2" width="700" />
-The measurements are:
 
 |index|measurement|
 |---|---|
 |g|11 holes|
 |h|39 holes|
 
-### 1.3 - PCB 24 V Terminal
+This PCB will form now on be referenced as PCB 2.
 
-- Take one perforated circuit board (2.54 mm; 80 x 20 mm) (Pos 13).
-- Cut it to the required size using a metal saw.
 
-<img src="../images/terminal_24V_cutout.png" alt="24 V terminal cutout" width="300" />
+
+### 1.2 - Step 2: preparation for connection of PCB 1 and PCB 2 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      ||
+|12.1|<a href="https://www.reichelt.de/de/de/shop/produkt/stiftleiste_1_x_16_polig_gerade_rastermass_2_54_mm-404301">single pin header (1x1; 2,54 mm)</a>|26| ||
+
+- Place the single pin headers (1x1; 2,54 mm) (BOM Pos 12.1) in the holes of PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+- do **not** solder them in at this time. 
+
+<img src="../images/step_1-2.png" alt="" width="700" />
+
+
+
+### 1.3 - Step 3: connecting PCB 1 and PCB 2 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|N/A|PCB 2|1| ||
+
+- Place PCB 2 on top of PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the copper side of PCB 2 faces upward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - make sure all pins pass through both PCBs 
+- solder two pins to both PCBs to mechanically connect both PCBs.
+    - these two pins should be as far away from each other as possible.
+- solder the remaining pins.
+
+<img src="../images/step_1-3.png" alt="" width="700" />
+
+
+
+### 1.4 - Step 4: soldering 10 kOhm resisitors onto PCB 1
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|4|<a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_10_0_kohm_0207_0_6_w_1_-11449">resistor (10 kOhm)|12| |small side-cutting pliers|
+
+- mount the resistors (10 kOhm) (BOM Pos 4) on PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+- solder them in place using a soldering iron
+- shorten the wire of the resistors using small side-cutting pliers
+
+<img src="../images/step_1-4.png" alt="" width="700" />
+
+
+
+### 1.5 - Step 5: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-5.png" alt="" width="700" />
+
+
+
+### 1.6 - Step 6: soldering diode onto PCB 1 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|3|<a href="https://www.reichelt.de/de/de/shop/produkt/schottkydiode_40_v_1_a_do-41-219559">diode (Taiwan Semiconductor - 1N5819)</a>|6| |small side-cutting pliers|
+
+- mount the diode (BOM Pos 2) on PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+    - make sure that the ring of the diode faces the same direction as shown.
+- solder them in place using a soldering iron
+- shorten the wire of the resistors using small side-cutting pliers
+
+<img src="../images/step_1-6.png" alt="" width="700" />
+
+
+
+### 1.7 - Step 7: soldering Mosfet onto PCB 1 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|1|<a href="https://www.reichelt.de/de/de/shop/produkt/mosfet_n-ch_55v_47a_110w_to-220ab-129819">mosfet (Infineon - IRLZ44NPBF)</a>|6| |small side-cutting pliers|
+
+- mount the diode (BOM Pos 1) on PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+    - make sure that the ring of the diode faces the same direction as shown.
+- solder them in place using a soldering iron
+- shorten the wire of the mosfet using small side-cutting pliers
+
+<img src="../images/step_1-7.png" alt="" width="700" />
+
+
+
+
+## 1.8 - Step 8: Pre-assembly of transistor
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|2|<td><a href="https://www.reichelt.de/de/de/shop/produkt/hf-bipolartransistor_npn_100v_6a_65w_to-220-217329">transistor (MOSPEC - TIP41C)</a>|6| |small needle-nose pliers|
+
+- To manufacture the main PCB, bend the right legs of the transistors (Pos 2) outward as shown in the figure below.
+
+- Bend the leg to the right directly below the edge (A), where the leg becomes thicker.
+- Approximately 3–5 mm further down (B), bend the leg to the left again.
+- The leg does not need to fit into the PCB's hole grid on the first attempt.
+- Adjust the distance between the legs by pulling the end of the leg (C) down or pushing it up.
+
+- Ensure all legs are parallel to each other in the end.
+- Leave one row on the PCB free between the right and middle legs.
+
+<img src="../images/transistor_modulation.png" alt="Modulation of transistor" width="400" />
+
+
+
+### 1.9 - Step 9: soldering modified transistor onto PCB 1 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|2|<td><a href="https://www.reichelt.de/de/de/shop/produkt/hf-bipolartransistor_npn_100v_6a_65w_to-220-217329">transistor (MOSPEC - TIP41C)</a>|6| |small side-cutting pliers|
+
+- mount the diode (BOM Pos 2) on PCB 1 as shown below.
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+    - make sure that the ring of the diode faces the same direction as shown.
+- solder them in place using a soldering iron
+- shorten the wire of the mosfet using small side-cutting pliers
+
+<img src="../images/step_1-9.png" alt="" width="700" />
+
+
+
+### 1.10 - Step 10: soldering operation amplifyer
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|9|<a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_14-polig_doppelter_federkontakt-8206">IC-Socket (DIL-14)|1| ||
+|8|<a href="https://www.reichelt.de/de/de/shop/produkt/hex-schmitt-trigger-inverter_2_6_v_dil-14-290494">Hex-Schmitt-Trigger-Inverter (Texas Instruments - 74HC 14 TI)|1| ||
+
+- Solder the IC-Socket (9 pols) (BOM Pos 11) on top of PCB 2 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+- Place the Hex-Schmitt-Trigger-Inverter (Texas Instruments - 74HC 14 TI) (BOM Pos 8) into the soldered IC-Socket (DIL-14) (BOM Pos 9).
+    - the notch must face in the same direction as shown below.
+
+<img src="../images/step_1-10.png" alt="" width="700" />
+
+- The final assembly of the 74HCT14TI chip and DIL-14 socket must match the image below.
+<img src="../images/assemble_inv.png" alt="" width="700" />
+
+
+
+### 1.11 - Step 11: separating copper strips 
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |sharp knife|
+
+- separate the copper strips using a sharp knife as shown below. 
+    - the red lines indicate, where the copper lines have to be separated. 
+    - the copper side faces downward.
+    - the pink arrow indicates the direction of the copper stripes.
+
+<img src="../images/step_1-11.png" alt="" width="700" />
+
+
+
+### 1.12 - Step 12: soldering cables
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|15.1|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)|2| ||
+|15.2|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)|1| ||
+|15.3|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">green insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)|6| ||
+|15.4|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">blue insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)|6| ||
+
+- Solder the insulated copper stranded wire (≥ 0,5 mm²; ca. 1 cm each) (BOM Pos 15) to PCB 1 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - the wire colour should match the one shown below.
+
+|image|meaning|
+|---|---|
+|<img src="../images/wire_down.png" alt="" width="160" />|wire exits PCB 1 on the side of PCB 1s copper strips|
+|<img src="../images/wire_up.png" alt="" width="160" />|wire exits PCB 1 on the side with no copper strips|
+
+<img src="../images/step_1-12.png" alt="" width="700" />
+
+
+
+### 1.13 - Step 13: soldering cables
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|PCB 1|1|      |soldering iron with solder|
+|15.3|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">green insulated copper stranded wire (≥ 0,5 mm²; ca. 10 cm each)|6| ||
+
+- Solder the insulated copper stranded wire (≥ 0,5 mm²; ca. 1 cm each) (BOM Pos 15) to PCB 2 as shown below.
+    - the copper side of PCB 1 faces downward.
+    - the pink arrow indicates the direction of the copper stripes of PCB 1.
+    - the wire colour should match the one shown below.
+
+|image|meaning|
+|---|---|
+|<img src="../images/wire_down.png" alt="" width="160" />|wire exits PCB 1 on the side of PCB 1s copper strips|
+|<img src="../images/wire_up.png" alt="" width="160" />|wire exits PCB 1 on the side with no copper strips|
+
+<img src="../images/step_1-13.png" alt="" width="700" />
+
+
+
+ ## 2 - 24 V Terminal Assembly
+
+### Materials
+
+<table>
+  <tr>
+    <td rowspan="1">Pos</td>
+    <td rowspan="1">Part</td>
+    <td colspan="6">number of parts per number of outputs</td>
+  </tr>
+  <tr>
+    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
+  </tr>
+  <tr>
+    <td rowspan="1">17</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_4-pol_0_08_-_1_mm_rm_5_0-72189">Spring-loaded terminal (4-pole)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">18</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">19.1</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">19.2</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">19.3</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">19.4</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)</td>
+    <td colspan="6">1</td>
+  </tr>
+  </tr>
+</table>
+
+
+### Tools
+
+- soldering iron with solder
+- metal saw
+- vise (recommended)
+- small side-cutting pliers
+- small metal file
+
+### 2.1 - Step 1: Pre-assembling Spring-loaded terminal (4-pole)
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|17|<a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_4-pol_0_08_-_1_mm_rm_5_0-72189">Spring-loaded terminal (4-pole)|1| |small metal file|
+| | | | |vise (recommended)|
+
+- The terminal pins are too large for the PCB holes.
+- Carefully file down the edges of the pins until they fit into the holes of the perforated circuit board (80 x 20 mm) (BOM Pos 18).
+
+
+
+### 2.2 - Step 2: cutting PCB to size
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|18|<a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)|2|      |metal saw|
+| | | | |vise (recommended)|
+
+- Take one perforated circuit board (80 x 20 mm) (BOM Pos 18)
+- cut it to size using a metal saw.
+    - measurements are written down below.
+    - dont use much force at the end of the cut. Otherwise the Strip-Grid PCB will break.
+      
+<img src="../images/terminal_24V_cutout.png" alt="" width="700" />
+
+This PCB will form now on be referenced as 24 V Terminal PCB.
+
+
+
+### 2.3 - Step 3: soldering Spring-loaded terminal (4-pole)
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|24 V Terminal PCB|1|      |soldering iron with solder|
+|17|<a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_4-pol_0_08_-_1_mm_rm_5_0-72189">Spring-loaded terminal (4-pole)|1| ||
+
+- Solder the 4-pole spring-loaded terminal (Pos 17) on the 24 V Terminal PCB as shown in the image below. 
+  - Orange circles indicate the terminal pins.
+  - The 4-pole spring-loaded terminal (Pos 17) is mounted on the side of the 24 V Terminal PCB facing towards you.
+  - Arrows denote the direction of the spring loaded terminal ports.
+      - The spring loaded terminal ports face down.
+
+<img src="../images/Terminal_24V.png" alt="" width="300" />  
+
+
+
+### 2.4 - Step 4: soldering insulated copper stranded wire to 24 V Terminal PCB
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|24 V Terminal PCB|1|      |soldering iron with solder|
+|19.1|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|1| ||
+|19.2|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|1| ||
+|19.3|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|1| ||
+|19.4|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|1| ||
+
+- Connect both 24 V pins with one red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.2).
+- Connect both GND pins with one black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.4).
+- Ensure no connection exists between any 24 V pin and any GND pin.
+- Connect one red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.1) to one 24 V pin.
+- Connect one black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.3) to one GND pin.
+- Refer to the image below for clarity.
+<img src="../images/Terminal_24V_real.jpeg" alt="" width="300" />
+
+
+
+## 3 - Output Terminal Assembly
+
+### Materials
+
+<table>
+  <tr>
+    <td rowspan="1">Pos</td>
+    <td rowspan="1">Part</td>
+    <td colspan="6">number of parts per number of outputs</td>
+  </tr>
+  <tr>
+    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
+  </tr>
+  <tr>
+    <td rowspan="1">16</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_6-pol_0_08_-_1_mm_rm_5_0-72191">Spring-loaded terminal (6-pole)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">18</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">19.1</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)</td>
+    <td colspan="6">2</td>
+  </tr>
+  </tr>
+</table>
+
+
+### Tools
+
+- soldering iron with solder
+- metal saw
+- vise (recommended)
+- small side-cutting pliers
+- small metal file
+
+### 2.1 - Step 1: Pre-assembling Spring-loaded terminal (6-pole)
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|16|<a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_6-pol_0_08_-_1_mm_rm_5_0-72191">Spring-loaded terminal (6-pole)|1| |small metal file|
+| | | | |vise (recommended)|
+
+- The terminal pins are too large for the PCB holes.
+- Carefully file down the edges of the pins until they fit into the holes of the perforated circuit board (80 x 20 mm) (BOM Pos 18).
+
+
+
+### 2.2 - Step 2: soldering Spring-loaded terminal (6-pole)
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|18|<a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)|1|      |soldering iron with solder|
+|16|<a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_6-pol_0_08_-_1_mm_rm_5_0-72191">Spring-loaded terminal (6-pole)|1| ||
+
+- Solder the 6-pole spring-loaded terminal (Pos 16) on the perforated circuit board (80 x 20 mm) (BOM Pos 18) as shown in the image below. 
+  - Orange circles indicate the terminal pins.
+  - The 6-pole spring-loaded terminal (Pos 16) is mounted on the side of the perforated circuit board (80 x 20 mm) (BOM Pos 18) facing towards you.
+  - Arrows denote the direction of the spring loaded terminal ports.
+      - The spring loaded terminal ports face down.
+
+<img src="../images/analog_terminal.png" alt="" width="300" />  
+
+
+
+### 2.4 - Step 4: soldering Spring-loaded terminal (4-pole)
+
+|Pos in BOM|Part|Quantity||Tools|
+|---|---|---|---|---|
+|N/A|24 V Terminal PCB|1|      |soldering iron with solder|
+|19.1|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|2| ||
+
+- Connect all three GND pins with two black insulated copper stranded wires (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.1).
+- Ensure no connection exists between any 24 V pin and any GND pin.
+
+
+## 3 setting DCDC converter voltage
+
+### Materials 
+
+<table>
+  <tr>
+    <td rowspan="1">Pos</td>
+    <td rowspan="1">Part</td>
+    <td colspan="6">number of parts per number of outputs</td>
+  </tr>
+  <tr>
+    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
+  </tr>
+  <tr>
+    <td rowspan="1">14</td>
+    <td rowspan="1"><a href="https://www.reichelt.com/de/en/shop/product/developer_boards_-_voltage_regulators_dc_dc_converters-333853#closemodal">DCDC converter (SBC-BUCK01)</td>
+    <td colspan="6">1</td>
+  </tr>
+  </tr>
+</table>
+
+### Tools
+
+- small flathead screwdriver.
+
+  
+### Steps
+
+- Plug the DCDC converter (SBC-BUCK01) (BOM Pos 14) into the 24V power supply.
+- Verify the Display shows 24 V.
+- Press the button (S1) in the lower right corner.
+- Use a small flathead screwdriver to turn the brass screw on top of the blue Volatage Adjustment box.
+- Adjust until the display shows 10 V.
+ 
+<img src="../images/DCDC.png" alt="" width="300" />  
+
+
+
+## 6 connecting all components
+
+![kiCAD](../images/kiCAD_PWM.png)
+
+- Connect all assembled components as shown in the drawing above.
+- Keep wires as short as possible to ensure they fit into the case.
+
+
+
+
+
 
 ## Description of used symbols
 |Pos|symbol|description|
@@ -57,142 +622,3 @@ The measurements are:
 ||red lines| cut the copper strips with a sharp knife|
 ||large white dots|soldering points|
 ||small white dots|open PCB holes|
-
-## 2 - Pre-assembly of transistor
-
-- To manufacture the main PCB, bend the right legs of the transistors (Pos 2) outward as shown in the figure below.
-
-- Bend the leg to the right directly below the edge (A), where the leg becomes thicker.
-- Approximately 3–5 mm further down (B), bend the leg to the left again.
-- The leg does not need to fit into the PCB's hole grid on the first attempt.
-- Adjust the distance between the legs by pulling the end of the leg (C) down or pushing it up.
-
-- Ensure all legs are parallel to each other in the end.
-- Leave one row on the PCB free between the right and middle legs.
-
-<img src="../images/transistor_modulation.png" alt="Modulation of transistor" width="400" />
-
-## 3 - PCB assembly
-- **IMPORTANT:**
-  Ensure the copper side of **PCB 1** faces down.
-  Align the copper lines with the direction of the blue arrow in the upper left corner.
-  The copper lines of PCB 1 must always face down unless specified otherwise.
-
-### 3.1 - selecting layout
-
-<img src="../images/PCB_6x.png" alt="Assembled PCB" width="700" />
-
-- If fewer than six outputs are required, use the following alternatives:
-  - Greyed-out sections are for reference only.
-  - Do not assemble greyed-out sections.
-  - [5x](../images/PCB_5x.png)
-  - [4x](../images/PCB_4x.png)
-  - [3x](../images/PCB_3x.png)
-  - [2x](../images/PCB_2x.png)
-  - [1x](../images/PCB_1x.png)
-
-### 3.2 - connecting PCB 1 & PCB 2
-
-- Insert all jumper pins (Pos 12) first. Do not solder them yet.
-- Align PCB 2 on top of PCB 1 as shown.
-  - PCB 2 must cover the cutout in PCB 1 completely.
-  - PCB 2 and PCB 1 must be flush on three edges.
-  - PCB 2 must not overhang any edges of PCB 1.
-- Ensure all jumper pins pass through both PCBs.
-- Fully solder two jumper pins (Pos 12) to mechanically connect the two PCBs and prevent the remaining jumper pins from falling out.
-
-<img src="../images/connection_PCB_1_2.png" alt="" width="700" />
-
-|index|name|
-|---|---|
-|1|PCB 1|
-|2|PCB2|
-|3|copper lines|
-|4|metal part of jumper pins|
-|5|plastic part of jumper pins|
-
-### 3.3 - assembling parts on PCB 1
-
-- Fully solder the remaining jumper pins (Pos 12).
-- Solder the remaining parts (Pos 1, 2, 3 and 4) as shown in the layout.
-  - Use red wire for the left and right wires in the middle of the PCB.
-  - Use black wire for the middle of the three wires in the middle of the PCB.
-  - Use blue wire for the wires exiting underneath the PCB at the bottom of the PCB.
-  - Use green wire for the wires exiting on top of the PCB at the bottom of the PCB.
-
-### 3.4 - assembling inverter
-
-- **IMPORTANT:**
-  Flip the PCB to the opposite side from its current position.
-
-- Solder the DIL-14 socket (Pos 9) without the 74HCT14TI chip (Pos 8) inserted.
-- Insert the 74HCT14TI chip (Pos 8) into the socket with the notch facing away from the rest of the PCB.
-- The final assembly of the 74HCT14TI chip and DIL-14 socket must match the image below.
-<img src="../images/assemble_inv.png" alt="" width="700" />
-
-- **IMPORTANT:**
-  Flip the PCB to the opposite side from its current position.
-
-### 3.5 - finishing PCB 2
-  
-- After assembling all components (Pos 1, 2, 3, 4, 5, 8 and 9) as described and connecting both PCBs, the setup should match the reference, excluding six green wires (Pos 15) and cut copper traces. Add these now.
-
-- All wires are described in the image below.
-- Option 1: Tag each wire with a small sticky note for identification.
-- Option 2: Refer back to the image later to identify their connections.
-
-
-<img src="../images/PCB_1_2_w_inv.png" alt="" width="700" />  
-
-
-## 4 - Terminals
-
-### 4.1 Pre-assembling the Terminals
-
-- The terminal pins are too large for the PCB holes.
-- Carefully file down the edges of the pins slightly.
-
-### 4.2 Assembly 24 V terminal
-
-<img src="../images/Terminal_24V.png" alt="" width="300" />  
-
-- Place the 4-pole spring-loaded terminal (Pos 11) on the previously cut PCB as shown in the image above.
-  - Orange circles indicate the terminal pins.
-  - Arrows denote the direction of the terminal ports.
-
-- Connect both 24 V pins with one short red wire.
-- Connect both GND pins with one short black wire.
-- Ensure no connection exists between any 24 V pin and any GND pin.
-- Add one pair of long wires (approximately 20 cm) for one pair of pins.
-  - Use red for 24 V.
-  - Use black for GND.
-- Refer to the image below for clarity.
-
-<img src="../images/Terminal_24V_real.jpeg" alt="" width="300" />
-
-
-### 4.3 Assembly Output terminal
-
-<img src="../images/terminal_out.png" alt="" width="700" />  
-
-- Place the 6-pole spring-loaded terminal (Pos 10) on the previously cut PCB as shown in the image above.
-  - Orange circles indicate the terminal pins.
-  - Arrows denote the direction of the terminal ports.
-- Solder the placed terminals.
-
-## 5 setting DCDC voltage
-
-- Plug the DCDC (Pos 7) into the 24V power supply.
-- Verify the LED display shows 24 V.
-- Press the button in the lower right corner.
-- Use a small flathead screwdriver to turn the brass screw on top of the blue box.
-- Adjust until the display shows the desired voltage.
-  - Voltage must be between 6 V and 20 V.
-  - Voltages outside this range will damage the Arduino.
-
-## 6 connecting all components
-
-![kiCAD](../images/kiCAD_PWM.png)
-
-- Connect all assembled components as shown in the drawing above.
-- Keep wires as short as possible to ensure they fit into the case.
