@@ -20,9 +20,6 @@ Youll need to print the following components:
     <td colspan="3">number of parts per number of outputs</td>
   </tr>
   <tr>
-    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
-  </tr>
-  <tr>
     <td>1</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/hf-bipolartransistor_npn_100v_6a_65w_to-220-217329">transistor (MOSPEC - TIP41C)</a></td><td>3</td>
   </tr>
   <tr>
