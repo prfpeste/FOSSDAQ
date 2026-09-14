@@ -362,10 +362,7 @@ This PCB will form now on be referenced as PCB 2.
   <tr>
     <td rowspan="1">Pos</td>
     <td rowspan="1">Part</td>
-    <td colspan="6">number of parts per number of outputs</td>
-  </tr>
-  <tr>
-    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
+    <td colspan="6">number of parts</td>
   </tr>
   <tr>
     <td rowspan="1">17</td>
@@ -484,10 +481,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
   <tr>
     <td rowspan="1">Pos</td>
     <td rowspan="1">Part</td>
-    <td colspan="6">number of parts per number of outputs</td>
-  </tr>
-  <tr>
-    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
+    <td colspan="6">number of parts</td>
   </tr>
   <tr>
     <td rowspan="1">16</td>
@@ -564,10 +558,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
   <tr>
     <td rowspan="1">Pos</td>
     <td rowspan="1">Part</td>
-    <td colspan="6">number of parts per number of outputs</td>
-  </tr>
-  <tr>
-    <th></th><th></th><th>3x</th><th>2x</th><th>1x</th>
+    <td colspan="6">number of parts</td>
   </tr>
   <tr>
     <td rowspan="1">14</td>
