@@ -527,7 +527,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
 |18|<a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)|1|      |soldering iron with solder|
-|16|<a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_6-pol_0_08_-_1_mm_rm_5_0-72191">Spring-loaded terminal (6-pole)|1| ||
+|16|<a href="https://www.reichelt.de/de/de/shop/produkt/federkraftklemme_6-pol_0_08_-_1_mm_rm_5_0-72191">Spring-loaded terminal (6-pole)|2| ||
 
 - Solder the 6-pole spring-loaded terminal (Pos 16) on the perforated circuit board (80 x 20 mm) (BOM Pos 18) as shown in the image below. 
   - Orange circles indicate the terminal pins.
