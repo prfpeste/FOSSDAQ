@@ -430,7 +430,7 @@ This PCB will form now on be referenced as PCB 2.
     - measurements are written down below.
     - dont use much force at the end of the cut. Otherwise the Strip-Grid PCB will break.
       
-<img src="../images/terminal_24V_cutout.png" alt="" width="700" />
+<img src="../images/terminal_24V_cutout.png" alt="" width="400" />
 
 This PCB will form now on be referenced as 24 V Terminal PCB.
 
@@ -449,7 +449,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
   - Arrows denote the direction of the spring loaded terminal ports.
       - The spring loaded terminal ports face down.
 
-<img src="../images/Terminal_24V.png" alt="" width="300" />  
+<img src="../images/Terminal_24V.png" alt="" width="400" />  
 
 
 
@@ -469,7 +469,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Connect one red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.1) to one 24 V pin.
 - Connect one black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.3) to one GND pin.
 - Refer to the image below for clarity.
-<img src="../images/Terminal_24V_real.jpeg" alt="" width="300" />
+<img src="../images/Terminal_24V_real.jpeg" alt="" width="400" />
 
 
 
@@ -535,7 +535,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
   - Arrows denote the direction of the spring loaded terminal ports.
       - The spring loaded terminal ports face down.
 
-<img src="../images/digital_terminal.png" alt="" width="300" />  
+<img src="../images/digital_terminal.png" alt="" width="700" />  
 
 
 
