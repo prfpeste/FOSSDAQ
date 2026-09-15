@@ -98,7 +98,7 @@ Youll need to print the following components:
         - the pink arrow indicates the direction of the copper stripes.
     - dont use much force at the end of the cut. Otherwise the Strip-Grid PCB will break.
 
-<img src="../images/PCB_cutout_1.png" alt="PCB 1" width="700" />
+<img src="../images/Hauptplatine_Zuschnitt.png" alt="PCB 1" width="700" />
 
 |index|measurement|
 |---|---|
@@ -119,7 +119,7 @@ This PCB will form now on be referenced as PCB 1.
         - the pink arrow indicates the direction of the copper stripes.
     - dont use much force at the end of the cut. Otherwise the Strip-Grid PCB will break.
 
-<img src="../images/PCB_cutout_2.png" alt="PCB 2" width="700" />
+<img src="../images/Nebenplatine_Zuschnitt.png" alt="PCB 2" width="700" />
 
 |index|measurement|
 |---|---|
