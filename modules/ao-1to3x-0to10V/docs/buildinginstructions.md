@@ -857,3 +857,12 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Adjust until the display shows 10 V.
  
 <img src="../images/DCDC.png" alt="" width="300" />  
+
+
+
+## 4 connecting all components
+
+![kiCAD](../images/analog.png)
+
+- Connect all assembled components as shown in the drawing above.
+- Keep wires as short as possible to ensure they fit into the case.
