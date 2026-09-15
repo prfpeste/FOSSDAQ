@@ -5,10 +5,10 @@ Youll need to print the following components:
 
 |image|Name and Link|
 |---|---|
-|<img src="../images/mosfet.png" alt="" width="160" />|[Case](../hardware)|
-|<img src="../images/transistor.png" alt="" width="160" />|[Lid](../hardware)|
-|<img src="../images/diode.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware)|
-|<img src="../images/resistor.png" alt="" width="160" />|[Mounting Plate PCB](../hardware)|
+|<img src="../images/mosfet.png" alt="" width="160" />|[Case](../images/RasPI_Case.png)|
+|<img src="../images/transistor.png" alt="" width="160" />|[Lid](../images/RasPI_Lid.png)|
+|<img src="../images/diode.png" alt="" width="160" />|[Mounting Plate DCDC](../images/RasPI_Clip.png)|
+
 
 
  ## 1 - 24 V Terminal Assembly
