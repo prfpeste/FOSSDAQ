@@ -422,7 +422,7 @@ This PCB will form now on be referenced as PCB 2.
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
-|18|<a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)|2|      |metal saw|
+|18|<a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (80 x 20 mm)|1|      |metal saw|
 | | | | |vise (recommended)|
 
 - Take one perforated circuit board (80 x 20 mm) (BOM Pos 18)
