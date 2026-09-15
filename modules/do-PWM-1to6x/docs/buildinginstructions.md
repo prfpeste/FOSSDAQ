@@ -535,7 +535,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
   - Arrows denote the direction of the spring loaded terminal ports.
       - The spring loaded terminal ports face down.
 
-<img src="../images/analog_terminal.png" alt="" width="300" />  
+<img src="../images/digital_terminal.png" alt="" width="300" />  
 
 
 
