@@ -300,7 +300,7 @@ This PCB will form now on be referenced as PCB 2.
 |---|---|---|---|---|
 |N/A|PCB 1|1|      |sharp knife|
 
-- separate the copper strips using a sharp knife as shown below. 
+- separate the copper strips on PCB 2 using a sharp knife as shown below. 
     - the red lines indicate, where the copper lines have to be separated. 
     - the copper side faces downward.
     - the pink arrow indicates the direction of the copper stripes.
