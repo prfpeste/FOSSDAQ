@@ -5,9 +5,9 @@ Youll need to print the following components:
 
 |image|Name and Link|
 |---|---|
-|<img src="../images/mosfet.png" alt="" width="160" />|[Case](../images/RasPI_Case.png)|
-|<img src="../images/transistor.png" alt="" width="160" />|[Lid](../images/RasPI_Lid.png)|
-|<img src="../images/diode.png" alt="" width="160" />|[Mounting Plate DCDC](../images/RasPI_Clip.png)|
+|<img src="../images/RasPI_Case.png" alt="" width="160" />|[Case](../images/RasPI_Case.png)|
+|<img src="../images/RasPI_Lid.png" alt="" width="160" />|[Lid](../images/RasPI_Lid.png)|
+|<img src="../images/RasPI_Clip.png" alt="" width="160" />|[Mounting Plate DCDC](../images/RasPI_Clip.png)|
 
 
 
