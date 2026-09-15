@@ -6,7 +6,7 @@ module.exports = {
     // chosen here - PWM out => int (0-255), digital out => boolean,
     // off => channel is not available to the output node.
     // Settings index === actuator index.
-    "do-PWM-1to6x": {
+    "do-6x-PWM": {
         kind: "actuator",
         actuatorsFromSettings: true,
         settings: [
@@ -68,7 +68,7 @@ module.exports = {
     },
 
     // --- Actuator board without selectable pin mode: fixed, static actuators.
-    "ao-1to3x-0to10V": {
+    "ao-3x-0to10V": {
         kind: "actuator",
         actuatorsFromSettings: true,
         settings: [{
