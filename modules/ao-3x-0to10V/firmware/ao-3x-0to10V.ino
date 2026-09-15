@@ -363,7 +363,7 @@ void controll() {                                                         // fun
         //=================================================================================================================================================================
         // ### Insert specific code to control actor 0 here ###
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        if (settings[controllIndex] == 2) writeToDAC(command, 2);
+        if (settings[controllIndex] == 2) writeToDAC(voltageInSteps, 2);
         else {
           Serial.println("ERROR: selected pin invalid"); 
           errorStatus();
@@ -375,7 +375,7 @@ void controll() {                                                         // fun
         //=================================================================================================================================================================
         // ### Insert specific code to control actor 1 here ###
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        if (settings[controllIndex] == 2) writeToDAC(command, 3);
+        if (settings[controllIndex] == 2) writeToDAC(voltageInSteps, 3);
         else {
           Serial.println("ERROR: selected pin invalid"); 
           errorStatus();
@@ -387,7 +387,7 @@ void controll() {                                                         // fun
         //=================================================================================================================================================================
         // ### Insert specific code to control actor 2 here ###
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        if (settings[controllIndex] == 2) writeToDAC(command, 4);
+        if (settings[controllIndex] == 2) writeToDAC(voltageInSteps, 4);
         else {
           Serial.println("ERROR: selected pin invalid"); 
           errorStatus();
