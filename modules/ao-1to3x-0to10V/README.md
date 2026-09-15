@@ -1,6 +1,6 @@
-# ao-1to3x-0to10V
+# ao-3x-0to10V
 
-1to3-channel analog output module for the FOSSDAQ system.
+3-channel analog output module for the FOSSDAQ system.
 
 This module is designed for actors with 0to10 V supply. It is based on an Arduino Nano and communicates with the Raspberry Pi via USB.
 
