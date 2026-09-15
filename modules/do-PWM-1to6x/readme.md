@@ -1,6 +1,6 @@
-# do-PWM-1to6x
+# do-6x-PWM
 
-1-6-channel digital output module with PWM functionality for the FOSSDAQ system.
+6-channel digital output module with PWM functionality for the FOSSDAQ system.
 
 This module is designed for actors with 0-20 V supply. It is based on an Arduino Nano R4 and communicates with the Raspberry Pi via USB.
 
