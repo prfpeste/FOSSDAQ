@@ -15,8 +15,7 @@ Everything is orchestrated by a single script, `install.sh`.
 
 ## 1. Requirements
 
-- freshly installed Raspberry Pi OS (recommended) (or Ubuntu 22.04/24.04) with a network connection for the
-  install step
+- freshly installed Raspberry Pi OS (recommended) with a network connection for the install step
 - A Wi-Fi adapter that supports AP (access point) mode. Raspberry PIs come with a builtin one.
 - Root access (`sudo`)
 
