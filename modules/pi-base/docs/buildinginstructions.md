@@ -141,4 +141,9 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 |4|<a href="https://www.berrybase.de/4-teiliges-kuehlkoerper-set-fuer-raspberry-pi-4-silber">Heat Sink Fin Set|1| ||
 |N/A|24 V Terminal PCB|1|      ||
 
-<img src="../images/RasPI_Layout.png" alt="" width="400" />
+- Connect all assembled components as shown in the drawing above.
+- Keep wires as short as possible to ensure they fit into the case.
+- connect the RTC Battery (BOM Pos 2) to the Raspberry Pi 5 (BOM Pos 1) and mount the battery to the side of the case using sticky tape.
+- mount the heat sinks (BOM Pos 4) on the Raspberry Pi 5 (BOM Pos 1).
+
+<img src="../images/RasPI_Layout.png" alt="" width="800" />
