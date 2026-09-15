@@ -142,7 +142,7 @@ This PCB will form now on be referenced as PCB 2.
     - the pink arrow indicates the direction of the copper stripes.
 - do **not** solder them in at this time. 
 
-<img src="../images/step_1-2.png" alt="" width="700" />
+<img src="../images/Step_1-2.png" alt="" width="700" />
 
 
 
@@ -162,7 +162,7 @@ This PCB will form now on be referenced as PCB 2.
     - these two pins should be as far away from each other as possible.
 - solder the remaining pins.
 
-<img src="../images/step_1-3.png" alt="" width="700" />
+<img src="../images/Step_1-3.png" alt="" width="700" />
 
 
 
@@ -179,7 +179,7 @@ This PCB will form now on be referenced as PCB 2.
 - solder them in place using a soldering iron
 - shorten the wire of the resistors using small side-cutting pliers
 
-<img src="../images/step_1-4.png" alt="" width="700" />
+<img src="../images/Step_1-4.png" alt="" width="700" />
 
 
 
@@ -194,7 +194,7 @@ This PCB will form now on be referenced as PCB 2.
     - the copper side faces downward.
     - the pink arrow indicates the direction of the copper stripes.
 
-<img src="../images/step_1-5.png" alt="" width="700" />
+<img src="../images/Step_1-5.png" alt="" width="700" />
 
 
 
@@ -212,7 +212,7 @@ This PCB will form now on be referenced as PCB 2.
 - solder them in place using a soldering iron
 - shorten the wire of the resistors using small side-cutting pliers
 
-<img src="../images/step_1-6.png" alt="" width="700" />
+<img src="../images/Step_1-6.png" alt="" width="700" />
 
 
 
@@ -230,7 +230,7 @@ This PCB will form now on be referenced as PCB 2.
 - solder them in place using a soldering iron
 - shorten the wire of the mosfet using small side-cutting pliers
 
-<img src="../images/step_1-7.png" alt="" width="700" />
+<img src="../images/Step_1-7.png" alt="" width="700" />
 
 
 
@@ -269,7 +269,7 @@ This PCB will form now on be referenced as PCB 2.
 - solder them in place using a soldering iron
 - shorten the wire of the mosfet using small side-cutting pliers
 
-<img src="../images/step_1-9.png" alt="" width="700" />
+<img src="../images/Step_1-9.png" alt="" width="700" />
 
 
 
@@ -287,7 +287,7 @@ This PCB will form now on be referenced as PCB 2.
 - Place the Hex-Schmitt-Trigger-Inverter (Texas Instruments - 74HC 14 TI) (BOM Pos 8) into the soldered IC-Socket (DIL-14) (BOM Pos 9).
     - the notch must face in the same direction as shown below.
 
-<img src="../images/step_1-10.png" alt="" width="700" />
+<img src="../images/Step_1-10.png" alt="" width="700" />
 
 - The final assembly of the 74HCT14TI chip and DIL-14 socket must match the image below.
 <img src="../images/assemble_inv.png" alt="" width="700" />
@@ -305,7 +305,7 @@ This PCB will form now on be referenced as PCB 2.
     - the copper side faces downward.
     - the pink arrow indicates the direction of the copper stripes.
 
-<img src="../images/step_1-11.png" alt="" width="700" />
+<img src="../images/Step_1-11.png" alt="" width="700" />
 
 
 
@@ -329,7 +329,7 @@ This PCB will form now on be referenced as PCB 2.
 |<img src="../images/wire_down.png" alt="" width="160" />|wire exits PCB 1 on the side of PCB 1s copper strips|
 |<img src="../images/wire_up.png" alt="" width="160" />|wire exits PCB 1 on the side with no copper strips|
 
-<img src="../images/step_1-12.png" alt="" width="700" />
+<img src="../images/Step_1-12.png" alt="" width="700" />
 
 
 
@@ -350,7 +350,7 @@ This PCB will form now on be referenced as PCB 2.
 |<img src="../images/wire_down.png" alt="" width="160" />|wire exits PCB 1 on the side of PCB 1s copper strips|
 |<img src="../images/wire_up.png" alt="" width="160" />|wire exits PCB 1 on the side with no copper strips|
 
-<img src="../images/step_1-13.png" alt="" width="700" />
+<img src="../images/Step_1-13.png" alt="" width="700" />
 
 
 
