@@ -806,6 +806,8 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
   - The 6-pole spring-loaded terminal (Pos 16) is mounted on the side of the perforated circuit board (80 x 20 mm) (BOM Pos 18) facing towards you.
   - Arrows denote the direction of the spring loaded terminal ports.
       - The spring loaded terminal ports face down.
+  - leave a 2 mm gap between the 6-pole spring-loaded terminal (Pos 16) and the perforated circuit board (80 x 20 mm) (BOM Pos 18).
+      - place the perforated circuit board (80 x 20 mm) (BOM Pos 18) in the case (0 - 3D-printing) and push the 6-pole spring-loaded terminal (Pos 16) in, until it touches the case.
 
 <img src="../images/analog_terminal.png" alt="" width="300" />  
 
