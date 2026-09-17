@@ -31,7 +31,9 @@ trap '' TTIN TTOU
 KNOWN_IDS=(
     "do-6x-PWM"
     "ao-3x-0to10V"
-    "ai-8x-0to3v3"
+    "ai-8x-5V"
+    "ai-4x-tck"
+    "I2C-6x-mux"
     # add more IDs here, e.g.:
     # "MySensorBoard"
 )
