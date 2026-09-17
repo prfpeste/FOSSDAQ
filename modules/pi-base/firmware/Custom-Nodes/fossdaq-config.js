@@ -117,7 +117,7 @@ module.exports = {
     },
 
 
-        "ai-4x-tck": {
+    "ai-4x-tck": {
         kind: "sensor",
         settings: [],
         sensors: [
@@ -125,6 +125,20 @@ module.exports = {
             { index: 1, formula: "S" },
             { index: 2, formula: "S" },
             { index: 3, formula: "S" },
+        ],
+    },
+
+
+    "I2C-6x-mux": {
+        kind: "sensor",
+        settings: [],
+        sensors: [
+            { index: 0, formula: "S" },
+            { index: 1, formula: "S" },
+            { index: 2, formula: "S" },
+            { index: 3, formula: "S" },
+            { index: 4, formula: "S" },
+            { index: 5, formula: "S" },
         ],
     },
     // add more board types...
