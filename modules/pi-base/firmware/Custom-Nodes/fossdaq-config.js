@@ -103,7 +103,38 @@ module.exports = {
     // the user assigns a custom name in fossdaq-init.
     "ai-8x-5V": {
         kind: "sensor",
-        settings: [],
+        settings: [{ index: 0, label: "Channel 0", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 1, label: "Channel 1", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 2, label: "Channel 2", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 3, label: "Channel 3", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 4, label: "Channel 4", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 5, label: "Channel 5", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 6, label: "Channel 6", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 7, label: "Channel 7", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},],
         sensors: [
             { index: 0, formula: "S" },
             { index: 1, formula: "S" },
@@ -119,7 +150,22 @@ module.exports = {
 
     "ai-4x-tck": {
         kind: "sensor",
-        settings: [],
+        settings: [{ index: 0, label: "Channel 0", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 1, label: "Channel 1", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 2, label: "Channel 2", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 3, label: "Channel 3", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},],
         sensors: [
             { index: 0, formula: "S" },
             { index: 1, formula: "S" },
@@ -131,7 +177,30 @@ module.exports = {
 
     "I2C-6x-mux": {
         kind: "sensor",
-        settings: [],
+        settings: [{ index: 0, label: "Channel 0", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 1, label: "Channel 1", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 2, label: "Channel 2", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 3, label: "Channel 3", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 4, label: "Channel 4", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},
+                  { index: 5, label: "Channel 5", options: [
+                            { value: 1, label: "off" },
+                            { value: 2, label: "on" },
+                  ]},],
         sensors: [
             { index: 0, formula: "S" },
             { index: 1, formula: "S" },
