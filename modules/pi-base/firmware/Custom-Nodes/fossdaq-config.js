@@ -101,7 +101,7 @@ module.exports = {
     // --- Example sensor board: no settings, two sensor channels. No own
     // `label` -> default display name is simply "Sensor <index>", unless
     // the user assigns a custom name in fossdaq-init.
-    "ai-8x-0to3v3": {
+    "ai-8x-5V": {
         kind: "sensor",
         settings: [],
         sensors: [
@@ -113,6 +113,18 @@ module.exports = {
             { index: 5, formula: "S" },
             { index: 6, formula: "S" },
             { index: 7, formula: "S" },
+        ],
+    },
+
+
+        "ai-4x-tck": {
+        kind: "sensor",
+        settings: [],
+        sensors: [
+            { index: 0, formula: "S" },
+            { index: 1, formula: "S" },
+            { index: 2, formula: "S" },
+            { index: 3, formula: "S" },
         ],
     },
     // add more board types...
