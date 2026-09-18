@@ -5,11 +5,11 @@ Youll need to print the following components:
 
 |image|Name and Link|
 |---|---|
-|<img src="../images/PWM_Case.png" alt="" width="160" />|[Case](../hardware)|
-|<img src="../images/PWM_Lid.png" alt="" width="160" />|[Lid](../hardware)|
-|<img src="../images/Arduino_Clip.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware)|
-|<img src="../images/PCB_Clip.png" alt="" width="160" />|[Mounting Plate PCB](../hardware)|
-|<img src="../images/slate_pin.png" alt="" width="160" />|[slate pin](../hardware)|
+|<img src="../images/PWM_Case.png" alt="" width="160" />|[Case](../hardware/PWM_Case.stl)|
+|<img src="../images/PWM_Lid.png" alt="" width="160" />|[Lid](../hardware/PWM_Lid.stl)|
+|<img src="../images/Arduino_Clip.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware/Arduino_Clip.stl)|
+|<img src="../images/PCB_Clip.png" alt="" width="160" />|[Mounting Plate PCB](../hardware/PCB_Clip.stl)|
+|<img src="../images/slate_pin.png" alt="" width="160" />|[slate pin](../hardware/slate_pin.stl)|
 
 ## 1 - PCB Assembly
 
