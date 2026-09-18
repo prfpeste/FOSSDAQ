@@ -193,7 +193,7 @@ switch (initStatus) {
         return;
       }
 
-      startInit(received);
+      if (startInit(received)) return;
 
       if (received == "initEnd") {                                        // if 'initEnd' was received,
         initStatus = 3;                                                   // then end initialization in the next iteration
@@ -278,6 +278,8 @@ void measure() {                                                          // fun
     }
     int measureingIndex = received.toInt();                               // convert string to integer
 
+    if (startInit(received)) return;
+    
     int measurement = 0;                                                  // declaration of the variable where the measurement value must be written.
 
     switch (measureingIndex) {
@@ -395,7 +397,7 @@ void errorStatus() {
 //#########################################################################################################################################################################
 //=========================================================================================================================================================================
 
-void startInit(String received) {
+bool startInit(String received) {
   if (received == "serveID") {                                            // if the command received is 'serveID'
     initStatus=1;
     int rand;                                                       // will hold the device's ID (random or previously stored)
@@ -420,6 +422,8 @@ void startInit(String received) {
     errorStatus();
     digitalWrite(LED_BUILTIN, LOW); // turn OFF builtin LED
     ERROR = false;
+    return true;
   }
+  return false;
 
 }
