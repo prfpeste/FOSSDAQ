@@ -45,7 +45,7 @@
 // ### Variable and constant declaration ###
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-#define N 8                 // Enter the number of settings here. A setting can have many possible arguments (e.g., setting0=shape, setting1=color).
+#define N 1                 // Enter the number of settings here. A setting can have many possible arguments (e.g., setting0=shape, setting1=color).
 #define noSettings 1        // If no settings are required, set 'noSettings' = 1. If settings are required, set 'noSettings' = 0.
 
 String ID="ai-8x-5V_";  // ID prefex of the specific Arduino. The '_' at the end is necessary!
@@ -206,62 +206,7 @@ switch (initStatus) {
                 errorStatus();                                            // and call the error function
                 return;
               }
-              break;  
-            case 1:
-              if (setting != 1 && setting != 2) {                         // if sent setting is NOT valid (query every valid setting with '!=' and link them with '&&'),
-                Serial.print("ERROR: invalid setting at index: ");        // then send error message to NodeRed
-                Serial.println(indexSet, DEC);                            // and send index of error to NodeRed
-                errorStatus();                                            // and call the error function
-                return;
-              }
-              break;  
-            case 2:
-              if (setting != 1 && setting != 2) {                         // if sent setting is NOT valid (query every valid setting with '!=' and link them with '&&'),
-                Serial.print("ERROR: invalid setting at index: ");        // then send error message to NodeRed
-                Serial.println(indexSet, DEC);                            // and send index of error to NodeRed
-                errorStatus();                                            // and call the error function
-                return;
-              }
-              break;  
-            case 3:
-              if (setting != 1 && setting != 2) {                         // if sent setting is NOT valid (query every valid setting with '!=' and link them with '&&'),
-                Serial.print("ERROR: invalid setting at index: ");        // then send error message to NodeRed
-                Serial.println(indexSet, DEC);                            // and send index of error to NodeRed
-                errorStatus();                                            // and call the error function
-                return;
-              }
-            case 4:
-              if (setting != 1 && setting != 2) {                         // if sent setting is NOT valid (query every valid setting with '!=' and link them with '&&'),
-                Serial.print("ERROR: invalid setting at index: ");        // then send error message to NodeRed
-                Serial.println(indexSet, DEC);                            // and send index of error to NodeRed
-                errorStatus();                                            // and call the error function
-                return;
-              }
-              break;  
-            case 5:
-              if (setting != 1 && setting != 2) {                         // if sent setting is NOT valid (query every valid setting with '!=' and link them with '&&'),
-                Serial.print("ERROR: invalid setting at index: ");        // then send error message to NodeRed
-                Serial.println(indexSet, DEC);                            // and send index of error to NodeRed
-                errorStatus();                                            // and call the error function
-                return;
-              }
-              break;  
-            case 6:
-              if (setting != 1 && setting != 2) {                         // if sent setting is NOT valid (query every valid setting with '!=' and link them with '&&'),
-                Serial.print("ERROR: invalid setting at index: ");        // then send error message to NodeRed
-                Serial.println(indexSet, DEC);                            // and send index of error to NodeRed
-                errorStatus();                                            // and call the error function
-                return;
-              }
-              break;  
-            case 7:
-              if (setting != 1 && setting != 2) {                         // if sent setting is NOT valid (query every valid setting with '!=' and link them with '&&'),
-                Serial.print("ERROR: invalid setting at index: ");        // then send error message to NodeRed
-                Serial.println(indexSet, DEC);                            // and send index of error to NodeRed
-                errorStatus();                                            // and call the error function
-                return;
-              }
-              break;  
+              break;    
           }
           settings[indexSet] = setting;                                   // write setting to the correct position in the settings array
         }
@@ -364,11 +309,6 @@ void measure() {                                                          // fun
     int measureingIndex = received.toInt();                               // convert string to integer
 
     int measurement = 0;                                                  // declaration of the variable where the measurement value must be written.
-
-    if (settings[measureingIndex] != 2) {
-      Serial.println("ERROR: at least one setting is invalid");       // and send an error message
-      errorStatus();                                                  // call the error function
-    }
 
     switch (measureingIndex) {
       case 0:
