@@ -469,7 +469,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Connect one red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.1) to one 24 V pin.
 - Connect one black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.3) to one GND pin.
 - Refer to the image below for clarity.
-<img src="../images/Terminal_24V_real.jpeg" alt="" width="400" />
+<img src="../images/Terminal_24V_real.png" alt="" width="400" />
 
 
 
@@ -541,11 +541,11 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 
 
 
-### 2.4 - Step 4: soldering Spring-loaded terminal (4-pole)
+### 2.4 - Step 4: soldering Spring-loaded terminal (6-pole)
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
-|N/A|24 V Terminal PCB|1|      |soldering iron with solder|
+|N/A|Output Terminal PCB|1|      |soldering iron with solder|
 |19.1|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|2| ||
 
 - Connect all three GND pins with two black insulated copper stranded wires (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.1).
