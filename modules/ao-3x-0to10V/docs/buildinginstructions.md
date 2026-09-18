@@ -738,7 +738,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Connect one red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.1) to one 24 V pin.
 - Connect one black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.3) to one GND pin.
 - Refer to the image below for clarity.
-<img src="../images/Terminal_24V_real.jpeg" alt="" width="300" />
+<img src="../images/Terminal_24V_real.png" alt="" width="300" />
 
 
 
