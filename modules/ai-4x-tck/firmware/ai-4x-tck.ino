@@ -300,7 +300,7 @@ void measure() {                                                          // fun
       return;
     }
 
-    startInit(received);
+    if (startInit(received)) return;
 
     int measureingIndex = received.toInt();                               // convert string to integer
 
