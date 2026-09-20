@@ -6,7 +6,7 @@ You'll need to print the following components:
 |image|Name and Link|
 |---|---|
 |<img src="../images/analog_out_Case.png" alt="" width="160" />|[Case](../hardware/analog_out_case.stl)|
-|<img src="../images/analog_out_Lid.png" alt="" width="160" />|[Lid](../hardware/analog_out_lid.stl)|
+|<img src="../images/analog_out_lid.png" alt="" width="160" />|[Lid](../hardware/analog_out_lid.stl)|
 |<img src="../images/Arduino_Clip.png" alt="" width="160" />|[Mounting Plate Arduino](../hardware/Arduino_Clip.stl)|
 |<img src="../images/PCB_Clip.png" alt="" width="160" />|[Mounting Plate PCB](../hardware/PCB_Clip.stl)|
 |<img src="../images/slate_pin.png" alt="" width="160" />|[slate pin](../hardware/slate_pin.stl)|
