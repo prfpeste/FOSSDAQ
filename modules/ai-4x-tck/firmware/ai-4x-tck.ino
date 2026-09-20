@@ -390,7 +390,7 @@ bool startInit(String received) {
     byte lowByteValue = EEPROM.read(adresse + 1);                   // read low byte of stored ID from EEPROM
 
     if (highByteValue == 255 && lowByteValue == 255) {              // 0xFF/0xFF means EEPROM is unwritten -> no ID assigned yet
-      randomSeed(analogRead(A0));                                   // seed the RNG using noise from an unconnected analog pin
+      randomSeed(analogRead(A4));                                   // seed the RNG using noise from an unconnected analog pin
       rand=random(0,32768);                                         // generate a new random ID (0-32767, fits in 15 bits/2 bytes)
       EEPROM.write(adresse, highByte(rand));                        // store high byte of the new ID in EEPROM
       EEPROM.write(adresse + 1, lowByte(rand));                     // store low byte of the new ID in EEPROM
