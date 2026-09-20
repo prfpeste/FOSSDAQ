@@ -69,7 +69,7 @@
   </tr>
   <tr>
     <td rowspan="1">15</td>
-    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">insulated copper stranded wire (≥ 0,5 mm²; 3-4 colors recomended; ca. 1 m each)</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">insulated copper stranded wire (≥ 0,5 mm²; 3-4 colors recomended)</td>
     <td colspan="6">1</td>
   </tr>
   <tr>
