@@ -1,7 +1,7 @@
 # ao-3x-0to10V
 
 ## 0 - 3D-printing
-Youll need to print the following components: 
+You'll need to print the following components: 
 
 |image|Name and Link|
 |---|---|
@@ -33,11 +33,11 @@ Youll need to print the following components:
   <tr>
     <td>5</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_10_0_kohm_0207_0_6_w_1_-11449">resistor (10 kOhm)</a><td>7</td>
   <tr>
-    <td>6</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/tantal_bedrahtet_10_f_10v_125_c-393673">condensatore (tantnal 10 µF)</a><td>3</td>
+    <td>6</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/tantal_bedrahtet_10_f_10v_125_c-393673">capacitor (tantalum 10 µF)</a><td>3</td>
   <tr>
-    <td>7</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/keramik-kondensator_500v_100p-9316">condensatore (ceramic 0.1 µF)</a><td>6</td>
+    <td>7</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/keramik-kondensator_500v_100p-9316">capacitor (ceramic 0.1 µF)</a><td>6</td>
   <tr>
-    <td>8</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/operationsverstaerker_1-fach_dip-8-21555">operation amplifyer (Texas Instruments - TL071CP)</a><td>3</td>
+    <td>8</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/operationsverstaerker_1-fach_dip-8-21555">operational amplifier (Texas Instruments - TL071CP)</a><td>3</td>
   </tr>
   <tr>
     <td>9</td><td><a href="https://www.reichelt.de/de/de/shop/produkt/d_a-wandler_12-bit_1-kanal_spi_u-referenz_dip-8-280824">digital to analog converter (Microchip Technology - MCP 4821)</a><td>3</td>
@@ -158,7 +158,7 @@ This PCB will form now on be referenced as PCB 5.
 
 
 
-### 1.2 - Step 2: soldering 10 kOhm resisitors onto PCB 1
+### 1.2 - Step 2: soldering 10 kOhm resistors onto PCB 1
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
@@ -191,14 +191,14 @@ This PCB will form now on be referenced as PCB 5.
 
 
 
-### 1.4 - Step 4: soldering 3.8 kOhm resistors onto PCB 1 
+### 1.4 - Step 4: soldering 3.83 kOhm resistors onto PCB 1 
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
 |N/A|PCB 1|1|      |soldering iron with solder|
-|4|<a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_3_83_kohm_0207_0_6_w_1_-11704">resistor (3.8 kOhm)|3| |small side-cutting pliers|
+|4|<a href="https://www.reichelt.de/de/de/shop/produkt/widerstand_metallschicht_3_83_kohm_0207_0_6_w_1_-11704">resistor (3.83 kOhm)|3| |small side-cutting pliers|
 
-- mount the resistors (3.8 kOhm) (BOM Pos 4) on PCB 1 as shown below.
+- mount the resistors (3.83 kOhm) (BOM Pos 4) on PCB 1 as shown below.
     - the copper side faces downward.
     - the pink arrow indicates the direction of the copper stripes.
     - make sure that the resistor and its wires lay on top of PCB 1 exactly as shown. 
@@ -435,18 +435,18 @@ This PCB will form now on be referenced as PCB 5.
 
 
 
-### 1.18 - Step 18: soldering operation amplifyer
+### 1.18 - Step 18: soldering operational amplifier
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
 |N/A|PCB 1|1|      |soldering iron with solder|
 |11|<a href="https://www.reichelt.de/de/de/shop/produkt/ic-sockel_8-polig_doppelter_federkontakt-8230">IC-Socket (8 pols)|3| ||
-|8|<a href="https://www.reichelt.de/de/de/shop/produkt/operationsverstaerker_1-fach_dip-8-21555">operation amplifyer (Texas Instruments - TL071CP)|3| ||
+|8|<a href="https://www.reichelt.de/de/de/shop/produkt/operationsverstaerker_1-fach_dip-8-21555">operational amplifier (Texas Instruments - TL071CP)|3| ||
 
 - Solder the IC-Socket (8 pols) (BOM Pos 11) on top of PCB 1 as shown below.
     - the copper side of PCB 1 faces downward.
     - the pink arrow indicates the direction of the copper stripes of PCB 1.
-- Place the operation amplifyer (Texas Instruments - TL071CP) (BOM Pos 8) into the soldered IC-Socket (8 pols) (BOM Pos 11).
+- Place the operational amplifier (Texas Instruments - TL071CP) (BOM Pos 8) into the soldered IC-Socket (8 pols) (BOM Pos 11).
     - the notch must face in the same direction as shown below.
 
 <img src="../images/step_1-18.png" alt="" width="700" />
@@ -501,30 +501,30 @@ This PCB will form now on be referenced as PCB 5.
 
 
 
-### 1.22 - Step 22: soldering condensatore (ceramic 0.1 µF)
+### 1.22 - Step 22: soldering capacitor (ceramic 0.1 µF)
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
 |N/A|PCB 1|1|      |soldering iron with solder|
-|7|<a href="https://www.reichelt.de/de/de/shop/produkt/keramik-kondensator_500v_100p-9316">condensatore (ceramic 0.1 µF)|6| ||
+|7|<a href="https://www.reichelt.de/de/de/shop/produkt/keramik-kondensator_500v_100p-9316">capacitor (ceramic 0.1 µF)|6| ||
 
-- Solder the condensatore (ceramic 0.1 µF) (BOM Pos 7) on top of PCB 1 as shown below.
+- Solder the capacitor (ceramic 0.1 µF) (BOM Pos 7) on top of PCB 1 as shown below.
     - the copper side of PCB 1 faces downward.
     - the pink arrow indicates the direction of the copper stripes of PCB 1.
-    - the condensator is located above the wire of the resistor. The wires of both components must noch touch.
+    - the capacitor is located above the wire of the resistor. The wires of both components must not touch.
 
 <img src="../images/step_1-22.png" alt="" width="700" />
 
 
 
-### 1.23 - Step 23: soldering condensatore (tantnal 10 µF)
+### 1.23 - Step 23: soldering capacitor (tantalum 10 µF)
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
 |N/A|PCB 1|1|      |soldering iron with solder|
-|6|<a href="https://www.reichelt.de/de/de/shop/produkt/tantal_bedrahtet_10_f_10v_125_c-393673">condensatore (tantnal 10 µF)</a>|3| ||
+|6|<a href="https://www.reichelt.de/de/de/shop/produkt/tantal_bedrahtet_10_f_10v_125_c-393673">capacitor (tantalum 10 µF)</a>|3| ||
 
-- Solder the condensatore (ceramic 0.1 µF) (BOM Pos 7) on top of PCB 1 as shown below.
+- Solder the capacitor (tantalum 10 µF) (BOM Pos 6) on top of PCB 1 as shown below.
     - the copper side of PCB 1 faces downward.
     - the pink arrow indicates the direction of the copper stripes of PCB 1.
 
@@ -588,7 +588,7 @@ This PCB will form now on be referenced as PCB 5.
 |19.3|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">green insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|7| ||
 |19.4|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">blue insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|3| ||
 
-- Solder the insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19) to PCB 1 as shown below.
+- Solder the insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.1 – 19.4) to PCB 1 as shown below.
     - the copper side of PCB 1 faces downward.
     - the pink arrow indicates the direction of the copper stripes of PCB 1.
     - the wire colour should match the one shown below.
@@ -650,17 +650,17 @@ This PCB will form now on be referenced as PCB 5.
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1">19.2</td>
+    <td rowspan="1">19.5</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)</td>
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1">19.3</td>
+    <td rowspan="1">19.2</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</td>
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1">19.4</td>
+    <td rowspan="1">19.6</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)</td>
     <td colspan="6">1</td>
   </tr>
@@ -729,15 +729,15 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 |---|---|---|---|---|
 |N/A|24 V Terminal PCB|1|      |soldering iron with solder|
 |19.1|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|1| ||
-|19.2|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|1| ||
-|19.3|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|1| ||
-|19.4|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|1| ||
+|19.5|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|1| ||
+|19.2|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)|1| ||
+|19.6|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|1| ||
 
-- Connect both 24 V pins with one red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.2).
-- Connect both GND pins with one black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.4).
+- Connect both 24 V pins with one red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.5).
+- Connect both GND pins with one black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.6).
 - Ensure no connection exists between any 24 V pin and any GND pin.
 - Connect one red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.1) to one 24 V pin.
-- Connect one black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.3) to one GND pin.
+- Connect one black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each) (BOM Pos 19.2) to one GND pin.
 - Refer to the image below for clarity.
 <img src="../images/Terminal_24V_real.png" alt="" width="300" />
 
@@ -767,7 +767,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1">19.1</td>
+    <td rowspan="1">19.6</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)</td>
     <td colspan="6">2</td>
   </tr>
@@ -783,7 +783,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - small side-cutting pliers
 - small metal file
 
-### 2.1 - Step 1: Pre-assembling Spring-loaded terminal (6-pole)
+### 3.1 - Step 1: Pre-assembling Spring-loaded terminal (6-pole)
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
@@ -795,7 +795,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 
 
 
-### 2.2 - Step 2: soldering Spring-loaded terminal (6-pole)
+### 3.2 - Step 2: soldering Spring-loaded terminal (6-pole)
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
@@ -814,18 +814,18 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 
 
 
-### 2.4 - Step 4: soldering Spring-loaded terminal (4-pole)
+### 3.3 - Step 3: soldering GND wires
 
 |Pos in BOM|Part|Quantity||Tools|
 |---|---|---|---|---|
-|N/A|24 V Terminal PCB|1|      |soldering iron with solder|
-|19.1|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|2| ||
+|N/A|Output Terminal PCB|1|      |soldering iron with solder|
+|19.6|<a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)|2| ||
 
-- Connect all three GND pins with two black insulated copper stranded wires (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.1).
-- Ensure no connection exists between any 24 V pin and any GND pin.
+- Connect all three GND pins with two black insulated copper stranded wires (≥ 0,5 mm²; ca. 5 cm each) (BOM Pos 19.6).
+- Ensure no connection exists between any GND pin and any other pin.
 
 
-## 3 setting DCDC converter voltage
+## 4 setting DCDC converter voltage
 
 ### Materials 
 
@@ -856,14 +856,14 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Plug the DCDC converter (SBC-BUCK01) (BOM Pos 14) into the 24V power supply.
 - Verify the Display shows 24 V.
 - Press the button (S1) in the lower right corner.
-- Use a small flathead screwdriver to turn the brass screw on top of the blue Volatage Adjustment box.
+- Use a small flathead screwdriver to turn the brass screw on top of the blue Voltage Adjustment box.
 - Adjust until the display shows 10 V.
  
 <img src="../images/DCDC.png" alt="" width="300" />  
 
 
 
-## 4 connecting all components
+## 5 connecting all components
 
 ![kiCAD](../images/analog.png)
 
