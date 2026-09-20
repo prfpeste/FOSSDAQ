@@ -1,7 +1,7 @@
 # ai-4x-tck
 
 ## 0 - 3D-printing
-Youll need to print the following components: 
+You'll need to print the following components: 
 
 |image|Name and Link|
 |---|---|
@@ -71,7 +71,7 @@ Youll need to print the following components:
 | | | | |vise (recommended)|
 
 - The terminal pins are too large for the PCB holes.
-- Carefully file down the edges of the pins until they fit into the holes of the perforated circuit board (80 x 20 mm) (BOM Pos 4).
+- Carefully file down the edges of the pins until they fit into the holes of the perforated circuit board (80 x 20 mm) (BOM Pos 5).
 
 
 
@@ -157,7 +157,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Plug the DCDC converter (SBC-BUCK01) (BOM Pos 2) into the 24V power supply.
 - Verify the Display shows 24 V.
 - Press the button (S1) in the lower right corner.
-- Use a small flathead screwdriver to turn the brass screw on top of the blue Volatage Adjustment box.
+- Use a small flathead screwdriver to turn the brass screw on top of the blue Voltage Adjustment box.
 - Adjust until the display shows 5 V.
  
 <img src="../images/DCDC.png" alt="" width="300" />  
