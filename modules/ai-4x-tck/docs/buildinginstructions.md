@@ -128,7 +128,43 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Refer to the image below for clarity.
 <img src="../images/Terminal_24V_real.png" alt="" width="400" />
 
-## 2 connecting all components
+
+## 2 setting DCDC converter voltage
+
+### Materials 
+
+<table>
+  <tr>
+    <td rowspan="1">Pos</td>
+    <td rowspan="1">Part</td>
+    <td colspan="6">number of parts</td>
+  </tr>
+  <tr>
+    <td rowspan="1">14</td>
+    <td rowspan="1"><a href="https://www.reichelt.com/de/en/shop/product/developer_boards_-_voltage_regulators_dc_dc_converters-333853#closemodal">DCDC converter (SBC-BUCK01)</td>
+    <td colspan="6">1</td>
+  </tr>
+  </tr>
+</table>
+
+### Tools
+
+- small flathead screwdriver.
+
+  
+### Steps
+
+- Plug the DCDC converter (SBC-BUCK01) (BOM Pos 14) into the 24V power supply.
+- Verify the Display shows 24 V.
+- Press the button (S1) in the lower right corner.
+- Use a small flathead screwdriver to turn the brass screw on top of the blue Volatage Adjustment box.
+- Adjust until the display shows 5 V.
+ 
+<img src="../images/DCDC.png" alt="" width="300" />  
+
+
+
+## 3 connecting all components
 
 ![kiCAD](../images/kiCAD_ai-4x-tck.png)
 
