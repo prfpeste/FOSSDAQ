@@ -28,7 +28,7 @@
   <tr>
     <td rowspan="1">5</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/lochrasterplatine_doppelseitig_80_x_20_mm-319114">perforated circuit board (2.54 mm; 80 x 20 mm)</td>
-    <td colspan="6">2</td>
+    <td colspan="6">1</td>
   </tr>
   <tr>
     <td rowspan="1">6</td>
@@ -38,6 +38,26 @@
   <tr>
     <td rowspan="1">7</td>
     <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">insulated copper stranded wire (≥ 0,5 mm²; 3-4 colors recomended; ca. 1 m each)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">7.1</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">7.2</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">red insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">7.3</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 20 cm each)</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">7.4</td>
+    <td rowspan="1"><a href="https://www.reichelt.de/de/de/shop/produkt/kupferlitze_isoliert_10_m_4_x_0_50_mm_sw_gn_rt_bl-280308">black insulated copper stranded wire (≥ 0,5 mm²; ca. 5 cm each)</td>
     <td colspan="6">1</td>
   </tr>
   <tr>
