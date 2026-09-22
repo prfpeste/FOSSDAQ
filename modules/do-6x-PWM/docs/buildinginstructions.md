@@ -570,7 +570,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1">N/A</td>
+    <td rowspan="1">14</td>
     <td rowspan="1">USB-C cable</td>
     <td colspan="6">1</td>
   </tr>
