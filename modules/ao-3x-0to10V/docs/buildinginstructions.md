@@ -861,7 +861,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 ### 4.2 - Step 2: load the sketch
 
 - Open the Arduino IDE.
-- Open the [sketch](../firmware/do-6x-PWM.ino) and copy its content into the IDE, replacing the default code that is already present.
+- Open the [sketch](../firmware/ao-3x-0to10V.ino) and copy its content into the IDE, replacing the default code that is already present.
 
 ### 4.3 - Step 3: select board and port
 
