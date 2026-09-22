@@ -140,12 +140,12 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
     <td colspan="6">number of parts</td>
   </tr>
   <tr>
-    <td rowspan="1">13</td>
+    <td rowspan="1">1</td>
     <td rowspan="1">Arduino Nano R4</td>
     <td colspan="6">1</td>
   </tr>
   <tr>
-    <td rowspan="1">20</td>
+    <td rowspan="1">6</td>
     <td rowspan="1">USB-C cable</td>
     <td colspan="6">1</td>
   </tr>
