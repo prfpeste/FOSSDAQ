@@ -565,7 +565,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
     <td colspan="6">number of parts</td>
   </tr>
   <tr>
-    <td rowspan="1">N/A</td>
+    <td rowspan="1">6</td>
     <td rowspan="1">Arduino Nano R4</td>
     <td colspan="6">1</td>
   </tr>
