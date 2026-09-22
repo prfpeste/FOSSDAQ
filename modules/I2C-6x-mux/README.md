@@ -8,7 +8,7 @@ This module is designed for up to four BME280 sensors (temperature, relative hum
 
 - Development status: prototype
 - Hardware version: v1.0
-- Firmware status: defined separately
+- Firmware status: prototype
 - Last updated: September 20, 2026
 
 ## Purpose
