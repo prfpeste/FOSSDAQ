@@ -825,7 +825,71 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Ensure no connection exists between any GND pin and any other pin.
 
 
-## 4 setting DCDC converter voltage
+
+## 4 - Flashing the Arduino
+
+### Materials
+
+<table>
+  <tr>
+    <td rowspan="1">Pos</td>
+    <td rowspan="1">Part</td>
+    <td colspan="6">number of parts</td>
+  </tr>
+  <tr>
+    <td rowspan="1">13</td>
+    <td rowspan="1">Arduino Nano R4</td>
+    <td colspan="6">1</td>
+  </tr>
+  <tr>
+    <td rowspan="1">20</td>
+    <td rowspan="1">USB-C cable</td>
+    <td colspan="6">1</td>
+  </tr>
+</table>
+
+### Tools / Software
+
+- PC or laptop with internet access
+- [Arduino IDE](https://www.arduino.cc/en/software) (version 2.x recommended)
+
+### 4.1 - Step 1: install the Arduino IDE
+
+- Download the Arduino IDE from the [official website](https://www.arduino.cc/en/software) and install it.
+- Launch the Arduino IDE after installation.
+
+### 4.3 - Step 3: load the sketch
+
+- Open the Arduino IDE.
+- Open the [sketch](../firmware/do-6x-PWM.ino) and copy its content into the IDE, replacing the default code that is already present.
+
+### 4.4 - Step 4: select board and port
+
+- Connect the Arduino to the PC using the USB cable.
+- In the Arduino IDE, go to **Tools → Board** and select the Arduino model being used (Arduino Nano R4).
+- Go to **Tools → Port** and select the COM port (Windows) or the device (macOS/Linux) the Arduino is connected to.
+    - If no port is shown, check the USB cable connection and driver installation.
+
+### 4.5 - Step 5: upload the sketch
+
+- Click the **Upload** button (arrow icon) in the Arduino IDE.
+- Wait until the sketch has been compiled and transferred to the Arduino.
+    - The message "Upload complete" appears at the bottom of the console.
+- Some drivers or libraries may be missing. In this case, the IDE will notify you with a popup — install them, then click **Upload** again.
+- If errors still occur:
+    - Check that the correct board and port are selected (step 4.4).
+    - Check that all required libraries are installed (step 4.3).
+
+### 4.6 - Step 6: verify functionality
+
+- Open the **Serial Monitor** (**Tools → Serial Monitor**) to check the Arduino's output.
+    - Set the baud rate to 9600.
+    - Type `serveID` (case sensitive!) and note down the output on the Arduino case.
+        - It should look like this: `ao-3x-0to10V_123`. The numbers after the underscore are random.
+
+
+
+## 5 setting DCDC converter voltage
 
 ### Materials 
 
@@ -863,7 +927,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 
 
 
-## 5 connecting all components
+## 6 connecting all components
 
 ![kiCAD](../images/analog.png)
 
