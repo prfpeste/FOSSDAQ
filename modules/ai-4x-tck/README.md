@@ -8,7 +8,7 @@ This module is designed for Type-K thermocouples with a measurement range of −
 
 - Development status: prototype
 - Hardware version: v1.0
-- Firmware status: defined separately
+- Firmware status: v1.0
 - Last updated: September 20, 2026
 
 ## Purpose
