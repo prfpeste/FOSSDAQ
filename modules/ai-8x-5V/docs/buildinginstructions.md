@@ -311,7 +311,7 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 ### 3.2 - Step 2: load the sketch
 
 - Open the Arduino IDE.
-- Open the [sketch](../firmware/do-6x-PWM.ino) and copy its content into the IDE, replacing the default code that is already present.
+- Open the [sketch](../firmware/ai-8x-5V.ino) and copy its content into the IDE, replacing the default code that is already present.
 
 ### 3.3 - Step 3: select board and port
 
@@ -326,16 +326,13 @@ This PCB will form now on be referenced as 24 V Terminal PCB.
 - Wait until the sketch has been compiled and transferred to the Arduino.
     - The message "Upload complete" appears at the bottom of the console.
 - Some drivers or libraries may be missing. In this case, the IDE will notify you with a popup — install them, then click **Upload** again.
-- If errors still occur:
-    - Check that the correct board and port are selected (step 4.4).
-    - Check that all required libraries are installed (step 4.3).
 
 ### 3.5 - Step 5: verify functionality
 
 - Open the **Serial Monitor** (**Tools → Serial Monitor**) to check the Arduino's output.
     - Set the baud rate to 9600.
     - Type `serveID` (case sensitive!) and note down the output on the Arduino case.
-        - It should look like this: `ao-3x-0to10V_123`. The numbers after the underscore are random.
+        - It should look like this: `ai-8x-5V_123`. The numbers after the underscore are random.
 
 
 
