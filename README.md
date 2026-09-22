@@ -55,6 +55,10 @@ FOSSDAQ is developed as an open modular measurement system in the context of stu
 #### Further module contributors
 - To be added as new modules are published
 
+## Related Projects
+
+- [FOSSTHERM](https://github.com/prfpeste/FOSSTHERM) – Free and Open Source Thermal Experiments
+
 
 ## License
 
