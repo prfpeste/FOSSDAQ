@@ -1,4 +1,11 @@
 <script type="text/javascript">
+    // Shared with fossdaq-init.html / fossdaq-input.html - see comment
+    // there. Avoids a fresh async /fossdaq/board/:prefix round-trip (and
+    // therefore the save-race below) every time this dialog is reopened
+    // for an already-known board type.
+    window.fossdaqBoardEntryCache = window.fossdaqBoardEntryCache || {};
+    var fossdaqBoardEntryCache = window.fossdaqBoardEntryCache;
+
     RED.nodes.registerType('fossdaq-output', {
         category: 'fossdaq',
         color: '#a6d5fa',
@@ -210,10 +217,18 @@
                 const configNode = RED.nodes.node(configId);
                 const prefix = extractPrefix(configNode ? configNode.path : "");
                 if (!prefix) {
+                    // No/invalid port: this is a real, known state (not a
+                    // pending fetch) - an empty board entry is correct here.
                     populate({ actuators: [], settings: [] }, node.rows);
                     return;
                 }
+                const cached = fossdaqBoardEntryCache[prefix];
+                if (cached) {
+                    populate(cached, node.rows);
+                    return;
+                }
                 $.getJSON('fossdaq/board/' + prefix, function(entry) {
+                    fossdaqBoardEntryCache[prefix] = entry;
                     populate(entry, node.rows);
                 });
             }
@@ -227,6 +242,19 @@
         },
         oneditsave: function() {
             const node = this;
+
+            // Board entry not loaded yet (async /fossdaq/board/:prefix
+            // fetch still in flight when the dialog was saved). Neither
+            // the row list nor the dynamic-channel dropdown were populated
+            // with real channels in that case, so reading them here would
+            // previously produce rows=[] / dynamicIndex=null - silently
+            // discarding the configured channel(s). Keep the previous
+            // configuration instead.
+            if (!node._entry) {
+                node.warn("fossdaq-output: board configuration not loaded yet - keeping previous channel configuration for '" + (node.name || "this node") + "'. Please reopen and save again.");
+                return;
+            }
+
             const dynamicOn = $("#node-input-dynamic").prop('checked');
             node.dynamic = dynamicOn;
 
