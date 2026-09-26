@@ -1,4 +1,11 @@
 <script type="text/javascript">
+    // Shared with fossdaq-init.html / fossdaq-output.html - see comment
+    // there. Avoids a fresh async /fossdaq/board/:prefix round-trip (and
+    // therefore the save-race below) every time this dialog is reopened
+    // for an already-known board type.
+    window.fossdaqBoardEntryCache = window.fossdaqBoardEntryCache || {};
+    var fossdaqBoardEntryCache = window.fossdaqBoardEntryCache;
+
     RED.nodes.registerType('fossdaq-input', {
         category: 'fossdaq',
         color: '#a6d5fa',
@@ -70,7 +77,13 @@
                 sortable: true
             });
 
-            function populate(sensors, rows) {
+            function populate(entry, rows) {
+                // node._entry marks "board definition successfully loaded"
+                // - oneditsave refuses to touch node.rows/outputs while
+                // this is still unset (see there), so it MUST be set here,
+                // synchronously with the rendering, not before/separately.
+                node._entry = entry;
+                const sensors = getEnabledSensorList(entry);
                 node._sensors = sensors;
                 list.editableList('empty');
                 if (sensors.length === 0) {
@@ -87,11 +100,19 @@
                 const configNode = RED.nodes.node(configId);
                 const prefix = extractPrefix(configNode ? configNode.path : "");
                 if (!prefix) {
-                    populate([], node.rows);
+                    // No/invalid port: this is a real, known state (not a
+                    // pending fetch) - an empty board entry is correct here.
+                    populate({ sensors: [] }, node.rows);
+                    return;
+                }
+                const cached = fossdaqBoardEntryCache[prefix];
+                if (cached) {
+                    populate(cached, node.rows);
                     return;
                 }
                 $.getJSON('fossdaq/board/' + prefix, function(entry) {
-                    populate(getEnabledSensorList(entry), node.rows);
+                    fossdaqBoardEntryCache[prefix] = entry;
+                    populate(entry, node.rows);
                 });
             }
 
@@ -102,6 +123,18 @@
         },
         oneditsave: function() {
             const node = this;
+
+            // Board entry not loaded yet (async /fossdaq/board/:prefix
+            // fetch still in flight when the dialog was saved). The row
+            // list was never populated with real channels in that case,
+            // so reading it here would previously produce rows=[] and
+            // reset outputs to 1 - silently discarding the configured
+            // channels/wiring. Keep the previous configuration instead.
+            if (!node._entry) {
+                node.warn("fossdaq-input: board configuration not loaded yet - keeping previous channel configuration for '" + (node.name || "this node") + "'. Please reopen and save again.");
+                return;
+            }
+
             const rows = [];
             $("#node-input-rows-container").editableList('items').each(function() {
                 const select = $(this).find('select');
