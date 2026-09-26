@@ -76,6 +76,13 @@ function open(path, baudRate = 9600) {
 
             serial.on('close', () => {
                 if (conn.intentionalClose) return; // close() below was called deliberately
+                // Any writeAndWaitForLine() still pending against the
+                // connection that just died can never legitimately be
+                // answered - the board may reset/re-enumerate (see comment
+                // above attemptOpen) and a line received after reconnect
+                // has no relation to a request written before the drop.
+                // Reject now instead of leaving it to time out after 3s.
+                rejectAllPending(new Error(`Port ${path} disconnected while a request was pending`));
                 if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
                     emitter.emit('error', new Error(`Port ${path} closed unexpectedly and gave up reconnecting after ${MAX_RECONNECT_ATTEMPTS} attempts`));
                     return;
@@ -94,12 +101,32 @@ function open(path, baudRate = 9600) {
     // passed to the oldest open "pending" request (FIFO). Runs independently
     // of the handshake listener in fossdaq-init.js, which also listens for
     // 'line' - EventEmitter allows multiple listeners.
+    //
+    // "ERROR:" lines are protocol/status messages, not data responses to a
+    // sensor query - they can arrive at any time (e.g. the Arduino hits a
+    // problem while a fossdaq-input query happens to be in flight). If such
+    // a line were fed into the FIFO like a normal response, it would
+    // silently "consume" the pending entry that was actually waiting for
+    // the real sensor value; that real value, arriving right after, would
+    // then get paired with the NEXT pending request instead - desyncing
+    // the request/response pairing for every subsequent read on this port
+    // until the connection is torn down. So: reject every currently
+    // pending request instead of resolving one of them with error text.
     emitter.on('line', (line) => {
+        if (line.startsWith('ERROR:')) {
+            rejectAllPending(new Error('Arduino reported: ' + line));
+            return;
+        }
         if (conn.pending.length > 0) {
             const entry = conn.pending.shift();
             entry.resolve(line);
         }
     });
+
+    function rejectAllPending(err) {
+        const toReject = conn.pending.splice(0, conn.pending.length);
+        toReject.forEach(entry => entry.reject(err));
+    }
 
     connections.set(path, conn);
     return conn;
