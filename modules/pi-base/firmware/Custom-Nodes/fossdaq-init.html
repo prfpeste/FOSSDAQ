@@ -53,6 +53,16 @@
 <!--    static board entry.                                        -->
 <!-- ============================================================ -->
 <script type="text/javascript">
+    // Board definitions from /fossdaq/board/:prefix are static per prefix -
+    // cache them once so re-opening the edit dialog for an already-known
+    // board type doesn't need a fresh async round-trip (which is what
+    // caused the race with oneditsave in the first place - see below).
+    // Shared across all fossdaq-*.html editor scripts via window, so a
+    // prefix fetched from any one of the three node types is cached for
+    // all of them (they all hit the same read-only endpoint/data).
+    window.fossdaqBoardEntryCache = window.fossdaqBoardEntryCache || {};
+    var fossdaqBoardEntryCache = window.fossdaqBoardEntryCache;
+
     RED.nodes.registerType('fossdaq-init', {
         category: 'fossdaq',
         color: '#a6d5fa',
@@ -178,19 +188,40 @@
                 });
             }
 
+            function renderEntry(container, entry) {
+                renderSettings(container, entry); // already includes name fields when actuatorsFromSettings
+                if (entry.kind === "sensor") {
+                    renderSensorFormulas(container, entry);
+                } else if (entry.kind === "actuator" && !entry.actuatorsFromSettings) {
+                    renderActuatorNames(container, entry); // static actuators without their own settings row
+                }
+            }
+
             function loadForPrefix(prefix) {
                 const container = $("#node-settings-container");
                 container.empty();
-                node._lastEntry = null;
-                if (!prefix) return;
+                // Do NOT reset node._lastEntry to null here: oneditsave uses
+                // it to decide whether sensorFormulas/actuatorNames get
+                // rebuilt from the form, and clearing it would re-open the
+                // race window below on every re-render (e.g. triggered by
+                // the 'change' handler) even for a prefix we've already
+                // fetched. Only replace it once we actually have data.
+                if (!prefix) { node._lastEntry = null; return; }
+
+                const cached = fossdaqBoardEntryCache[prefix];
+                if (cached) {
+                    // Synchronously available - render immediately, no
+                    // window where oneditsave could fire before this
+                    // point, and no round-trip that could be slow/racy.
+                    node._lastEntry = cached;
+                    renderEntry(container, cached);
+                    return;
+                }
+
                 $.getJSON('fossdaq/board/' + prefix, function(entry) {
+                    fossdaqBoardEntryCache[prefix] = entry;
                     node._lastEntry = entry;
-                    renderSettings(container, entry); // already includes name fields when actuatorsFromSettings
-                    if (entry.kind === "sensor") {
-                        renderSensorFormulas(container, entry);
-                    } else if (entry.kind === "actuator" && !entry.actuatorsFromSettings) {
-                        renderActuatorNames(container, entry); // static actuators without their own settings row
-                    }
+                    renderEntry(container, entry);
                 });
             }
 
@@ -213,7 +244,23 @@
         },
         oneditsave: function() {
             const node = this;
-            const entry = node._lastEntry || { settings: [], sensors: [] };
+            const entry = node._lastEntry;
+
+            // Board entry not loaded yet (async /fossdaq/board/:prefix
+            // fetch still in flight when the dialog was saved - e.g. slow
+            // server response on the very first edit of a given board
+            // type). The form below was never rendered with real fields
+            // in that case either, so there is nothing valid to read from
+            // it. Previously this fell back to {settings:[], sensors:[]},
+            // which has no `kind`, silently skipped both blocks below, and
+            // wiped node.sensorFormulas/node.actuatorNames to {} - losing
+            // any previously assigned names/formulas. Instead, leave both
+            // untouched so a deploy under this race keeps the last known
+            // good configuration.
+            if (!entry || !entry.kind) {
+                node.warn("fossdaq-init: board configuration not loaded yet - keeping previous names/formulas for '" + (node.name || "this node") + "'. Please reopen and save again.");
+                return;
+            }
 
             const settingValues = {};
             $("#node-settings-container select[id^='setting-input-']").each(function() {
@@ -222,8 +269,8 @@
             });
             node.settingValues = settingValues;
 
-            const sensorFormulas = {};
             if (entry.kind === "sensor") {
+                const sensorFormulas = {};
                 (entry.sensors || []).forEach(s => {
                     const formulaVal = $("#sensor-formula-" + s.index).val();
                     const nameVal = $("#sensor-name-" + s.index).val();
@@ -234,11 +281,11 @@
                         enabled
                     };
                 });
+                node.sensorFormulas = sensorFormulas;
             }
-            node.sensorFormulas = sensorFormulas;
 
-            const actuatorNames = {};
             if (entry.kind === "actuator") {
+                const actuatorNames = {};
                 const list = (entry.actuatorsFromSettings)
                     ? (entry.settings || []).map(s => s.index)
                     : (entry.actuators || []).map(a => a.index);
@@ -246,8 +293,8 @@
                     const nameVal = $("#actuator-name-" + index).val();
                     if (nameVal && nameVal.trim()) actuatorNames[index] = nameVal.trim();
                 });
+                node.actuatorNames = actuatorNames;
             }
-            node.actuatorNames = actuatorNames;
         }
     });
 </script>
