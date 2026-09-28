@@ -1,8 +1,8 @@
-# i2c-4x-mux
+# i2c-6x-mux
 
-4-channel I²C sensor interface module with TCA9548A multiplexer for the FOSSDAQ system.
+6-channel I²C sensor interface module with TCA9548A multiplexer for the FOSSDAQ system.
 
-This module is designed for up to four BME280 sensors (temperature, relative humidity and air pressure) with digital I²C interface. It is based on an Arduino Nano 33 BLE Rev2 and communicates with the Raspberry Pi via USB.
+This module is designed for up to six sensors with digital I²C interface. It is based on an Arduino Nano R4 and communicates with the Raspberry Pi via USB.
 
 ## Status
 
@@ -13,14 +13,13 @@ This module is designed for up to four BME280 sensors (temperature, relative hum
 
 ## Purpose
 
-The `i2c-4x-mux` module is the I²C sensor card of the FOSSDAQ system. It is intended for simple and low-cost acquisition of digital I²C sensor data in educational and laboratory setups. The TCA9548A multiplexer provides separate I²C channels, so that several identical sensors can be operated on one card.
+The `i2c-6x-mux` module is the I²C sensor card of the FOSSDAQ system. It is intended for simple and low-cost acquisition of digital I²C sensor data in educational and laboratory setups. The TCA9548A multiplexer provides separate I²C channels, so that several identical sensors can be operated on one card.
 
 ## Features
 
 - 4 independent I²C sensor connections via TCA9548A multiplexer
-- Designed for 4 × BME280 (temperature, relative humidity, air pressure)
 - Digital I²C interface, no analog signal path
-- Based on Arduino Nano 33 BLE Rev2
+- Based on Arduino Nano R4
 - 24 spring terminal positions (4 × 6-pole); 16 used for four sensors (VCC, GND, SCL, SDA per sensor), remaining positions available for additional I²C sensors
 - Local 5 V generation from shared 24 V DC bus, shared 5 V sensor supply
 - USB connection to Raspberry Pi for data only
@@ -63,10 +62,9 @@ The `i2c-4x-mux` module is the I²C sensor card of the FOSSDAQ system. It is int
 - USB used as: data path only
 
 ### Signals
-- Channel count: 4 (via TCA9548A)
+- Channel count: 6 (via TCA9548A)
 - Interface: digital I²C (SDA/SCL); the sensor values are not connected to the analog inputs of the Arduino
 - Terminal signals per sensor: VCC, GND, SCL, SDA
-- Typical sensor type: BME280 (temperature, relative humidity, air pressure)
 
 ### Mechanics
 - Mounting: TS-35 DIN rail
@@ -76,9 +74,8 @@ The `i2c-4x-mux` module is the I²C sensor card of the FOSSDAQ system. It is int
 
 ## Main components
 
-- Arduino Nano 33 BLE Rev2
+- Arduino Nano R4
 - TCA9548A I²C multiplexer (DEBO I2C-MULTI)
-- 4 × BME280 I²C sensor (DEBO BME280)
 - DEBO DCDC DOWN 5 DC/DC converter module (LM2596S)
 - AST 025-06 spring terminal blocks for sensor connections
 - AST 025-04 spring terminal block for 24 V bus input/pass-through
