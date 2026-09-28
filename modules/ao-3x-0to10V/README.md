@@ -13,11 +13,11 @@ This module is designed for actors with 0to10 V supply. It is based on an Arduin
 
 ## Purpose
 
-The `ao-1to3x-0to10V` module is the first fully developed analog output card of the FOSSDAQ system. It is intended for simple and low-cost control of devices with an analog input in educational and laboratory setups.
+The `ao-3x-0to10V` module is the first fully developed analog output card of the FOSSDAQ system. It is intended for simple and low-cost control of devices with an analog input in educational and laboratory setups.
 
 ## Features
 
-- 1to3 analog output channels
+- 3 analog output channels
 - Designed for 0to10 V signal output
 - Based on Arduino Nano R4
 - 12-bit DAC via SPI
@@ -62,7 +62,7 @@ The `ao-1to3x-0to10V` module is the first fully developed analog output card of 
 - USB used as: data path only
 
 ### Signals
-- Channel count: 1to3
+- Channel count: 3
 - Input pins: see documentation
 - Signal range: 0to10 V
 
