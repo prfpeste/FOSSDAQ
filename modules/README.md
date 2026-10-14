@@ -7,6 +7,8 @@
 - `ao-3x-0to10V` – 3-channel analog output card with 0–10 V output (12-bit DAC)
 - `do-6x-PWM` – 6-channel digital output card with PWM or on/off switching per channel (up to 20 V)
 - `I2C-6x-mux` – 6-channel I²C sensor interface card with I²C multiplexer
+- `ai-4x-4to20mA` – 4-channel analog current for sensors with 4–20 mA current output signals 
+- `di-4x-5V` – 4-channel digital input with digital pulse output signals up to 5 V.
 
 The Arduino-based cards are powered from the shared 24 V DC bus, communicate with the Raspberry Pi via USB and are mounted on a TS-35 DIN rail. Each module folder contains its own `docs/` (build instructions and BOM), `firmware/` and `images/`.
 
