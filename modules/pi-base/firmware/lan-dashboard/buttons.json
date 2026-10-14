@@ -1,0 +1,9 @@
+[
+  {
+    "id": "node-red",
+    "label": "NodeRed",
+    "url": "http://nodered.hotspot",
+    "visible": true,
+    "order": 0
+  }
+]

@@ -1,0 +1,12 @@
+# /etc/systemd/system/find-arduino@.service
+#
+# Started via udev rule (99-arduino.rules) for each newly detected
+# ttyACM*/ttyUSB* device. %i = e.g., "ttyACM0".
+[Unit]
+Description=Identify Arduino/Clone on %i and create symlink
+After=dev-%i.device
+BindsTo=dev-%i.device
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/setsid -w /bin/bash -c '/usr/local/bin/find_arduino.sh -s -p /dev/%i & wait $!'

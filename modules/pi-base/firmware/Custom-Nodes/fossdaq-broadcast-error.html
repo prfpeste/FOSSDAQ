@@ -1,0 +1,34 @@
+<script type="text/javascript">
+    RED.nodes.registerType('fossdaq-broadcast-error', {
+        category: 'fossdaq',
+        color: '#f2a6a6',
+        defaults: {
+            name: { value: "" }
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "alert.png",
+        label: function() {
+            return this.name || "Broadcast ERROR";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="fossdaq-broadcast-error">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="fossdaq-broadcast-error">
+    <p>On every incoming message, immediately sends <code>ERROR\n</code> to <b>every</b> currently open Arduino
+       connection (all ports, not just one) - the same broadcast that a fossdaq-init, fossdaq-input or
+       fossdaq-output node triggers automatically whenever it hits a severe error that stops its own flow
+       branch (e.g. connection error, handshake failure, write error, port not ready).</p>
+    <p>Use this node to trigger that same "notify every board" behavior explicitly from within a flow - for
+       example from an emergency-stop button, a watchdog timer, or any custom logic that detects a problem the
+       fossdaq nodes themselves wouldn't catch on their own.</p>
+    <p>The node has no output - it is a pure side-effect/action node. <code>msg.payload</code> is ignored;
+       any incoming message triggers the broadcast.</p>
+</script>
