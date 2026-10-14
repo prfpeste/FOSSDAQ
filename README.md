@@ -49,11 +49,14 @@ FOSSDAQ is developed as an open modular measurement system in the context of stu
 - Prof. Dr. Peter Stein (HTWG Konstanz - Maschinenbau)
 
 #### Core contributors
-- Jürgen Altemeier (HTWG Konstanz - Maschinenbau - basic concept and first modules - 2026)
-- Patrick Uitz (HTWG Konstanz - Maschinenbau - basic concept and first modules - 2026)
+- Jürgen Altemeier (HTWG Konstanz - Maschinenbau - basic concept and 2 first modules - 2026)
+- Patrick Uitz (HTWG Konstanz - Maschinenbau - basic concept and 2 first modules - 2026)
+- Alexander Gschlecht (HTWG Konstanz - Maschinenbau - node red integration and 2 new and several revised modules)
 
 #### Further module contributors
-- To be added as new modules are published
+- Sergej Tsoy (HTWG Konstanz - Maschinenbau - 2 modules)
+- Vincent Böhmer (HTWG Konstanz - Maschinenbau - 1 module)
+- Philip Hauser (HTWG Konstanz - Maschinenbau - 2 module)
 
 ## Related Projects
 
